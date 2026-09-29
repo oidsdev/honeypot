@@ -20,6 +20,9 @@
   .tag { display: inline-block; font-size: 0.75rem; color: #666; border: 1px solid #ccc; border-radius: 3px; padding: 0.1rem 0.4rem; margin-right: 0.5rem; }
   .card code { display: block; font-size: 0.8rem; background: #f5f5f5; padding: 0.5rem; border-radius: 4px; margin-top: 0.5rem; overflow-x: auto; white-space: nowrap; }
   .card .src { font-size: 0.8rem; }
+  details.badge { margin-top: 0.5rem; font-size: 0.8rem; }
+  details.badge summary { cursor: pointer; color: #666; }
+  details.badge code { white-space: normal; word-break: break-all; }
   ol.submit li { margin-bottom: 0.5rem; }
   .count { font-size: 0.85rem; color: #666; }
 </style>
@@ -44,6 +47,8 @@
     <li>Fork <a href="https://github.com/oidsdev/honeypot">github.com/oidsdev/honeypot</a>.</li>
     <li>Add it at <code>skills/&lt;your-skill&gt;/SKILL.md</code>.</li>
     <li>Open a pull request. We merge fast.</li>
+    <li>Add the badge to your repo so people find the index:<br>
+    <code>[![Indexed on Honeypot](https://honeypot-e6c.pages.dev/badge.svg)](https://honeypot-e6c.pages.dev)</code></li>
   </ol>
 
   <h2>For machines</h2>
@@ -83,6 +88,8 @@
         '<span class="tag">' + esc(s.category) + '</span>' +
         (s.skill_md_url ? '<a class="src" href="' + esc(s.skill_md_url) + '">SKILL.md</a>' : '') +
         (s.install ? '<code>' + esc(s.install) + '</code>' : '') +
+        '<details class="badge"><summary>add badge</summary>' +
+        '<code>' + esc('[![Indexed on Honeypot](https://honeypot-e6c.pages.dev/badge.svg)](https://honeypot-e6c.pages.dev)') + '</code></details>' +
         '</div>';
     }).join('');
   }

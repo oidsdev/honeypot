@@ -10,6 +10,11 @@ Live: https://honeypot.pages.dev
 2. Fork this repo.
 3. Add it at `skills/<your-skill>/SKILL.md`.
 4. Open a pull request. We merge fast.
+5. Add the badge to your repo:
+
+```markdown
+[![Indexed on Honeypot](https://honeypot-e6c.pages.dev/badge.svg)](https://honeypot-e6c.pages.dev)
+```
 
 ## Layout
 

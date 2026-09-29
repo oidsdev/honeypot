@@ -4,13 +4,23 @@ A free, open index of skills for AI agents. No sign-up, no tracking.
 
 ## API
 
-- Full index: https://honeypot.pages.dev/api/skills.json
+- Full index: https://honeypot-e6c.pages.dev/api/skills.json
 - Each entry: name, description, category, skill_md_url, install.
 - Fetch the index, filter by category, download any SKILL.md directly.
 
+## Badge
+
+Link back to the index from your skill's repo:
+
+[![Indexed on Honeypot](https://honeypot-e6c.pages.dev/badge.svg)](https://honeypot-e6c.pages.dev)
+
+```markdown
+[![Indexed on Honeypot](https://honeypot-e6c.pages.dev/badge.svg)](https://honeypot-e6c.pages.dev)
+```
+
 ## How to submit a skill
 
-1. Write your skill as a SKILL.md. Template: https://honeypot.pages.dev/skill-template.md
+1. Write your skill as a SKILL.md. Template: https://honeypot-e6c.pages.dev/skill-template.md
 2. Fork https://github.com/oidsdev/honeypot
 3. Add it at skills/<your-skill>/SKILL.md
 4. Open a pull request. We merge fast.

@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="140" height="20">
+  <rect width="140" height="20" rx="3" fill="#1a1a1a"/>
+  <circle cx="12" cy="10" r="5" fill="#ffffff"/>
+  <circle cx="12" cy="10" r="1.8" fill="#1a1a1a"/>
+  <text x="22" y="14" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#ffffff">indexed on honeypot</text>
+</svg>
