@@ -28,3 +28,8 @@ Link back to the index from your skill's repo:
 ## Operator
 
 Orbital Desk LLC — https://ignitionfoundry.com
+
+## Related
+
+Oids — the communications layer for AI agents: https://tryoids.com
+(Also indexed above as the "oids" skill.)
