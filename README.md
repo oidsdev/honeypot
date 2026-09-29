@@ -49,6 +49,11 @@ Editor's picks live at `/api/editors-picks.json`. There's no score: a skill is a
 when it passes every check in `PICK_CRITERIA` in `scripts/gen.py` (description length,
 tags, verified recently, SKILL.md link). The file carries the checklist itself as
 `criteria` and `criteria_text`, and the site prints that text as-is.
+
+Every card on the site shows its `last_verified` date. Anything not re-verified in
+`STALE_AFTER_DAYS` (180, set in `scripts/gen.py` and published as `stale_after_days`
+in `/api/editors-picks.json`) gets a "stale" badge and drops out of the picks.
+Freshness is date-based only; nothing pings the skills.
 The same JSON is mirrored at
 `https://raw.githubusercontent.com/oidsdev/honeypot/main/api/skills.json`.
 

@@ -26,6 +26,8 @@
   .tag { display: inline-block; font-size: 0.75rem; color: #666; border: 1px solid #ccc; border-radius: 3px; padding: 0.1rem 0.4rem; margin-right: 0.5rem; }
   .card code { display: block; font-size: 0.8rem; background: #f5f5f5; padding: 0.5rem; border-radius: 4px; margin-top: 0.5rem; overflow-x: auto; white-space: nowrap; }
   .card .src { font-size: 0.8rem; }
+  .card .verified { font-size: 0.8rem; color: #666; margin-left: 0.5rem; }
+  .tag.stale { color: #8a3b00; border-color: #8a3b00; margin-left: 0.5rem; margin-right: 0; }
   details.badge { margin-top: 0.5rem; font-size: 0.8rem; }
   details.badge summary { cursor: pointer; color: #666; }
   details.badge code { white-space: normal; word-break: break-all; }
@@ -89,11 +91,28 @@
   var tag = document.getElementById('tag');
   var count = document.getElementById('count');
   var all = [];
+  // Stale threshold in days. Comes from gen.py's STALE_AFTER_DAYS via
+  // api/editors-picks.json; until that loads, no card is marked stale.
+  var staleAfterDays = null;
 
   function esc(s) {
     return String(s).replace(/[&<>"']/g, function (c) {
       return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
     });
+  }
+
+  // Whole days since a YYYY-MM-DD date, counted in calendar days like gen.py.
+  function ageDays(ymd) {
+    var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(ymd || '');
+    if (!m) return null;
+    var now = new Date();
+    return Math.round((Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()) - Date.UTC(+m[1], m[2] - 1, +m[3])) / 86400000);
+  }
+
+  function isStale(s) {
+    if (staleAfterDays === null) return false;
+    var age = ageDays(s.last_verified);
+    return age === null || age > staleAfterDays;
   }
 
   function addOptions(select, values) {
@@ -132,6 +151,8 @@
         '<p>' + esc(s.description) + '</p>' +
         '<span class="tag">' + esc(s.category) + '</span>' +
         (s.skill_md_url ? '<a class="src" href="' + esc(s.skill_md_url) + '">SKILL.md</a>' : '') +
+        (s.last_verified ? '<span class="verified">verified ' + esc(s.last_verified) + '</span>' : '') +
+        (isStale(s) ? '<span class="tag stale" title="Not re-verified in over ' + staleAfterDays + ' days">stale</span>' : '') +
         (s.install ? '<code>' + esc(s.install) + '</code>' : '') +
         '<details class="badge"><summary>add badge</summary>' +
         '<code>' + esc('[![Indexed on Honeypot](https://honeypot-e6c.pages.dev/badge.svg)](https://honeypot-e6c.pages.dev)') + '</code></details>' +
@@ -163,6 +184,10 @@
   function update() { render(); syncUrl(); }
   // Editor's picks: list and criteria text both come from gen.py's output
   fetch('api/editors-picks.json').then(function (r) { return r.json(); }).then(function (p) {
+    if (typeof p.stale_after_days === 'number') {
+      staleAfterDays = p.stale_after_days;
+      if (all.length) render();
+    }
     if (!p.picks || !p.picks.length) return;
     document.getElementById('picks-list').innerHTML = p.picks.map(function (s) {
       return '<li><a href="skills/' + encodeURIComponent(s.name) + '/">' + esc(s.name) + '</a> ' + esc(s.description) + '</li>';
