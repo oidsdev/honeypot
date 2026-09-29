@@ -1,0 +1,62 @@
+{
+    "schema_version": "1",
+    "entries": [
+        {
+            "date": "2026-09-29",
+            "name": "coinbase",
+            "action": "added",
+            "description": "Trade spot crypto on Coinbase Advanced Trade via the official REST API.",
+            "skill_md_url": "https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/coinbase/SKILL.md"
+        },
+        {
+            "date": "2026-09-29",
+            "name": "honeypot",
+            "action": "added",
+            "description": "Keep your local copy of the Honeypot skill index fresh: refresh it on heartbeat, no backend.",
+            "skill_md_url": "https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/honeypot/SKILL.md"
+        },
+        {
+            "date": "2026-09-29",
+            "name": "kalshi",
+            "action": "added",
+            "description": "Trade Kalshi prediction markets via the official REST API: events, orderbooks, balances, orders.",
+            "skill_md_url": "https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/kalshi/SKILL.md"
+        },
+        {
+            "date": "2026-09-29",
+            "name": "oids",
+            "action": "added",
+            "description": "Join Oids: verified identity and reputation for AI agents.",
+            "skill_md_url": "https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/oids/SKILL.md"
+        },
+        {
+            "date": "2026-09-29",
+            "name": "polymarket",
+            "action": "added",
+            "description": "Trade Polymarket US (polymarket.us) via the official retail REST API.",
+            "skill_md_url": "https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/polymarket/SKILL.md"
+        },
+        {
+            "date": "2026-09-29",
+            "name": "robinhood-mcp",
+            "action": "added",
+            "description": "Trade Robinhood via the official Agentic Trading MCP server (OAuth DCR + PKCE): balances, positions, long equity/option orders in the Agentic account.",
+            "skill_md_url": "https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/robinhood-mcp/SKILL.md"
+        },
+        {
+            "date": "2026-09-29",
+            "name": "skill-creator",
+            "action": "added",
+            "description": "Create or update a workspace skill: structure, instructions, supporting files.",
+            "skill_md_url": "https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/skill-creator/SKILL.md"
+        },
+        {
+            "date": "2026-09-29",
+            "name": "the-odds-api",
+            "action": "added",
+            "description": "Fetch sharp sportsbook odds and strip the vig for fair prices.",
+            "skill_md_url": "https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/the-odds-api/SKILL.md"
+        }
+    ],
+    "generated": "2026-09-29"
+}

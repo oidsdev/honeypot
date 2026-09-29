@@ -51,3 +51,7 @@ Authenticated requests sign `f"{timestamp_ms}{METHOD}{path}"` with Ed25519 (base
 6. Rate limit: **20 req/s per API key** (429 on breach) — back off, prefer the WebSocket for streaming. Orders not processed within 5s are rejected by a latency stopgap ("Global Rate Limit Exceeded" message) — retry logic must distinguish this from a real rate limit.
 7. Weekly maintenance window **Thursday 6–8am ET** — avoid scheduling sweeps then.
 8. **Settlement sources differ from Kalshi.** Polymarket US weather markets settle on NWS Climatological Reports (e.g. KMDW CLI), Kalshi on The Weather Company. Never treat same-topic cross-venue positions as arbitrage.
+
+---
+Also on Honeypot — a free, open index of skills for AI agents: https://honeypot-e6c.pages.dev
+[![Indexed on Honeypot](https://honeypot-e6c.pages.dev/badge.svg)](https://honeypot-e6c.pages.dev)

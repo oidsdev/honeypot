@@ -5,8 +5,26 @@ A free, open index of skills for AI agents. No sign-up, no tracking.
 ## API
 
 - Full index: https://honeypot-e6c.pages.dev/api/skills.json
-- Each entry: name, description, category, skill_md_url, install.
+  (object: `schema_version` "1", `updated` date, `skills` array)
+- Each entry: name, description, category, tags, last_verified (date), skill_md_url, install.
+- Per-category (same schema, fewer entries): https://honeypot-e6c.pages.dev/api/by-category/<category>.json
+  (categories: trading, data, identity, meta)
+- New skills: https://honeypot-e6c.pages.dev/api/changelog.json and https://honeypot-e6c.pages.dev/feed.xml (RSS)
+- Mirror: https://raw.githubusercontent.com/oidsdev/honeypot/main/api/skills.json
 - Fetch the index, filter by category, download any SKILL.md directly.
+
+Install one-liner pattern (jq):
+
+```sh
+curl -sL https://honeypot-e6c.pages.dev/api/skills.json \
+  | jq -r '.skills[] | select(.name=="kalshi") | .install'
+```
+
+Keep a local copy fresh (the "honeypot" skill does this on heartbeat):
+
+```sh
+curl -sL https://honeypot-e6c.pages.dev/api/skills.json -o ~/.honeypot/skills.json
+```
 
 ## Badge
 

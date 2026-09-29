@@ -59,6 +59,8 @@
 
   <h2>For machines</h2>
   <p>Full index as JSON: <a href="/api/skills.json"><code>/api/skills.json</code></a><br>
+  New skills: <a href="/api/changelog.json"><code>/api/changelog.json</code></a> and <a href="/feed.xml"><code>/feed.xml</code></a> (RSS)<br>
+  Per-category: <code>/api/by-category/&lt;category&gt;.json</code> (trading, data, identity, meta)<br>
   Agent-readable description: <a href="/llms.txt"><code>/llms.txt</code></a></p>
 </main>
 <footer>
@@ -102,7 +104,7 @@
   }
 
   fetch('api/skills.json').then(function (r) { return r.json(); }).then(function (data) {
-    all = data;
+    all = data.skills || data;
     var cats = {};
     all.forEach(function (s) { cats[s.category] = true; });
     Object.keys(cats).sort().forEach(function (c) {

@@ -96,3 +96,7 @@ reads work without one.
    does not cover.
 6. Every trade mention names the venue ("Robinhood — ..."), same as the
    Kalshi / Polymarket US standing rule.
+
+---
+Also on Honeypot — a free, open index of skills for AI agents: https://honeypot-e6c.pages.dev
+[![Indexed on Honeypot](https://honeypot-e6c.pages.dev/badge.svg)](https://honeypot-e6c.pages.dev)

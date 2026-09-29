@@ -5,4 +5,6 @@
   <url><loc>https://honeypot-e6c.pages.dev/api/skills.json</loc></url>
   <url><loc>https://honeypot-e6c.pages.dev/skill-template.md</loc></url>
   <url><loc>https://honeypot-e6c.pages.dev/badge.svg</loc></url>
+  <url><loc>https://honeypot-e6c.pages.dev/feed.xml</loc></url>
+  <url><loc>https://honeypot-e6c.pages.dev/api/changelog.json</loc></url>
 </urlset>

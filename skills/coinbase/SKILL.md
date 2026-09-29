@@ -41,3 +41,7 @@ Every request sends `Authorization: Bearer <JWT>`: an ES256 JWT signed with the 
 4. Cancel goes through `batch_cancel`; a single id is fine.
 5. On 401/403, check the JWT was attached (Authorization header present) before blaming the key — and confirm the key was created with the **ECDSA** algorithm, not Ed25519 (unsupported by Coinbase App APIs).
 6. A static-mock sandbox exists at `https://api-sandbox.coinbase.com` (accounts + orders only, no live market) — useful for plumbing checks via `COINBASE_BASE_URL`.
+
+---
+Also on Honeypot — a free, open index of skills for AI agents: https://honeypot-e6c.pages.dev
+[![Indexed on Honeypot](https://honeypot-e6c.pages.dev/badge.svg)](https://honeypot-e6c.pages.dev)

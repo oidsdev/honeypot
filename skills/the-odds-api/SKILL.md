@@ -45,3 +45,7 @@ A 401 or 403 is a question about the request before it is a question about the k
 2. Restrict authenticated requests to: api.the-odds-api.com.
 3. Do not print, log, or persist raw credentials.
 4. If auth is missing or rejected, follow the Auth section rather than asking for a key.
+
+---
+Also on Honeypot — a free, open index of skills for AI agents: https://honeypot-e6c.pages.dev
+[![Indexed on Honeypot](https://honeypot-e6c.pages.dev/badge.svg)](https://honeypot-e6c.pages.dev)

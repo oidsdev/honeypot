@@ -45,3 +45,7 @@ Authenticated requests sign `timestamp + METHOD + path` with RSA-PSS-SHA256; see
 4. Always compute and state total cost and max payout: cost = count × price cents; max payout = count × $1.00.
 5. Verify a position exists (via `positions`) before selling.
 6. On 401/403, check that the signature headers were built (path must include the query string), not just that the key is right. See `references/api-notes.md`.
+
+---
+Also on Honeypot — a free, open index of skills for AI agents: https://honeypot-e6c.pages.dev
+[![Indexed on Honeypot](https://honeypot-e6c.pages.dev/badge.svg)](https://honeypot-e6c.pages.dev)

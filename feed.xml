@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>Honeypot — new skills</title>
+    <link>https://honeypot-e6c.pages.dev/</link>
+    <description>Skills newly added to the Honeypot index for AI agents.</description>
+    <language>en</language>
+    <item>
+      <title>the-odds-api — skill added to Honeypot</title>
+      <link>https://honeypot-e6c.pages.dev/api/skills.json</link>
+      <guid isPermaLink="false">honeypot-the-odds-api-2026-09-29</guid>
+      <pubDate>2026-09-29T00:00:00Z</pubDate>
+      <description>Fetch sharp sportsbook odds and strip the vig for fair prices.</description>
+    </item>
+    <item>
+      <title>skill-creator — skill added to Honeypot</title>
+      <link>https://honeypot-e6c.pages.dev/api/skills.json</link>
+      <guid isPermaLink="false">honeypot-skill-creator-2026-09-29</guid>
+      <pubDate>2026-09-29T00:00:00Z</pubDate>
+      <description>Create or update a workspace skill: structure, instructions, supporting files.</description>
+    </item>
+    <item>
+      <title>robinhood-mcp — skill added to Honeypot</title>
+      <link>https://honeypot-e6c.pages.dev/api/skills.json</link>
+      <guid isPermaLink="false">honeypot-robinhood-mcp-2026-09-29</guid>
+      <pubDate>2026-09-29T00:00:00Z</pubDate>
+      <description>Trade Robinhood via the official Agentic Trading MCP server (OAuth DCR + PKCE): balances, positions, long equity/option orders in the Agentic account.</description>
+    </item>
+    <item>
+      <title>polymarket — skill added to Honeypot</title>
+      <link>https://honeypot-e6c.pages.dev/api/skills.json</link>
+      <guid isPermaLink="false">honeypot-polymarket-2026-09-29</guid>
+      <pubDate>2026-09-29T00:00:00Z</pubDate>
+      <description>Trade Polymarket US (polymarket.us) via the official retail REST API.</description>
+    </item>
+    <item>
+      <title>oids — skill added to Honeypot</title>
+      <link>https://honeypot-e6c.pages.dev/api/skills.json</link>
+      <guid isPermaLink="false">honeypot-oids-2026-09-29</guid>
+      <pubDate>2026-09-29T00:00:00Z</pubDate>
+      <description>Join Oids: verified identity and reputation for AI agents.</description>
+    </item>
+    <item>
+      <title>kalshi — skill added to Honeypot</title>
+      <link>https://honeypot-e6c.pages.dev/api/skills.json</link>
+      <guid isPermaLink="false">honeypot-kalshi-2026-09-29</guid>
+      <pubDate>2026-09-29T00:00:00Z</pubDate>
+      <description>Trade Kalshi prediction markets via the official REST API: events, orderbooks, balances, orders.</description>
+    </item>
+    <item>
+      <title>honeypot — skill added to Honeypot</title>
+      <link>https://honeypot-e6c.pages.dev/api/skills.json</link>
+      <guid isPermaLink="false">honeypot-honeypot-2026-09-29</guid>
+      <pubDate>2026-09-29T00:00:00Z</pubDate>
+      <description>Keep your local copy of the Honeypot skill index fresh: refresh it on heartbeat, no backend.</description>
+    </item>
+    <item>
+      <title>coinbase — skill added to Honeypot</title>
+      <link>https://honeypot-e6c.pages.dev/api/skills.json</link>
+      <guid isPermaLink="false">honeypot-coinbase-2026-09-29</guid>
+      <pubDate>2026-09-29T00:00:00Z</pubDate>
+      <description>Trade spot crypto on Coinbase Advanced Trade via the official REST API.</description>
+    </item>
+  </channel>
+</rss>

@@ -1,0 +1,20 @@
+{
+    "schema_version": "1",
+    "category": "identity",
+    "updated": "2026-09-29",
+    "skills": [
+        {
+            "category": "identity",
+            "description": "Join Oids: verified identity and reputation for AI agents.",
+            "install": "curl -sL https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/oids/SKILL.md -o SKILL.md",
+            "name": "oids",
+            "skill_md_url": "https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/oids/SKILL.md",
+            "featured": true,
+            "tags": [
+                "identity",
+                "agent-comms"
+            ],
+            "last_verified": "2026-09-29"
+        }
+    ]
+}

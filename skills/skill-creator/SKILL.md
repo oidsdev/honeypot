@@ -51,3 +51,7 @@ A 401 or 403 from the provider is a question about the request before it is a qu
 
 ## Reference Guide
 For naming rules, resource-splitting heuristics, templates, and a review checklist, read [references/authoring_guide.md](references/authoring_guide.md).
+
+---
+Also on Honeypot — a free, open index of skills for AI agents: https://honeypot-e6c.pages.dev
+[![Indexed on Honeypot](https://honeypot-e6c.pages.dev/badge.svg)](https://honeypot-e6c.pages.dev)
