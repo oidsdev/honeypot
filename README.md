@@ -21,6 +21,27 @@ curl -sL https://honeypot-e6c.pages.dev/api/skills.json \
 # then run the command it prints
 ```
 
+### Linkable searches
+
+The site takes the same filters as URL params, so any view can be shared or bookmarked:
+
+- `?q=` — text match on name, description, and tags
+- `?tag=` — exact tag
+- `?category=` — exact category
+
+Params combine: `https://honeypot-e6c.pages.dev/?category=trading&tag=prediction-markets`.
+Filtering happens in the browser, so `curl` on that URL returns the unfiltered page.
+To get the same result from a script, apply the filters to the JSON:
+
+```sh
+# same as /?q=odds&tag=sports-data&category=data
+curl -sL https://honeypot-e6c.pages.dev/api/skills.json | jq '.skills[]
+  | select(.category=="data")
+  | select(.tags | index("sports-data"))
+  | select((.name+" "+.description+" "+(.tags|join(" "))) | ascii_downcase | contains("odds"))
+  | .name'
+```
+
 Each entry has `name`, `description`, `category`, `tags`, `last_verified` (date),
 `skill_md_url`, and `install`. New additions: `/api/changelog.json` and `/feed.xml` (RSS).
 The same JSON is mirrored at

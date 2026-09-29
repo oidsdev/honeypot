@@ -17,9 +17,9 @@
   h2 { font-size: 1.15rem; margin-top: 2.5rem; }
   a { color: #1a1a1a; }
   footer { margin-top: 3rem; font-size: 0.85rem; color: #666; }
-  .controls { display: flex; gap: 0.5rem; margin: 1.5rem 0; }
+  .controls { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 1.5rem 0; }
   .controls input, .controls select { font: inherit; padding: 0.4rem 0.6rem; border: 1px solid #999; border-radius: 4px; background: #fff; color: #1a1a1a; }
-  .controls input { flex: 1; }
+  .controls input { flex: 1 1 12rem; }
   .card { border: 1px solid #ddd; border-radius: 6px; padding: 1rem; margin-bottom: 1rem; }
   .card h3 { margin: 0 0 0.25rem; font-size: 1.05rem; }
   .card p { margin: 0.25rem 0; }
@@ -43,6 +43,9 @@
     <select id="cat" aria-label="Filter by category">
       <option value="">All categories</option>
     </select>
+    <select id="tag" aria-label="Filter by tag">
+      <option value="">All tags</option>
+    </select>
   </div>
   <p class="count" id="count"></p>
   <div id="cards"></div>
@@ -62,7 +65,8 @@
   <p>Full index as JSON: <a href="/api/skills.json"><code>/api/skills.json</code></a><br>
   New skills: <a href="/api/changelog.json"><code>/api/changelog.json</code></a> and <a href="/feed.xml"><code>/feed.xml</code></a> (RSS)<br>
   Per-category: <code>/api/by-category/&lt;category&gt;.json</code> (trading, data, identity, meta)<br>
-  Agent-readable description: <a href="/llms.txt"><code>/llms.txt</code></a></p>
+  Agent-readable description: <a href="/llms.txt"><code>/llms.txt</code></a><br>
+  Linkable searches: <code>/?q=&lt;text&gt;&amp;tag=&lt;tag&gt;&amp;category=&lt;category&gt;</code> (e.g. <a href="/?tag=prediction-markets"><code>/?tag=prediction-markets</code></a>)</p>
 </main>
 <footer>
   <p>© 2026 Orbital Desk LLC — <a href="https://ignitionfoundry.com">ignitionfoundry.com</a></p>
@@ -73,6 +77,7 @@
   var cards = document.getElementById('cards');
   var q = document.getElementById('q');
   var cat = document.getElementById('cat');
+  var tag = document.getElementById('tag');
   var count = document.getElementById('count');
   var all = [];
 
@@ -82,13 +87,34 @@
     });
   }
 
+  function addOptions(select, values) {
+    values.sort().forEach(function (v) {
+      var o = document.createElement('option');
+      o.value = v; o.textContent = v;
+      select.appendChild(o);
+    });
+  }
+
+  // Keep the address bar in sync so any view can be shared as ?q=&tag=&category=
+  function syncUrl() {
+    var p = new URLSearchParams();
+    if (q.value.trim()) p.set('q', q.value.trim());
+    if (tag.value) p.set('tag', tag.value);
+    if (cat.value) p.set('category', cat.value);
+    var qs = p.toString();
+    history.replaceState(null, '', location.pathname + (qs ? '?' + qs : '') + location.hash);
+  }
+
   function render() {
     var term = q.value.trim().toLowerCase();
     var c = cat.value;
+    var t = tag.value;
     var list = all.filter(function (s) {
+      var tags = s.tags || [];
       var okCat = !c || s.category === c;
-      var okTerm = !term || (s.name + ' ' + s.description).toLowerCase().indexOf(term) !== -1;
-      return okCat && okTerm;
+      var okTag = !t || tags.indexOf(t) !== -1;
+      var okTerm = !term || (s.name + ' ' + s.description + ' ' + tags.join(' ')).toLowerCase().indexOf(term) !== -1;
+      return okCat && okTag && okTerm;
     });
     count.textContent = list.length + ' of ' + all.length + ' skills';
     cards.innerHTML = list.map(function (s) {
@@ -106,20 +132,29 @@
 
   fetch('api/skills.json').then(function (r) { return r.json(); }).then(function (data) {
     all = data.skills || data;
-    var cats = {};
-    all.forEach(function (s) { cats[s.category] = true; });
-    Object.keys(cats).sort().forEach(function (c) {
-      var o = document.createElement('option');
-      o.value = c; o.textContent = c;
-      cat.appendChild(o);
+    var cats = {}, tags = {};
+    all.forEach(function (s) {
+      cats[s.category] = true;
+      (s.tags || []).forEach(function (t) { tags[t] = true; });
     });
+    addOptions(cat, Object.keys(cats));
+    addOptions(tag, Object.keys(tags));
+
+    // Pre-fill controls from ?q=, ?tag=, ?category=
+    var params = new URLSearchParams(location.search);
+    q.value = params.get('q') || '';
+    var pc = params.get('category'), pt = params.get('tag');
+    if (pc && cats[pc]) cat.value = pc;
+    if (pt && tags[pt]) tag.value = pt;
     render();
   }).catch(function () {
     cards.innerHTML = '<p>Could not load the index.</p>';
   });
 
-  q.addEventListener('input', render);
-  cat.addEventListener('change', render);
+  function update() { render(); syncUrl(); }
+  q.addEventListener('input', update);
+  cat.addEventListener('change', update);
+  tag.addEventListener('change', update);
 })();
 </script>
 </body>

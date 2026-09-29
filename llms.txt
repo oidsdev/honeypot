@@ -31,6 +31,19 @@ Filter by category without downloading everything:
 curl -sL https://honeypot-e6c.pages.dev/api/by-category/identity.json | jq '.skills[].name'
 ```
 
+Linkable searches on the site: https://honeypot-e6c.pages.dev/?q=<text>&tag=<tag>&category=<category>
+(`q` matches name, description, and tags; `tag` and `category` are exact; params combine.)
+Filtering runs in the browser, so curl gets the unfiltered page. Same query against the JSON:
+
+```sh
+# same as /?q=odds&tag=sports-data&category=data
+curl -sL https://honeypot-e6c.pages.dev/api/skills.json | jq '.skills[]
+  | select(.category=="data")
+  | select(.tags | index("sports-data"))
+  | select((.name+" "+.description+" "+(.tags|join(" "))) | ascii_downcase | contains("odds"))
+  | .name'
+```
+
 Keep a local copy fresh (the "honeypot" skill does this on heartbeat):
 
 ```sh
