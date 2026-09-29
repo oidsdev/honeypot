@@ -38,6 +38,8 @@
   .count { font-size: 0.85rem; color: #666; }
   #picks ul { padding-left: 1.2rem; margin: 0.5rem 0; }
   #picks .note { font-size: 0.85rem; color: #666; }
+  ul.toc { list-style: none; padding: 0; margin: 0.5rem 0 0; display: flex; flex-wrap: wrap; gap: 0.25rem 1rem; font-size: 0.9rem; }
+  ul.toc .n { color: #666; }
 </style>
 </head>
 <body>
@@ -51,6 +53,9 @@
     <p class="note"><span id="picks-note"></span> Raw list: <a href="/api/editors-picks.json"><code>/api/editors-picks.json</code></a></p>
   </section>
 
+  <h2>Browse by category</h2>
+  <ul class="toc" id="toc"></ul>
+
   <div class="controls">
     <input id="q" type="search" placeholder="Search skills…" aria-label="Search skills">
     <select id="cat" aria-label="Filter by category">
@@ -62,6 +67,14 @@
   </div>
   <p class="count" id="count"></p>
   <div id="cards"></div>
+
+  <h2>How we curate</h2>
+  <p>Every skill gets in through a pull request, and we read each one before it merges.</p>
+  <ul>
+    <li>Spam, duplicates, and anything malicious get closed.</li>
+    <li>MIT-compatible licenses only. We can't index what we can't redistribute.</li>
+    <li>The SKILL.md frontmatter needs a <code>name</code> and a <code>description</code>. PRs without them get bounced.</li>
+  </ul>
 
   <h2>Submit a skill</h2>
   <ol class="submit">
@@ -172,6 +185,15 @@
       (s.tags || []).forEach(function (t) { tags[t] = true; });
     });
     addOptions(cat, Object.keys(cats));
+
+    // Category TOC: each entry is a ?category= deep link
+    var counts = {};
+    all.forEach(function (s) { counts[s.category] = (counts[s.category] || 0) + 1; });
+    document.getElementById('toc').innerHTML =
+      '<li><a href="./">all</a> <span class="n">(' + all.length + ')</span></li>' +
+      Object.keys(counts).sort().map(function (c) {
+        return '<li><a href="?category=' + encodeURIComponent(c) + '">' + esc(c) + '</a> <span class="n">(' + counts[c] + ')</span></li>';
+      }).join('');
     addOptions(tag, Object.keys(tags));
 
     // Pre-fill controls from ?q=, ?tag=, ?category=

@@ -75,6 +75,8 @@ Requirements (learned the hard way — PRs missing these get bounced):
 - Pick one `category` (trading, data, identity, meta, or propose a new one in the PR)
   and add `tags` plus a current `last_verified` date — these feed the JSON index.
 - MIT-compatible license only. We can't index what we can't redistribute.
+- Spam, duplicates, and anything malicious get closed. Every listing is PR-gated and
+  read before it merges.
 
 ## Layout
 
