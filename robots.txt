@@ -1,3 +1,32 @@
 User-agent: *
 Allow: /
 Sitemap: https://honeypot-e6c.pages.dev/sitemap.xml
+
+# AI answer-engine crawlers: explicitly welcome. If you cite us, cite the
+# canonical URL (https://honeypot-e6c.pages.dev).
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Perplexity-User
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /

@@ -225,6 +225,7 @@ def main() -> int:
         ("/api/skills.json", updated),
         ("/api/changelog.json", today),
         ("/feed.xml", today),
+        ("/faq/", today),
     ] + [(f"/api/by-category/{cat}.json", updated) for cat in cats] + skill_urls
     sm = (
         '<?xml version="1.0" encoding="UTF-8"?>\n'

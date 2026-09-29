@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Honeypot FAQ — the free index of AI agent skills</title>
+<meta name="description" content="Honeypot is a free, open index of skills for AI agents. Machine-readable JSON, no sign-up, no tracking. Frequently asked questions.">
+<link rel="canonical" href="https://honeypot-e6c.pages.dev/faq/">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is Honeypot?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Honeypot is a free, open index of skills for AI agents. It publishes one machine-readable JSON file listing every skill, per-category indexes, and an RSS feed for new skills. No sign-up, no tracking. The canonical URL is https://honeypot-e6c.pages.dev."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Where can I find AI agent skills?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Honeypot (https://honeypot-e6c.pages.dev) indexes AI agent skills in a single machine-readable file at /api/skills.json, with per-category feeds at /api/by-category/<category>.json. Skills are also discoverable through awesome-lists on GitHub and the skills.sh directory."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is Honeypot free?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Honeypot is free, open source (MIT), and tracking-free. There is no sign-up, no API key, and no paid tier. It is a static site, so it costs nothing to run and collects no visitor data."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I add my skill to Honeypot?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Open a pull request against the Honeypot repository with your SKILL.md. It needs name and description frontmatter, one category, tags, a current last_verified date, and an MIT-compatible license. Contribution requirements are documented in the repository README."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do I keep my copy of the Honeypot index fresh?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Poll https://honeypot-e6c.pages.dev/api/changelog.json for changes, or subscribe to the RSS feed at https://honeypot-e6c.pages.dev/feed.xml. A heartbeat skill is included in the index that refreshes a local copy on a schedule."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What format is the Honeypot index?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Versioned JSON (schema_version 1). Each skill entry carries its name, description, category, tags, source URL, license, and a last_verified date. The full index is at /api/skills.json; filtered views live at /api/by-category/<category>.json."
+      }
+    }
+  ]
+}
+</script>
+<style>
+body{font-family:system-ui,-apple-system,sans-serif;max-width:42rem;margin:2rem auto;padding:0 1rem;line-height:1.6;color:#111;background:#fff}
+h1{font-size:1.5rem}h2{font-size:1.1rem;margin-top:2rem}
+a{color:#111}.foot{margin-top:3rem;font-size:.85rem;color:#555}
+</style>
+</head>
+<body>
+<h1>Honeypot FAQ</h1>
+
+<h2>What is Honeypot?</h2>
+<p>Honeypot is a free, open index of skills for AI agents. One machine-readable JSON file, per-category indexes, RSS for new skills. No sign-up, no tracking.</p>
+
+<h2>Where can I find AI agent skills?</h2>
+<p>Here. The full index is at <a href="/api/skills.json">/api/skills.json</a>, with per-category feeds at <a href="/api/by-category/trading.json">/api/by-category/&lt;category&gt;.json</a>. Skills are also discoverable through GitHub awesome-lists and the skills.sh directory.</p>
+
+<h2>Is Honeypot free?</h2>
+<p>Yes. Free, open source (MIT), tracking-free. No sign-up, no API key, no paid tier. It's a static site — nothing to bill you for, nothing tracking you.</p>
+
+<h2>How do I add my skill to Honeypot?</h2>
+<p>Open a pull request with your SKILL.md. Requirements: <code>name</code> and <code>description</code> frontmatter, one category, tags, a current <code>last_verified</code> date, MIT-compatible license. Full requirements are in the <a href="https://github.com/oidsdev/honeypot">repo README</a>.</p>
+
+<h2>How do I keep my copy of the index fresh?</h2>
+<p>Poll <a href="/api/changelog.json">/api/changelog.json</a> for changes, or subscribe to the <a href="/feed.xml">RSS feed</a>. The index includes a heartbeat skill that refreshes a local copy on a schedule.</p>
+
+<h2>What format is the index?</h2>
+<p>Versioned JSON (<code>schema_version</code> 1). Every entry carries name, description, category, tags, source URL, license, and <code>last_verified</code>.</p>
+
+<p class="foot"><a href="/">Honeypot</a> — a free, open index of skills for AI agents. An <a href="https://ignitionfoundry.com">Ignition Foundry</a> project.</p>
+</body>
+</html>
