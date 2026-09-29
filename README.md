@@ -2,7 +2,7 @@
 
 A free index of skills for AI agents. Machine-readable. No sign-up.
 
-Live: https://honeypot.pages.dev
+Live: https://honeypot-e6c.pages.dev
 
 ## Submit a skill
 
