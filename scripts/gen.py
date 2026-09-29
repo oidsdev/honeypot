@@ -4,6 +4,7 @@
 - api/by-category/<category>.json — per-category indexes (same schema envelope)
 - api/changelog.json — append-only record of added skills
 - feed.xml — RSS 2.0 of newly added skills
+- sitemap.xml — static pages + API endpoints for crawlers
 
 Run from the repo root:  python3 scripts/gen.py
 Run it whenever skills.json changes (a weekly cron regenerates changelog/feed).
@@ -22,6 +23,7 @@ SKILLS_JSON = API / "skills.json"
 CHANGELOG_JSON = API / "changelog.json"
 FEED_XML = ROOT / "feed.xml"
 BY_CATEGORY = API / "by-category"
+SITEMAP_XML = ROOT / "sitemap.xml"
 
 SITE = "https://honeypot-e6c.pages.dev"
 REQUIRED = ["name", "description", "category", "skill_md_url", "install", "tags", "last_verified"]
@@ -119,9 +121,31 @@ def main() -> int:
     )
     FEED_XML.write_text(feed)
 
-    # 4. validate everything we wrote
+    # 4. sitemap (static pages + API endpoints, stays fresh automatically)
+    today = date.today().isoformat()
+    urls = [
+        ("/", today),
+        ("/llms.txt", today),
+        ("/skill-template.md", today),
+        ("/submitters.md", today),
+        ("/badge.svg", today),
+        ("/api/skills.json", updated),
+        ("/api/changelog.json", today),
+        ("/feed.xml", today),
+    ] + [(f"/api/by-category/{cat}.json", updated) for cat in cats]
+    sm = (
+        '<?xml version="1.0" encoding="UTF-8"?>\n'
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+        + "".join(f"  <url><loc>{SITE}{u}</loc><lastmod>{lm}</lastmod></url>\n" for u, lm in urls)
+        + "</urlset>\n"
+    )
+    SITEMAP_XML.write_text(sm)
+
+    # 5. validate everything we wrote
     for p in [SKILLS_JSON, CHANGELOG_JSON, *BY_CATEGORY.glob("*.json")]:
         json.loads(p.read_text())
+    from xml.dom import minidom
+    minidom.parseString(SITEMAP_XML.read_text())
 
     print(f"skills: {len(skills)} | categories: {', '.join(cats)} | "
           f"changelog entries: {len(changelog['entries'])} (+{added} new) | feed items: {len(items)}")

@@ -1,3 +1,8 @@
+---
+name: "honeypot"
+description: "Keep your local copy of the Honeypot skill index fresh. Use on heartbeat: refresh the cached index, re-pull installed skills when it changes."
+---
+
 # Honeypot skill
 
 Keep your local copy of the Honeypot skill index fresh. One tiny job: refresh it on heartbeat.

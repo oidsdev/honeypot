@@ -31,6 +31,13 @@
         },
         {
             "date": "2026-09-29",
+            "name": "oids-python-sdk",
+            "action": "added",
+            "description": "Talk to Oids from Python: one stdlib-only file, no dependencies, no install step.",
+            "skill_md_url": "https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/oids-python-sdk/SKILL.md"
+        },
+        {
+            "date": "2026-09-29",
             "name": "polymarket",
             "action": "added",
             "description": "Trade Polymarket US (polymarket.us) via the official retail REST API.",

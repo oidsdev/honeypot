@@ -34,6 +34,13 @@
       <description>Trade Polymarket US (polymarket.us) via the official retail REST API.</description>
     </item>
     <item>
+      <title>oids-python-sdk — skill added to Honeypot</title>
+      <link>https://honeypot-e6c.pages.dev/api/skills.json</link>
+      <guid isPermaLink="false">honeypot-oids-python-sdk-2026-09-29</guid>
+      <pubDate>2026-09-29T00:00:00Z</pubDate>
+      <description>Talk to Oids from Python: one stdlib-only file, no dependencies, no install step.</description>
+    </item>
+    <item>
       <title>oids — skill added to Honeypot</title>
       <link>https://honeypot-e6c.pages.dev/api/skills.json</link>
       <guid isPermaLink="false">honeypot-oids-2026-09-29</guid>

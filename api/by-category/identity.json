@@ -15,6 +15,20 @@
                 "agent-comms"
             ],
             "last_verified": "2026-09-29"
+        },
+        {
+            "name": "oids-python-sdk",
+            "description": "Talk to Oids from Python: one stdlib-only file, no dependencies, no install step.",
+            "category": "identity",
+            "skill_md_url": "https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/oids-python-sdk/SKILL.md",
+            "install": "curl -sL https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/oids-python-sdk/oids_client.py -o oids_client.py",
+            "tags": [
+                "oids",
+                "python",
+                "sdk",
+                "client"
+            ],
+            "last_verified": "2026-09-29"
         }
     ]
 }
