@@ -4,7 +4,9 @@
 - api/by-category/<category>.json — per-category indexes (same schema envelope)
 - api/changelog.json — append-only record of added skills
 - feed.xml — RSS 2.0 of newly added skills
-- sitemap.xml — static pages + API endpoints for crawlers
+- sitemap.xml — static pages + skill pages + API endpoints for crawlers
+- skills/<name>/index.html — per-skill page (SEO tags, JSON-LD, backlinks)
+- llms-full.txt — every SKILL.md concatenated for crawlers
 
 Run from the repo root:  python3 scripts/gen.py
 Run it whenever skills.json changes (a weekly cron regenerates changelog/feed).
@@ -24,6 +26,8 @@ CHANGELOG_JSON = API / "changelog.json"
 FEED_XML = ROOT / "feed.xml"
 BY_CATEGORY = API / "by-category"
 SITEMAP_XML = ROOT / "sitemap.xml"
+LLMS_FULL = ROOT / "llms-full.txt"
+SKILLS_DIR = ROOT / "skills"
 
 SITE = "https://honeypot-e6c.pages.dev"
 REQUIRED = ["name", "description", "category", "skill_md_url", "install", "tags", "last_verified"]
@@ -39,6 +43,73 @@ def git_added(path: str) -> str:
         return out[-1].strip() if out else date.today().isoformat()
     except Exception:
         return date.today().isoformat()
+
+
+def skill_page(s: dict) -> str:
+    """Static per-skill page: SEO tags, JSON-LD, links back to index + category."""
+    name = s["name"]
+    desc = s["description"]
+    cat = s["category"]
+    tags = ", ".join(s["tags"])
+    install = s["install"]
+    md_url = s["skill_md_url"]
+    verified = s["last_verified"]
+    esc_t = escape(desc)
+    esc_i = escape(install)
+    ld = {
+        "@context": "https://schema.org",
+        "@type": "SoftwareSourceCode",
+        "name": name,
+        "description": desc,
+        "codeRepository": "https://github.com/oidsdev/honeypot",
+        "license": "https://opensource.org/licenses/MIT",
+        "dateModified": verified,
+        "isPartOf": {
+            "@type": "WebSite",
+            "name": "Honeypot",
+            "url": SITE,
+        },
+    }
+    return f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{escape(name)} — a skill on Honeypot</title>
+<meta name="description" content="{esc_t}">
+<meta property="og:title" content="{escape(name)} — a skill on Honeypot">
+<meta property="og:description" content="{esc_t}">
+<meta property="og:url" content="{SITE}/skills/{escape(name)}/">
+<meta property="og:type" content="article">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='%231a1a1a'/%3E%3Ccircle cx='16' cy='16' r='5' fill='%23fff'/%3E%3C/svg%3E">
+<script type="application/ld+json">
+{json.dumps(ld, indent=2)}
+</script>
+<style>
+  body {{ font-family: system-ui, sans-serif; max-width: 38rem; margin: 4rem auto; padding: 0 1rem; line-height: 1.6; color: #1a1a1a; }}
+  h1 {{ font-size: 1.6rem; margin-bottom: 0; }}
+  a {{ color: #1a1a1a; }}
+  code.install {{ display: block; font-size: 0.8rem; background: #f5f5f5; padding: 0.75rem; border-radius: 4px; margin: 1rem 0; overflow-x: auto; white-space: nowrap; }}
+  .meta {{ font-size: 0.85rem; color: #666; }}
+  footer {{ margin-top: 3rem; font-size: 0.85rem; color: #666; }}
+</style>
+</head>
+<body>
+<main>
+  <h1>{escape(name)}</h1>
+  <p>{esc_t}</p>
+  <p class="meta">Category: <a href="/api/by-category/{escape(cat)}.json">{escape(cat)}</a> &middot; Tags: {escape(tags)} &middot; Verified {escape(verified)}</p>
+  <h2>Install</h2>
+  <code class="install">{esc_i}</code>
+  <p>Read the full skill: <a href="{escape(md_url)}">SKILL.md</a></p>
+  <p><a href="/">Honeypot</a> — a free, open index of skills for AI agents. Machine-readable. No sign-up, no tracking.</p>
+</main>
+<footer>
+  Indexed on <a href="{SITE}">Honeypot</a>. Want your skill listed? <a href="https://github.com/oidsdev/honeypot#submit-a-skill">Submit a pull request</a>.
+</footer>
+</body>
+</html>
+"""
 
 
 def main() -> int:
@@ -121,18 +192,40 @@ def main() -> int:
     )
     FEED_XML.write_text(feed)
 
-    # 4. sitemap (static pages + API endpoints, stays fresh automatically)
+    # 4. per-skill static pages (SEO + JSON-LD, links back to index/category)
+    skill_urls = []
+    for s in skills:
+        page = SKILLS_DIR / s["name"] / "index.html"
+        page.write_text(skill_page(s))
+        skill_urls.append((f"/skills/{s['name']}/", s["last_verified"]))
+
+    # 5. llms-full.txt — every SKILL.md in one file for crawlers
+    parts = [
+        "# Honeypot — full skill text",
+        "# Generated from skills/<name>/SKILL.md. Per-skill source of truth lives there.",
+        "# https://honeypot-e6c.pages.dev",
+        "",
+    ]
+    for s in sorted(skills, key=lambda x: x["name"]):
+        md_path = SKILLS_DIR / s["name"] / "SKILL.md"
+        parts.append(f"# ===== {s['name']} =====")
+        parts.append(md_path.read_text().rstrip())
+        parts.append("")
+    LLMS_FULL.write_text("\n".join(parts))
+
+    # 6. sitemap (static pages + skill pages + API endpoints, stays fresh automatically)
     today = date.today().isoformat()
     urls = [
         ("/", today),
         ("/llms.txt", today),
+        ("/llms-full.txt", today),
         ("/skill-template.md", today),
         ("/submitters.md", today),
         ("/badge.svg", today),
         ("/api/skills.json", updated),
         ("/api/changelog.json", today),
         ("/feed.xml", today),
-    ] + [(f"/api/by-category/{cat}.json", updated) for cat in cats]
+    ] + [(f"/api/by-category/{cat}.json", updated) for cat in cats] + skill_urls
     sm = (
         '<?xml version="1.0" encoding="UTF-8"?>\n'
         '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
@@ -141,11 +234,14 @@ def main() -> int:
     )
     SITEMAP_XML.write_text(sm)
 
-    # 5. validate everything we wrote
+    # 7. validate everything we wrote
     for p in [SKILLS_JSON, CHANGELOG_JSON, *BY_CATEGORY.glob("*.json")]:
         json.loads(p.read_text())
     from xml.dom import minidom
     minidom.parseString(SITEMAP_XML.read_text())
+    assert LLMS_FULL.exists() and LLMS_FULL.stat().st_size > 0
+    for s in skills:
+        assert (SKILLS_DIR / s["name"] / "index.html").exists()
 
     print(f"skills: {len(skills)} | categories: {', '.join(cats)} | "
           f"changelog entries: {len(changelog['entries'])} (+{added} new) | feed items: {len(items)}")

@@ -2,6 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://honeypot-e6c.pages.dev/</loc><lastmod>2026-09-29</lastmod></url>
   <url><loc>https://honeypot-e6c.pages.dev/llms.txt</loc><lastmod>2026-09-29</lastmod></url>
+  <url><loc>https://honeypot-e6c.pages.dev/llms-full.txt</loc><lastmod>2026-09-29</lastmod></url>
   <url><loc>https://honeypot-e6c.pages.dev/skill-template.md</loc><lastmod>2026-09-29</lastmod></url>
   <url><loc>https://honeypot-e6c.pages.dev/submitters.md</loc><lastmod>2026-09-29</lastmod></url>
   <url><loc>https://honeypot-e6c.pages.dev/badge.svg</loc><lastmod>2026-09-29</lastmod></url>
@@ -12,4 +13,13 @@
   <url><loc>https://honeypot-e6c.pages.dev/api/by-category/identity.json</loc><lastmod>2026-09-29</lastmod></url>
   <url><loc>https://honeypot-e6c.pages.dev/api/by-category/meta.json</loc><lastmod>2026-09-29</lastmod></url>
   <url><loc>https://honeypot-e6c.pages.dev/api/by-category/trading.json</loc><lastmod>2026-09-29</lastmod></url>
+  <url><loc>https://honeypot-e6c.pages.dev/skills/kalshi/</loc><lastmod>2026-09-29</lastmod></url>
+  <url><loc>https://honeypot-e6c.pages.dev/skills/coinbase/</loc><lastmod>2026-09-29</lastmod></url>
+  <url><loc>https://honeypot-e6c.pages.dev/skills/polymarket/</loc><lastmod>2026-09-29</lastmod></url>
+  <url><loc>https://honeypot-e6c.pages.dev/skills/the-odds-api/</loc><lastmod>2026-09-29</lastmod></url>
+  <url><loc>https://honeypot-e6c.pages.dev/skills/oids/</loc><lastmod>2026-09-29</lastmod></url>
+  <url><loc>https://honeypot-e6c.pages.dev/skills/skill-creator/</loc><lastmod>2026-09-29</lastmod></url>
+  <url><loc>https://honeypot-e6c.pages.dev/skills/robinhood-mcp/</loc><lastmod>2026-09-29</lastmod></url>
+  <url><loc>https://honeypot-e6c.pages.dev/skills/honeypot/</loc><lastmod>2026-09-29</lastmod></url>
+  <url><loc>https://honeypot-e6c.pages.dev/skills/oids-python-sdk/</loc><lastmod>2026-09-29</lastmod></url>
 </urlset>

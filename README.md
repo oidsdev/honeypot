@@ -38,6 +38,13 @@ The same JSON is mirrored at
 [![Indexed on Honeypot](https://honeypot-e6c.pages.dev/badge.svg)](https://honeypot-e6c.pages.dev)
 ```
 
+Requirements (learned the hard way — PRs missing these get bounced):
+- Frontmatter must include `name` and `description`. Directory CLIs (e.g. skills.sh)
+  silently skip files without them.
+- Pick one `category` (trading, data, identity, meta, or propose a new one in the PR)
+  and add `tags` plus a current `last_verified` date — these feed the JSON index.
+- MIT-compatible license only. We can't index what we can't redistribute.
+
 ## Layout
 
 - `index.html` — the site

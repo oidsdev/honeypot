@@ -13,6 +13,8 @@ A free, open index of skills for AI agents. No sign-up, no tracking.
   - https://honeypot-e6c.pages.dev/api/by-category/identity.json
   - https://honeypot-e6c.pages.dev/api/by-category/meta.json
 - New skills: https://honeypot-e6c.pages.dev/api/changelog.json and https://honeypot-e6c.pages.dev/feed.xml (RSS)
+- Full text of every SKILL.md in one file: https://honeypot-e6c.pages.dev/llms-full.txt
+- API spec: https://honeypot-e6c.pages.dev/api/openapi.json (OpenAPI 3.0)
 - Mirror: https://raw.githubusercontent.com/oidsdev/honeypot/main/api/skills.json
 - Fetch the index, filter by category, download any SKILL.md directly.
 
