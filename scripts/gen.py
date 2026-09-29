@@ -7,6 +7,7 @@
 - sitemap.xml — static pages + skill pages + API endpoints for crawlers
 - skills/<name>/index.html — per-skill page (SEO tags, JSON-LD, backlinks)
 - llms-full.txt — every SKILL.md concatenated for crawlers
+- api/editors-picks.json — skills passing the published PICK_CRITERIA checklist
 
 Run from the repo root:  python3 scripts/gen.py
 Run it whenever skills.json changes (a weekly cron regenerates changelog/feed).
@@ -15,7 +16,7 @@ Static output only; no network, no secrets.
 import json
 import subprocess
 import sys
-from datetime import date
+from datetime import date, timedelta
 from pathlib import Path
 from xml.sax.saxutils import escape
 
@@ -27,10 +28,56 @@ FEED_XML = ROOT / "feed.xml"
 BY_CATEGORY = API / "by-category"
 SITEMAP_XML = ROOT / "sitemap.xml"
 LLMS_FULL = ROOT / "llms-full.txt"
+EDITORS_PICKS = API / "editors-picks.json"
 SKILLS_DIR = ROOT / "skills"
 
 SITE = "https://honeypot-e6c.pages.dev"
 REQUIRED = ["name", "description", "category", "skill_md_url", "install", "tags", "last_verified"]
+
+# Editor's picks checklist. Published verbatim in api/editors-picks.json and on
+# the site, so change it here and nowhere else. A skill is a pick when it passes
+# every check. No weights, no scores.
+PICK_MIN_DESCRIPTION = 40   # characters
+PICK_MIN_TAGS = 1
+STALE_AFTER_DAYS = 180      # also drives the "stale" badge on index.html
+
+
+def verified_within(s: dict, today: date, days: int) -> bool:
+    try:
+        return today - date.fromisoformat(s["last_verified"]) <= timedelta(days=days)
+    except (TypeError, ValueError):
+        return False
+
+
+PICK_CRITERIA = [
+    ("description", f"description is at least {PICK_MIN_DESCRIPTION} characters",
+     lambda s, today: len(s["description"]) >= PICK_MIN_DESCRIPTION),
+    ("tags", f"has at least {PICK_MIN_TAGS} tag",
+     lambda s, today: len(s["tags"]) >= PICK_MIN_TAGS),
+    ("fresh", f"verified in the last {STALE_AFTER_DAYS} days",
+     lambda s, today: verified_within(s, today, STALE_AFTER_DAYS)),
+    ("skill_md", "links a SKILL.md",
+     lambda s, today: bool(s["skill_md_url"])),
+]
+
+
+def editors_picks(skills: list, today: date) -> dict:
+    rules = [rule for _, rule, _ in PICK_CRITERIA]
+    text = ("Picked by checklist, not by score. A skill makes the list when it passes every check: "
+            + "; ".join(rules) + ".")
+    picks = [
+        {k: s[k] for k in ("name", "description", "category", "skill_md_url", "install", "last_verified")}
+        for s in sorted(skills, key=lambda x: x["name"])
+        if all(check(s, today) for _, _, check in PICK_CRITERIA)
+    ]
+    return {
+        "schema_version": "1",
+        "as_of": today.isoformat(),
+        "stale_after_days": STALE_AFTER_DAYS,
+        "criteria": [{"id": cid, "rule": rule} for cid, rule, _ in PICK_CRITERIA],
+        "criteria_text": text,
+        "picks": picks,
+    }
 
 
 def git_added(path: str) -> str:
@@ -213,8 +260,12 @@ def main() -> int:
         parts.append("")
     LLMS_FULL.write_text("\n".join(parts))
 
-    # 6. sitemap (static pages + skill pages + API endpoints, stays fresh automatically)
+    # 6. editor's picks (deterministic checklist above; same date as the sitemap)
     today = date.today().isoformat()
+    picks_doc = editors_picks(skills, date.fromisoformat(today))
+    EDITORS_PICKS.write_text(json.dumps(picks_doc, indent=4) + "\n")
+
+    # 7. sitemap (static pages + skill pages + API endpoints, stays fresh automatically)
     urls = [
         ("/", today),
         ("/llms.txt", today),
@@ -224,6 +275,7 @@ def main() -> int:
         ("/badge.svg", today),
         ("/api/skills.json", updated),
         ("/api/changelog.json", today),
+        ("/api/editors-picks.json", today),
         ("/feed.xml", today),
         ("/faq/", today),
     ] + [(f"/api/by-category/{cat}.json", updated) for cat in cats] + skill_urls
@@ -235,8 +287,8 @@ def main() -> int:
     )
     SITEMAP_XML.write_text(sm)
 
-    # 7. validate everything we wrote
-    for p in [SKILLS_JSON, CHANGELOG_JSON, *BY_CATEGORY.glob("*.json")]:
+    # 8. validate everything we wrote
+    for p in [SKILLS_JSON, CHANGELOG_JSON, EDITORS_PICKS, *BY_CATEGORY.glob("*.json")]:
         json.loads(p.read_text())
     from xml.dom import minidom
     minidom.parseString(SITEMAP_XML.read_text())
@@ -245,7 +297,8 @@ def main() -> int:
         assert (SKILLS_DIR / s["name"] / "index.html").exists()
 
     print(f"skills: {len(skills)} | categories: {', '.join(cats)} | "
-          f"changelog entries: {len(changelog['entries'])} (+{added} new) | feed items: {len(items)}")
+          f"changelog entries: {len(changelog['entries'])} (+{added} new) | feed items: {len(items)} | "
+          f"editor's picks: {len(picks_doc['picks'])}")
     return 0
 
 

@@ -31,12 +31,20 @@
   details.badge code { white-space: normal; word-break: break-all; }
   ol.submit li { margin-bottom: 0.5rem; }
   .count { font-size: 0.85rem; color: #666; }
+  #picks ul { padding-left: 1.2rem; margin: 0.5rem 0; }
+  #picks .note { font-size: 0.85rem; color: #666; }
 </style>
 </head>
 <body>
 <main>
   <h1>Honeypot</h1>
   <p>A free index of skills for AI agents. Machine-readable. No sign-up.</p>
+
+  <section id="picks" hidden>
+    <h2>Editor's picks</h2>
+    <ul id="picks-list"></ul>
+    <p class="note"><span id="picks-note"></span> Raw list: <a href="/api/editors-picks.json"><code>/api/editors-picks.json</code></a></p>
+  </section>
 
   <div class="controls">
     <input id="q" type="search" placeholder="Search skills…" aria-label="Search skills">
@@ -63,6 +71,7 @@
 
   <h2>For machines</h2>
   <p>Full index as JSON: <a href="/api/skills.json"><code>/api/skills.json</code></a><br>
+  Editor's picks and the checklist behind them: <a href="/api/editors-picks.json"><code>/api/editors-picks.json</code></a><br>
   New skills: <a href="/api/changelog.json"><code>/api/changelog.json</code></a> and <a href="/feed.xml"><code>/feed.xml</code></a> (RSS)<br>
   Per-category: <code>/api/by-category/&lt;category&gt;.json</code> (trading, data, identity, meta)<br>
   Agent-readable description: <a href="/llms.txt"><code>/llms.txt</code></a><br>
@@ -152,6 +161,16 @@
   });
 
   function update() { render(); syncUrl(); }
+  // Editor's picks: list and criteria text both come from gen.py's output
+  fetch('api/editors-picks.json').then(function (r) { return r.json(); }).then(function (p) {
+    if (!p.picks || !p.picks.length) return;
+    document.getElementById('picks-list').innerHTML = p.picks.map(function (s) {
+      return '<li><a href="skills/' + encodeURIComponent(s.name) + '/">' + esc(s.name) + '</a> ' + esc(s.description) + '</li>';
+    }).join('');
+    document.getElementById('picks-note').textContent = p.criteria_text;
+    document.getElementById('picks').hidden = false;
+  }).catch(function () {});
+
   q.addEventListener('input', update);
   cat.addEventListener('change', update);
   tag.addEventListener('change', update);

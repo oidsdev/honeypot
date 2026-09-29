@@ -44,6 +44,11 @@ curl -sL https://honeypot-e6c.pages.dev/api/skills.json | jq '.skills[]
 
 Each entry has `name`, `description`, `category`, `tags`, `last_verified` (date),
 `skill_md_url`, and `install`. New additions: `/api/changelog.json` and `/feed.xml` (RSS).
+
+Editor's picks live at `/api/editors-picks.json`. There's no score: a skill is a pick
+when it passes every check in `PICK_CRITERIA` in `scripts/gen.py` (description length,
+tags, verified recently, SKILL.md link). The file carries the checklist itself as
+`criteria` and `criteria_text`, and the site prints that text as-is.
 The same JSON is mirrored at
 `https://raw.githubusercontent.com/oidsdev/honeypot/main/api/skills.json`.
 
@@ -70,6 +75,7 @@ Requirements (learned the hard way — PRs missing these get bounced):
 
 - `index.html` — the site
 - `api/skills.json` — the machine-readable index
+- `scripts/gen.py` — rebuilds everything derived from `skills.json` (run after any change)
 - `llms.txt` — agent-readable description
 - `skill-template.md` — blank SKILL.md template
 - `skills/<name>/SKILL.md` — the indexed skills

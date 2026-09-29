@@ -1,0 +1,98 @@
+{
+    "schema_version": "1",
+    "as_of": "2026-09-29",
+    "stale_after_days": 180,
+    "criteria": [
+        {
+            "id": "description",
+            "rule": "description is at least 40 characters"
+        },
+        {
+            "id": "tags",
+            "rule": "has at least 1 tag"
+        },
+        {
+            "id": "fresh",
+            "rule": "verified in the last 180 days"
+        },
+        {
+            "id": "skill_md",
+            "rule": "links a SKILL.md"
+        }
+    ],
+    "criteria_text": "Picked by checklist, not by score. A skill makes the list when it passes every check: description is at least 40 characters; has at least 1 tag; verified in the last 180 days; links a SKILL.md.",
+    "picks": [
+        {
+            "name": "coinbase",
+            "description": "Trade spot crypto on Coinbase Advanced Trade via the official REST API.",
+            "category": "trading",
+            "skill_md_url": "https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/coinbase/SKILL.md",
+            "install": "curl -sL https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/coinbase/SKILL.md -o SKILL.md",
+            "last_verified": "2026-09-29"
+        },
+        {
+            "name": "honeypot",
+            "description": "Keep your local copy of the Honeypot skill index fresh: refresh it on heartbeat, no backend.",
+            "category": "meta",
+            "skill_md_url": "https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/honeypot/SKILL.md",
+            "install": "curl -sL https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/honeypot/SKILL.md -o SKILL.md",
+            "last_verified": "2026-09-29"
+        },
+        {
+            "name": "kalshi",
+            "description": "Trade Kalshi prediction markets via the official REST API: events, orderbooks, balances, orders.",
+            "category": "trading",
+            "skill_md_url": "https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/kalshi/SKILL.md",
+            "install": "curl -sL https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/kalshi/SKILL.md -o SKILL.md",
+            "last_verified": "2026-09-29"
+        },
+        {
+            "name": "oids",
+            "description": "Join Oids: verified identity and reputation for AI agents.",
+            "category": "identity",
+            "skill_md_url": "https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/oids/SKILL.md",
+            "install": "curl -sL https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/oids/SKILL.md -o SKILL.md",
+            "last_verified": "2026-09-29"
+        },
+        {
+            "name": "oids-python-sdk",
+            "description": "Talk to Oids from Python: one stdlib-only file, no dependencies, no install step.",
+            "category": "identity",
+            "skill_md_url": "https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/oids-python-sdk/SKILL.md",
+            "install": "curl -sL https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/oids-python-sdk/oids_client.py -o oids_client.py",
+            "last_verified": "2026-09-29"
+        },
+        {
+            "name": "polymarket",
+            "description": "Trade Polymarket US (polymarket.us) via the official retail REST API.",
+            "category": "trading",
+            "skill_md_url": "https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/polymarket/SKILL.md",
+            "install": "curl -sL https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/polymarket/SKILL.md -o SKILL.md",
+            "last_verified": "2026-09-29"
+        },
+        {
+            "name": "robinhood-mcp",
+            "description": "Trade Robinhood via the official Agentic Trading MCP server (OAuth DCR + PKCE): balances, positions, long equity/option orders in the Agentic account.",
+            "category": "trading",
+            "skill_md_url": "https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/robinhood-mcp/SKILL.md",
+            "install": "curl -sL https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/robinhood-mcp/SKILL.md -o SKILL.md",
+            "last_verified": "2026-09-29"
+        },
+        {
+            "name": "skill-creator",
+            "description": "Create or update a workspace skill: structure, instructions, supporting files.",
+            "category": "meta",
+            "skill_md_url": "https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/skill-creator/SKILL.md",
+            "install": "curl -sL https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/skill-creator/SKILL.md -o SKILL.md",
+            "last_verified": "2026-09-29"
+        },
+        {
+            "name": "the-odds-api",
+            "description": "Fetch sharp sportsbook odds and strip the vig for fair prices.",
+            "category": "data",
+            "skill_md_url": "https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/the-odds-api/SKILL.md",
+            "install": "curl -sL https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/the-odds-api/SKILL.md -o SKILL.md",
+            "last_verified": "2026-09-29"
+        }
+    ]
+}
