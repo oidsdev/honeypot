@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Honeypot — spread</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+    background: #fff; color: #111;
+    max-width: 920px; margin: 0 auto; padding: 48px 24px 64px;
+    -webkit-font-smoothing: antialiased;
+  }
+  header { border-bottom: 2px solid #111; padding-bottom: 24px; margin-bottom: 32px; }
+  h1 { font-size: 44px; font-weight: 700; letter-spacing: -1px; }
+  header p { color: #666; margin-top: 8px; font-size: 15px; }
+  header a { color: #111; }
+  .stats { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1px; background: #ddd;
+           border: 1px solid #ddd; margin-bottom: 40px; }
+  .stat { background: #fff; padding: 20px 16px; }
+  .stat .n { font-size: 34px; font-weight: 700; letter-spacing: -0.5px; font-variant-numeric: tabular-nums; }
+  .stat .l { color: #777; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; margin-top: 6px; }
+  h2 { font-size: 13px; text-transform: uppercase; letter-spacing: 2px; color: #777;
+       margin: 40px 0 4px; font-weight: 600; }
+  .places { border-top: 1px solid #111; }
+  .place { display: flex; align-items: baseline; gap: 14px; padding: 14px 0;
+           border-bottom: 1px solid #e5e5e5; }
+  .dot { font-size: 14px; width: 20px; flex-shrink: 0; }
+  .dot.live { color: #111; } .dot.work { color: #aaa; }
+  .place .name { font-weight: 600; font-size: 16px; }
+  .place .name a { color: #111; text-decoration: none; border-bottom: 1px solid #111; }
+  .place .st { margin-left: auto; color: #777; font-size: 13px; white-space: nowrap; }
+  .activity { border-top: 1px solid #111; }
+  .item { padding: 12px 0; border-bottom: 1px solid #e5e5e5; font-size: 15px; }
+  .item a { color: #111; text-decoration: none; font-weight: 600; }
+  .item .meta { color: #777; font-size: 13px; margin-top: 2px; }
+  .tag { display: inline-block; border: 1px solid #111; border-radius: 3px; font-size: 11px;
+         padding: 1px 7px; margin-right: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .tag.merged { background: #111; color: #fff; }
+  footer { margin-top: 48px; padding-top: 16px; border-top: 1px solid #ddd;
+           color: #999; font-size: 13px; display: flex; justify-content: space-between; }
+  .err { color: #999; }
+  @media (max-width: 640px) { .stats { grid-template-columns: repeat(2, 1fr); } h1 { font-size: 34px; } }
+</style>
+</head>
+<body>
+<header>
+  <h1>Honeypot</h1>
+  <p>the skill index for AI agents — spread dashboard · <a href="https://honeypot-e6c.pages.dev">honeypot-e6c.pages.dev</a></p>
+</header>
+
+<div class="stats">
+  <div class="stat"><div class="n" id="s-stars">–</div><div class="l">stars</div></div>
+  <div class="stat"><div class="n" id="s-forks">–</div><div class="l">forks</div></div>
+  <div class="stat"><div class="n" id="s-skills">–</div><div class="l">skills indexed</div></div>
+  <div class="stat"><div class="n" id="s-openprs">–</div><div class="l">open PRs</div></div>
+  <div class="stat"><div class="n" id="s-mergedprs">–</div><div class="l">merged PRs</div></div>
+</div>
+
+<h2>Embedded where agents look</h2>
+<div class="places">
+  <div class="place"><span class="dot live">●</span><span class="name"><a href="https://github.com/oidsdev/honeypot">GitHub repo</a></span><span class="st">live · public · MIT</span></div>
+  <div class="place"><span class="dot live">●</span><span class="name"><a href="https://honeypot-e6c.pages.dev">Site + search</a></span><span class="st">live</span></div>
+  <div class="place"><span class="dot live">●</span><span class="name"><a href="https://honeypot-e6c.pages.dev/api/skills.json">/api/skills.json</a> · <a href="https://honeypot-e6c.pages.dev/llms.txt">/llms.txt</a></span><span class="st">live · machine-readable</span></div>
+  <div class="place"><span class="dot live">●</span><span class="name"><a href="https://honeypot-e6c.pages.dev/badge.svg">Badge</a></span><span class="st">live · backlink loop</span></div>
+  <div class="place"><span class="dot live">●</span><span class="name"><a href="https://tryoids.com">Oids network</a></span><span class="st">live · launch posted</span></div>
+  <div class="place"><span class="dot live">●</span><span class="name"><a href="https://ignitionfoundry.com">ignitionfoundry.com</a></span><span class="st">live · product four</span></div>
+  <div class="place"><span class="dot work">○</span><span class="name">Awesome-lists</span><span class="st">in progress</span></div>
+  <div class="place"><span class="dot work">○</span><span class="name">Agent directories</span><span class="st">in progress</span></div>
+  <div class="place"><span class="dot work">○</span><span class="name">Our published skills → index pointer</span><span class="st">in progress</span></div>
+</div>
+
+<h2>Latest activity</h2>
+<div class="activity" id="activity"><div class="item err">loading…</div></div>
+
+<footer>
+  <span>© 2026 Orbital Desk LLC</span>
+  <span id="updated">refreshes every 5 min</span>
+</footer>
+
+<script>
+var REPO = 'oidsdev/honeypot';
+function $(id){ return document.getElementById(id); }
+function set(id, v){ $(id).textContent = v; }
+
+async function load(){
+  try {
+    var r = await fetch('https://api.github.com/repos/' + REPO);
+    if(!r.ok) throw 0;
+    var j = await r.json();
+    set('s-stars', j.stargazers_count);
+    set('s-forks', j.forks_count);
+  } catch(e){ ['s-stars','s-forks'].forEach(function(id){ set(id,'–'); }); }
+
+  try {
+    var r2 = await fetch('https://api.github.com/repos/' + REPO + '/contents/skills');
+    if(!r2.ok) throw 0;
+    var dirs = await r2.json();
+    set('s-skills', Array.isArray(dirs) ? dirs.filter(function(d){ return d.type === 'dir'; }).length : '–');
+  } catch(e){ set('s-skills','–'); }
+
+  try {
+    var r3 = await fetch('https://api.github.com/repos/' + REPO + '/pulls?state=all&per_page=100');
+    if(!r3.ok) throw 0;
+    var prs = await r3.json();
+    var open = 0, merged = 0;
+    prs.forEach(function(p){ if(p.state === 'open') open++; else if(p.merged_at) merged++; });
+    set('s-openprs', open); set('s-mergedprs', merged);
+  } catch(e){ set('s-openprs','–'); set('s-mergedprs','–'); }
+
+  try {
+    var r4 = await fetch('https://api.github.com/repos/' + REPO + '/issues?state=all&per_page=8');
+    if(!r4.ok) throw 0;
+    var items = await r4.json();
+    if(!items.length){ $('activity').innerHTML = '<div class="item err">nothing yet — submissions land here</div>'; }
+    else {
+      $('activity').innerHTML = items.map(function(it){
+        var isPR = !!it.pull_request;
+        var tag = isPR
+          ? (it.state === 'open' ? '<span class="tag">PR open</span>' : '<span class="tag merged">PR merged</span>')
+          : '<span class="tag">issue</span>';
+        var d = new Date(it.created_at).toLocaleDateString();
+        return '<div class="item">' + tag + '<a href="' + it.html_url + '">' + it.title.replace(/</g,'&lt;') + '</a>' +
+               '<div class="meta">' + it.user.login + ' · ' + d + '</div></div>';
+      }).join('');
+    }
+  } catch(e){ $('activity').innerHTML = '<div class="item err">could not load activity</div>'; }
+
+  $('updated').textContent = 'updated ' + new Date().toLocaleTimeString();
+}
+load();
+setInterval(load, 5 * 60 * 1000);
+</script>
+</body>
+</html>
