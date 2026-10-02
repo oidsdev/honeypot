@@ -9,44 +9,41 @@ description: "Trade Polymarket US (polymarket.us, the CFTC-regulated US exchange
 Manage Polymarket US event-contract trades: discover markets, inspect orderbooks, view portfolio, place and cancel orders. Polymarket US is the CFTC-regulated Designated Contract Market operated by QCX LLC — fiat USD, fully off-chain, Ed25519 API-key auth.
 
 ## Tooling
-CLI: `~/workspace/skills/polymarket/bin/polymarket` (auto-uses its own venv; stdlib HTTP + `pynacl` for Ed25519 signing).
+No bundled CLI — call the official REST APIs directly with any HTTP client
+(e.g. `curl`). Public market data lives on the gateway host (no auth);
+trading calls go to the API host with the `X-PM-*` headers from the Auth
+section below.
 
 ```bash
-bin/polymarket events --limit 10                        # list events (public)
-bin/polymarket markets --limit 10                       # list markets (public)
-bin/polymarket search "Chicago temperature"             # search events/markets (public)
-bin/polymarket market <slug>                            # market details via search (public)
-bin/polymarket book <slug>                              # order book (public)
-bin/polymarket bbo <slug>                               # best bid/offer + stats (public)
-bin/polymarket settlement <slug>                        # settlement price (public; path unverified)
-bin/polymarket fees --qty 100 --price 50                # local fee estimate (no API call)
-bin/polymarket balance                                  # account balances (auth)
-bin/polymarket positions                                # open positions (auth)
-bin/polymarket orders                                   # open orders (auth)
-bin/polymarket order --slug S --intent buy-long --qty 10 --price 65 [--dry-run]
-bin/polymarket cancel <order_id> --slug S            # cancel one order (slug required)
-bin/polymarket cancel-all                           # cancel all open orders (auth)
+PUB=https://gateway.polymarket.us
+
+curl -s "$PUB/v1/events?limit=10"                        # events (public)
+curl -s "$PUB/v1/markets?limit=10"                       # markets (public)
+curl -s "$PUB/v1/search?query=Chicago%20temperature&limit=5"  # search (public)
+curl -s "$PUB/v1/markets/<slug>/book"                    # order book (public)
+curl -s "$PUB/v1/markets/<slug>/bbo"                     # best bid/offer (public)
 ```
 
-Append `--json` anywhere for raw API output. `order --dry-run` prints the signed request body without sending.
+Authenticated calls (`https://api.polymarket.us` + `/v1` paths):
+`GET /v1/account/balances`, `GET /v1/portfolio/positions`,
+`GET /v1/orders/open`, `POST /v1/orders` to place,
+`DELETE /v1/orders/{id}` to cancel one, `DELETE /v1/orders` to cancel all.
 
 ## Auth
-Credentials come from environment variables at runtime. **Never write them to files, logs, or memory; never print them.**
+Credentials come from environment variables at runtime — never hardcoded, never written to files, logs, or memory.
 
 - `POLYMARKET_KEY_ID` — API key UUID, from https://polymarket.us/developer
 - `POLYMARKET_SECRET_KEY` — base64 Ed25519 private key (shown **once** at key creation)
 - `POLYMARKET_AUTH_BASE` — optional override (default `https://api.polymarket.us`)
 - `POLYMARKET_PUBLIC_BASE` — optional override (default `https://gateway.polymarket.us`)
 
-Storage: `~/.polymarket/key_id` and `~/.polymarket/secret`, mode 0600 (live, created 2026-09-24). **Never write them to files, logs, or memory; never print them.**
-
-Authenticated requests sign `f"{timestamp_ms}{METHOD}{path}"` with Ed25519 (base64), sending `X-PM-Access-Key` / `X-PM-Timestamp` / `X-PM-Signature`. Timestamps must be within **30s** of server time. See `references/api-notes.md`.
+Authenticated requests sign `f"{timestamp_ms}{METHOD}{path}"` with Ed25519 (base64), sending `X-PM-Access-Key` / `X-PM-Timestamp` / `X-PM-Signature`. Timestamps must be within **30s** of server time.
 
 ## Operating Rules
 1. **Prices are in cents, 1–99.** Every contract pays **$1.00** if correct, **$0** if wrong. Long = bought YES contracts (profit if outcome occurs); short = sold YES contracts (profit if it doesn't).
-2. **Standing authority (2026-09-24):** David authorized autonomous real-money trading on Polymarket US mirroring the Kalshi mandate — no per-trade confirmation needed. Hard limits (confirmed 2026-09-24): ≤$20 total risk (full bankroll), $0.40–$1.00 per directional trade (max $2.00), 25–70¢ entry band, max 3–5 open, resting maker limit orders only, never add funds, never martingale/average down, no wash trading or spoofing (CFTC venue). Log each order's slug/intent/qty/price/cost to the daily memory log instead of asking.
-3. **Maker-only.** Taker fee is Θ=0.0695 × C × p × (1−p) (up to $1.74/100 @ 50¢); makers earn a rebate Θ=−0.0125 (up to $0.31/100 @ 50¢), credited at fill. Never take except to close a position David explicitly names.
-4. **No sandbox exists** per the docs — every order is real money. Use `order --dry-run` and the `fees` calculator before any first live order on a new path.
+2. **Every order is real money — no sandbox exists.** Before placing any order, present market / side / size / price / total cost and require the user's explicit confirmation. Never skip this, never batch it silently.
+3. **Maker-only.** Taker fee is Θ=0.0695 × C × p × (1−p) (up to $1.74/100 @ 50¢); makers earn a rebate Θ=−0.0125 (up to $0.31/100 @ 50¢), credited at fill. Never take except to close a position the user explicitly names.
+4. Use the fee math in rule 3 to sanity-check cost before any first live order on a new path.
 5. Verify a position exists (via `positions`) before closing it.
 6. Rate limit: **20 req/s per API key** (429 on breach) — back off, prefer the WebSocket for streaming. Orders not processed within 5s are rejected by a latency stopgap ("Global Rate Limit Exceeded" message) — retry logic must distinguish this from a real rate limit.
 7. Weekly maintenance window **Thursday 6–8am ET** — avoid scheduling sweeps then.

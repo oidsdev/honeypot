@@ -14,34 +14,38 @@ description: "Trade spot crypto on Coinbase Advanced Trade via the official REST
 Manage Coinbase Advanced Trade spot trading: accounts/balances, product prices, limit/market orders, cancels, order status, fills.
 
 ## Tooling
-CLI: `~/workspace/skills/coinbase/bin/coinbase` (stdlib + `requests`; pure-python P-256 ECDSA for the per-request ES256 JWT — no crypto dependency).
+No bundled CLI — call the official REST APIs directly with any HTTP client
+(e.g. `curl`). Public market data needs no auth; everything under
+`/api/v3/brokerage` needs the `Authorization: Bearer <JWT>` header from the
+Auth section below.
 
 ```bash
-bin/coinbase products --limit 10        # list spot products (public, no auth)
-bin/coinbase price BTC-USD              # price + bid/ask (public, no auth)
-bin/coinbase accounts                   # balances with available amounts (auth)
-bin/coinbase place-order --product BTC-USD --side buy --size 0.001 --price 90000
-bin/coinbase place-order --product ETH-USD --side sell --size 0.05 --market
-bin/coinbase cancel-order <order_id>    # cancel via batch_cancel (auth)
-bin/coinbase order <order_id>           # order status (auth)
-bin/coinbase fills --product-id BTC-USD --limit 20   # recent fills (auth)
+PUB=https://api.exchange.coinbase.com   # public market data (no auth)
+BASE=https://api.coinbase.com/api/v3/brokerage
+
+curl -s "$PUB/products" | head -c 600              # list spot products (public)
+curl -s "$PUB/products/BTC-USD/ticker"             # BTC price + bid/ask (public)
+curl -s -H "Authorization: Bearer $JWT" \
+  "$BASE/accounts?limit=250"                       # balances (auth)
 ```
 
-Append `--json` to any command for raw API output.
+Place, cancel, and query orders via `$BASE/orders`: POST to create, POST
+`$BASE/orders/batch_cancel` to cancel, GET
+`$BASE/orders/historical/{order_id}` for status — same JWT header on each.
 
 ## Auth
-Credentials come from environment variables at runtime, injected by the agent from the Secure Vault. **Never write them to files, logs, or memory; never print them.**
+Credentials come from environment variables at runtime — never hardcoded, never written to files, logs, or memory.
 
 - `COINBASE_API_KEY_NAME` — key name like `organizations/{orgId}/apiKeys/{keyId}`, from the CDP portal (Secret API Keys tab, signature algorithm **ECDSA**, permissions View + Trade — never Transfer for trading jobs)
 - `COINBASE_API_PRIVATE_KEY_PEM` — EC private key PEM *contents* (shown once at key creation), or `COINBASE_API_PRIVATE_KEY_PATH` for a PEM file path
 - `COINBASE_JWT_ISS` — JWT issuer override (default `cdp`)
 - `COINBASE_BASE_URL` — optional override (default `https://api.coinbase.com`)
 
-Every request sends `Authorization: Bearer <JWT>`: an ES256 JWT signed with the EC private key, fresh per request (header `{alg,kid,nonce,typ}`, claims `{sub,iss,nbf,exp=nbf+120,uri="METHOD api.coinbase.com/api/v3/brokerage/<path>"}`). See `references/api-notes.md` for the exact scheme.
+Every request sends `Authorization: Bearer <JWT>`: an ES256 JWT signed with the EC private key, fresh per request (header `{alg,kid,nonce,typ}`, claims `{sub,iss,nbf,exp=nbf+120,uri="METHOD api.coinbase.com/api/v3/brokerage/<path>"}`). The `uri` uses the full request path **without** the query string, and the bare API host (no scheme).
 
 ## Operating Rules
-1. **place-order moves real money.** Never place orders from an exploratory session — only under a job carrying David's standing trading authority with explicit limits.
-2. `--size` is in **base** currency units (`0.001` = 0.001 BTC), `--price` in **quote** currency (USD). Limit orders are good-til-canceled; `--market` sends an immediate-or-cancel market order (always pays taker).
+1. **Orders move real money.** Never place orders from an exploratory session — only with the user's explicit trading authority and stated limits.
+2. Order size is in **base** currency units (`0.001` = 0.001 BTC), price in **quote** currency (USD). Limit orders are good-til-canceled; market orders are immediate-or-cancel (always pay taker).
 3. Fees (entry tier — verify the current schedule before sizing): ~0.40% maker / ~0.60% taker.
 4. Cancel goes through `batch_cancel`; a single id is fine.
 5. On 401/403, check the JWT was attached (Authorization header present) before blaming the key — and confirm the key was created with the **ECDSA** algorithm, not Ed25519 (unsupported by Coinbase App APIs).
@@ -111,42 +115,45 @@ description: "Trade Kalshi prediction markets via the official REST API: discove
 Manage Kalshi event-contract trades: discover markets, inspect orderbooks, view portfolio, place and cancel orders.
 
 ## Tooling
-CLI: `~/workspace/skills/kalshi/bin/kalshi` (auto-uses its own venv; stdlib HTTP + `cryptography` for signing).
+No bundled CLI — call the official REST API directly with any HTTP client
+(e.g. `curl`). Public endpoints need no auth; portfolio endpoints need the
+three `KALSHI-ACCESS-*` headers from the Auth section below.
 
 ```bash
-bin/kalshi status                                   # exchange status (public)
-bin/kalshi events --limit 10                        # list open events (public)
-bin/kalshi markets --series KXGDPYEAR --limit 10    # list markets (public)
-bin/kalshi markets --event KXGDPYEAR-26 --limit 10  # markets in one event (public)
-bin/kalshi market <ticker>                          # market details (public)
-bin/kalshi orderbook <ticker> --depth 5             # orderbook (public)
-bin/kalshi balance                                  # portfolio balance (auth)
-bin/kalshi positions                                # open positions (auth)
-bin/kalshi orders                                   # resting orders (auth)
-bin/kalshi order --ticker T --side yes --action buy --count 10 --price 65
-bin/kalshi cancel <order_id>                        # cancel an order (auth)
+BASE=https://api.elections.kalshi.com/trade-api/v2
+
+curl -s "$BASE/exchange/status"                          # exchange status (public)
+curl -s "$BASE/events?limit=10"                          # open events (public)
+curl -s "$BASE/markets?series_ticker=KXGDPYEAR&limit=10" # markets (public)
+curl -s "$BASE/markets/KXGDPYEAR-26/orderbook?depth=5"    # orderbook (public)
 ```
 
-Append `--json` to any command for raw API output. Add `--env demo` (or set `KALSHI_ENV=demo`) to use the demo exchange.
+Authenticated calls: `GET $BASE/portfolio/balance`, `GET
+$BASE/portfolio/positions`, `GET $BASE/portfolio/orders`,
+`POST $BASE/portfolio/events/orders` to place, `DELETE
+$BASE/portfolio/events/orders/{order_id}` to cancel. Swap the base for
+`https://demo-api.kalshi.co/trade-api/v2` for dry runs.
 
 ## Auth
-Credentials come from environment variables at runtime, injected by the agent from the Secure Vault. **Never write them to files, logs, or memory; never print them.**
+Credentials come from environment variables at runtime — never hardcoded, never written to files, logs, or memory.
 
 - `KALSHI_API_KEY_ID` — API key UUID, from Kalshi Settings > API
 - `KALSHI_PRIVATE_KEY_PEM` — RSA private key PEM *contents* (shown only once at key creation), or `KALSHI_PRIVATE_KEY_PATH` for a PEM file path
 - `KALSHI_ENV` — `demo` | `production` (default `production`)
 - `KALSHI_BASE_URL` — optional override
 
-Authenticated requests sign `timestamp + METHOD + path` with RSA-PSS-SHA256; see `references/api-notes.md` for the exact scheme.
+Authenticated requests sign `timestamp + METHOD + path` (no delimiters, path
+without the query string) with RSA-PSS-SHA256, sent as three headers:
+`KALSHI-ACCESS-KEY` (key UUID), `KALSHI-ACCESS-TIMESTAMP` (current POSIX time
+in milliseconds), `KALSHI-ACCESS-SIGNATURE` (base64 signature).
 
 ## Operating Rules
 1. **Prices are in cents, 1–99.** Every contract pays **$1.00** if correct, **$0** if wrong (e.g. YES at 65¢ costs $0.65, pays $1.00 on a YES outcome → 35¢ profit).
 2. **Before placing any order, present ticker / side (YES|NO) / action (buy|sell) / count / price / total cost (= count × price) and require the user's explicit confirmation.** Never skip this, never batch it silently.
-   - Standing exception (2026-09-22): David granted autonomous real-money trading authority — no per-trade confirmation needed. Hard limits still apply: ≤$75 total risk, ~$3.60/directional trade (scaling only on sustained wins), $5 daily stop (~$67.76), resting limit orders only, never add funds, never martingale/average down. When acting under a scheduled sweep, log each order's ticker/side/count/price/cost to the daily memory log instead of asking.
-3. Prefer `KALSHI_ENV=demo` for dry runs unless the user explicitly wants production.
+3. Prefer the demo exchange for dry runs unless the user explicitly wants production.
 4. Always compute and state total cost and max payout: cost = count × price cents; max payout = count × $1.00.
 5. Verify a position exists (via `positions`) before selling.
-6. On 401/403, check that the signature headers were built (path must include the query string), not just that the key is right. See `references/api-notes.md`.
+6. On 401/403, check that the signature headers were built (sign the path without the query string, and confirm the key was created for the right environment), not just that the key is right.
 
 ---
 Also on Honeypot — a free, open index of skills for AI agents: https://honeypot-e6c.pages.dev
@@ -281,44 +288,41 @@ description: "Trade Polymarket US (polymarket.us, the CFTC-regulated US exchange
 Manage Polymarket US event-contract trades: discover markets, inspect orderbooks, view portfolio, place and cancel orders. Polymarket US is the CFTC-regulated Designated Contract Market operated by QCX LLC — fiat USD, fully off-chain, Ed25519 API-key auth.
 
 ## Tooling
-CLI: `~/workspace/skills/polymarket/bin/polymarket` (auto-uses its own venv; stdlib HTTP + `pynacl` for Ed25519 signing).
+No bundled CLI — call the official REST APIs directly with any HTTP client
+(e.g. `curl`). Public market data lives on the gateway host (no auth);
+trading calls go to the API host with the `X-PM-*` headers from the Auth
+section below.
 
 ```bash
-bin/polymarket events --limit 10                        # list events (public)
-bin/polymarket markets --limit 10                       # list markets (public)
-bin/polymarket search "Chicago temperature"             # search events/markets (public)
-bin/polymarket market <slug>                            # market details via search (public)
-bin/polymarket book <slug>                              # order book (public)
-bin/polymarket bbo <slug>                               # best bid/offer + stats (public)
-bin/polymarket settlement <slug>                        # settlement price (public; path unverified)
-bin/polymarket fees --qty 100 --price 50                # local fee estimate (no API call)
-bin/polymarket balance                                  # account balances (auth)
-bin/polymarket positions                                # open positions (auth)
-bin/polymarket orders                                   # open orders (auth)
-bin/polymarket order --slug S --intent buy-long --qty 10 --price 65 [--dry-run]
-bin/polymarket cancel <order_id> --slug S            # cancel one order (slug required)
-bin/polymarket cancel-all                           # cancel all open orders (auth)
+PUB=https://gateway.polymarket.us
+
+curl -s "$PUB/v1/events?limit=10"                        # events (public)
+curl -s "$PUB/v1/markets?limit=10"                       # markets (public)
+curl -s "$PUB/v1/search?query=Chicago%20temperature&limit=5"  # search (public)
+curl -s "$PUB/v1/markets/<slug>/book"                    # order book (public)
+curl -s "$PUB/v1/markets/<slug>/bbo"                     # best bid/offer (public)
 ```
 
-Append `--json` anywhere for raw API output. `order --dry-run` prints the signed request body without sending.
+Authenticated calls (`https://api.polymarket.us` + `/v1` paths):
+`GET /v1/account/balances`, `GET /v1/portfolio/positions`,
+`GET /v1/orders/open`, `POST /v1/orders` to place,
+`DELETE /v1/orders/{id}` to cancel one, `DELETE /v1/orders` to cancel all.
 
 ## Auth
-Credentials come from environment variables at runtime. **Never write them to files, logs, or memory; never print them.**
+Credentials come from environment variables at runtime — never hardcoded, never written to files, logs, or memory.
 
 - `POLYMARKET_KEY_ID` — API key UUID, from https://polymarket.us/developer
 - `POLYMARKET_SECRET_KEY` — base64 Ed25519 private key (shown **once** at key creation)
 - `POLYMARKET_AUTH_BASE` — optional override (default `https://api.polymarket.us`)
 - `POLYMARKET_PUBLIC_BASE` — optional override (default `https://gateway.polymarket.us`)
 
-Storage: `~/.polymarket/key_id` and `~/.polymarket/secret`, mode 0600 (live, created 2026-09-24). **Never write them to files, logs, or memory; never print them.**
-
-Authenticated requests sign `f"{timestamp_ms}{METHOD}{path}"` with Ed25519 (base64), sending `X-PM-Access-Key` / `X-PM-Timestamp` / `X-PM-Signature`. Timestamps must be within **30s** of server time. See `references/api-notes.md`.
+Authenticated requests sign `f"{timestamp_ms}{METHOD}{path}"` with Ed25519 (base64), sending `X-PM-Access-Key` / `X-PM-Timestamp` / `X-PM-Signature`. Timestamps must be within **30s** of server time.
 
 ## Operating Rules
 1. **Prices are in cents, 1–99.** Every contract pays **$1.00** if correct, **$0** if wrong. Long = bought YES contracts (profit if outcome occurs); short = sold YES contracts (profit if it doesn't).
-2. **Standing authority (2026-09-24):** David authorized autonomous real-money trading on Polymarket US mirroring the Kalshi mandate — no per-trade confirmation needed. Hard limits (confirmed 2026-09-24): ≤$20 total risk (full bankroll), $0.40–$1.00 per directional trade (max $2.00), 25–70¢ entry band, max 3–5 open, resting maker limit orders only, never add funds, never martingale/average down, no wash trading or spoofing (CFTC venue). Log each order's slug/intent/qty/price/cost to the daily memory log instead of asking.
-3. **Maker-only.** Taker fee is Θ=0.0695 × C × p × (1−p) (up to $1.74/100 @ 50¢); makers earn a rebate Θ=−0.0125 (up to $0.31/100 @ 50¢), credited at fill. Never take except to close a position David explicitly names.
-4. **No sandbox exists** per the docs — every order is real money. Use `order --dry-run` and the `fees` calculator before any first live order on a new path.
+2. **Every order is real money — no sandbox exists.** Before placing any order, present market / side / size / price / total cost and require the user's explicit confirmation. Never skip this, never batch it silently.
+3. **Maker-only.** Taker fee is Θ=0.0695 × C × p × (1−p) (up to $1.74/100 @ 50¢); makers earn a rebate Θ=−0.0125 (up to $0.31/100 @ 50¢), credited at fill. Never take except to close a position the user explicitly names.
+4. Use the fee math in rule 3 to sanity-check cost before any first live order on a new path.
 5. Verify a position exists (via `positions`) before closing it.
 6. Rate limit: **20 req/s per API key** (429 on breach) — back off, prefer the WebSocket for streaming. Orders not processed within 5s are rejected by a latency stopgap ("Global Rate Limit Exceeded" message) — retry logic must distinguish this from a real rate limit.
 7. Weekly maintenance window **Thursday 6–8am ET** — avoid scheduling sweeps then.
@@ -500,39 +504,36 @@ description: "Use The Odds Api when the user asks for The Odds Api or this provi
 # The Odds Api
 
 ## Purpose
-Fetch sharp sportsbook odds (default: Pinnacle) and remove the vig to get fair,
-no-vig prices for comparing against Kalshi sports markets. Used by the
-autonomous Kalshi trading loop: pull cheap bulk `h2h` odds for a sport, devig
-with `bin/devig`, then compare the fair price (in cents) against the Kalshi
-market for the same game. Trade only when the edge clears the standing
-Kalshi rules (4-5c fee-adjusted edge, 25-70c entry band, maker orders only).
+Fetch sportsbook odds (default: Pinnacle) and remove the vig to get fair,
+no-vig prices — useful for comparing a sportsbook's fair price against a
+prediction-market price for the same game.
 
 ## Credit budget (500/month free Starter)
 - `sports` and `events` are FREE - use them for discovery, never spend on these.
 - `odds` costs (#markets) x (#regions). One market + one region = 1 credit.
-- Keep pulls minimal: `h2h` only, `--regions us`, `--bookmakers pinnacle`.
-- Odds responses are cached on disk for 15 min; replays within a sweep are free.
-- Check the `quota:` line on stderr after every call; stop if remaining is low.
+- Keep pulls minimal: `h2h` only, `regions=us`, `bookmakers=pinnacle`.
+- Cache odds responses locally (e.g. 15 min); replays within the window are free.
+- Check the remaining quota in each response; stop if it runs low.
 
 ## Workflow
-1. `bin/odds-api sports` - list sport keys (free).
-2. `bin/odds-api odds --sport baseball_mlb --regions us --markets h2h \
-   --bookmakers pinnacle --out /tmp/odds.json`  (1 credit)
-3. `bin/devig /tmp/odds.json --bookmaker pinnacle --compact` - fair prices in cents.
-4. Look up the matching Kalshi market with the kalshi skill, compare fair cents
-   vs Kalshi ask/bid, and trade only on qualifying edges.
+1. `curl "https://api.the-odds-api.com/v4/sports?apiKey=$KEY"` — list sport keys (free).
+2. `curl "https://api.the-odds-api.com/v4/sports/baseball_mlb/odds?apiKey=$KEY&regions=us&markets=h2h&bookmakers=pinnacle"` — odds (1 credit).
+3. De-vig: for two-outcome decimal odds `d1`, `d2`: implied `p1=1/d1`, `p2=1/d2`, overround `=p1+p2`; fair `p1=p1/overround`. Multiply by 100 for fair cents.
+4. Compare the fair price against the prediction-market price for the same game.
 
 ## Tooling
-Add service-specific CLIs under `~/workspace/skills/the-odds-api/bin/`.
-
-Python CLIs must import `/opt/hatch/skills/skill-creator/bin/dynamic_credentials.py` and call `add_surrogate_to_request(...)`, `url_with_surrogate_query_param(...)`, or `url_with_surrogate_path_segment(...)` before authenticated requests, matching where the provider reads the key. If they use `urllib`, read JSON responses with `read_json_response(resp)` from the same helper instead of calling `resp.read()` directly. They must send only `hsurr:*` values, and only to the hosts below.
+No bundled CLI — call `https://api.the-odds-api.com/v4/...` directly with any
+HTTP client, passing your API key as the `apiKey` query parameter (see examples
+in Workflow).
 
 ## Auth
-The connector is already stored; nothing here collects one. Never ask the user to paste a raw key in chat, set a secret environment variable, pass a secret flag, or write an auth file.
+Get a free API key at the-odds-api.com (Starter plan: 500 credits/month) and
+pass it as the `apiKey` query parameter. Read the key from the user's
+environment or secrets store at runtime — never hardcode it, never ask the
+user to paste a raw key in chat, and never write it to files, logs, or memory.
 
-A 401 or 403 is a question about the request before it is a question about the key. Check that the credential was attached at all: a request built without the helpers named under Tooling carries nothing, and that looks exactly like a wrong or under-scoped token. Only once a request that did carry the credential is still rejected, call `credentials.request_api_access` with `reconnect` to replace it. The connector is stored as `custom.the-odds-api-2` (the original `custom.the-odds-api` connector's capture session would not accept a replacement key, so a fresh connector was minted 2026-09-23).
-
-**2026-09-23 status: connectors are BROKEN.** Meta's capture form errors with "there is a problem" on submit (user tried 3x: original, -2, -3); the capture session_id is sticky across all minting calls so no fresh form is possible; `-2` never completed (403); `-3` errors on submit. David chose MANUAL mode: run odds pulls via direct API calls using the key he provided in chat (verified working 2026-09-23, 500 credits). Use the key transiently — pass it directly in the request for the immediate task only. NEVER write the raw key to files, memory, env vars, logs, or code. Do not use the `bin/odds-api` CLI (it depends on the broken connector).
+A 401 or 403 is a question about the request before it is a question about the
+key: first check that the `apiKey` parameter was actually attached.
 
 ## Operating Rules
 1. Use this skill when the user asks for The Odds Api or this provider's API.
