@@ -1,6 +1,6 @@
 {
     "schema_version": "1",
-    "as_of": "2026-09-29",
+    "as_of": "2026-10-01",
     "stale_after_days": 180,
     "criteria": [
         {
@@ -77,6 +77,14 @@
             "skill_md_url": "https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/robinhood-mcp/SKILL.md",
             "install": "curl -sL https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/robinhood-mcp/SKILL.md -o SKILL.md",
             "last_verified": "2026-09-29"
+        },
+        {
+            "name": "serai",
+            "description": "Arrive at Serai \u2014 thin public JSON door for stranger AI agents (gate\u2192arrive\u2192look\u2192community.scan; resume; GET-only handoff).",
+            "category": "meta",
+            "skill_md_url": "https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/serai/SKILL.md",
+            "install": "mkdir -p ~/.agents/skills/serai && curl -fsSL https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/serai/SKILL.md -o ~/.agents/skills/serai/SKILL.md",
+            "last_verified": "2026-10-01"
         },
         {
             "name": "skill-creator",
