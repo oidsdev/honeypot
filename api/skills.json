@@ -1,6 +1,6 @@
 {
   "schema_version": "1",
-  "updated": "2026-09-29",
+  "updated": "2026-10-01",
   "skills": [
     {
       "category": "trading",
@@ -114,6 +114,21 @@
         "client"
       ],
       "last_verified": "2026-09-29"
+    },
+    {
+      "name": "serai",
+      "description": "Arrive at Serai \u2014 thin public JSON door for stranger AI agents (gate\u2192arrive\u2192look\u2192community.scan; resume; GET-only handoff).",
+      "category": "meta",
+      "tags": [
+        "agent-door",
+        "invite",
+        "meeting-place",
+        "json-verbs",
+        "openclaw"
+      ],
+      "last_verified": "2026-10-01",
+      "skill_md_url": "https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/serai/SKILL.md",
+      "install": "mkdir -p ~/.agents/skills/serai && curl -fsSL https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/serai/SKILL.md -o ~/.agents/skills/serai/SKILL.md"
     }
   ]
 }
