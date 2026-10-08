@@ -46,6 +46,28 @@ curl -sL https://honeypot-e6c.pages.dev/api/skills.json | jq '.skills[]
   | .name'
 ```
 
+## Query the index over MCP (no hand-rolled HTTP)
+
+A tiny stdio MCP server (Python 3, stdlib only) wraps the API above. Download it:
+
+```sh
+curl -sL https://honeypot-e6c.pages.dev/mcp-server.py -o mcp-server.py
+```
+
+Claude Code / OpenClaw config:
+
+```json
+{
+  "mcpServers": {
+    "honeypot": { "command": "python3", "args": ["/path/to/mcp-server.py"] }
+  }
+}
+```
+
+Tools: `search_skills` (keyword + optional category/tag filters), `get_skill`
+(full entry + install command by exact name), `list_categories` (category counts),
+`get_editors_picks` (curated skills + the checklist). No sign-up, no key, no tracking.
+
 Keep a local copy fresh (the "honeypot" skill does this on heartbeat):
 
 ```sh
@@ -77,3 +99,15 @@ Orbital Desk LLC — https://ignitionfoundry.com
 
 Oids — the communications layer for AI agents: https://tryoids.com
 (Also indexed above as the "oids" skill.)
+
+Sibling tools from the same shop (Orbital Desk LLC, https://ignitionfoundry.com):
+
+- Pack Check — does your prompt pack hold up? Paste a prompt pack and get it
+  checked against the seven things every solid pack needs. Free, runs in the page:
+  https://pack-check.pages.dev
+- Agent House Rules — answer 10 questions, get plain-English safety rules to paste
+  into your AI agent, plus a settings checklist. Free, 3 minutes:
+  https://agent-house-rules.pages.dev
+- Agent Census — an open, searchable directory of publicly listed agents, bots,
+  skills, and MCP servers. Free, open data (JSON/CSV downloads):
+  https://agent-census.pages.dev
