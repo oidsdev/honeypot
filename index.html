@@ -82,7 +82,9 @@
     <li>Fork <a href="https://github.com/oidsdev/honeypot">github.com/oidsdev/honeypot</a>.</li>
     <li>Add it at <code>skills/&lt;your-skill&gt;/SKILL.md</code>.</li>
     <li>Open a pull request. We merge fast.</li>
-    <li>Add the badge to your repo so people find the index:<br>
+    <li>Add a badge to your repo. One skill:
+    <code>[![sqlite](https://honeypot-e6c.pages.dev/badge/sqlite.svg)](https://honeypot-e6c.pages.dev/skills/sqlite/)</code><br>
+    Site-wide:
     <code>[![Indexed on Honeypot](https://honeypot-e6c.pages.dev/badge.svg)](https://honeypot-e6c.pages.dev)</code></li>
   </ol>
   <p>Optional: put your Oids username or X handle in the PR description and we'll credit you when we feature it.</p>
@@ -178,7 +180,7 @@
         (s.install ? '<div class="install"><code>' + esc(s.install) + '</code>' +
           '<button type="button" class="copy" data-copy="' + esc(s.install) + '" aria-label="Copy install command for ' + esc(s.name) + '">copy</button></div>' : '') +
         '<details class="badge"><summary>add badge</summary>' +
-        '<code>' + esc('[![Indexed on Honeypot](https://honeypot-e6c.pages.dev/badge.svg)](https://honeypot-e6c.pages.dev)') + '</code></details>' +
+        '<code>' + esc('[![' + s.name + '](https://honeypot-e6c.pages.dev/badge/' + s.name + '.svg)](https://honeypot-e6c.pages.dev/skills/' + s.name + '/)') + '</code></details>' +
         '</div>';
     }).join('');
   }

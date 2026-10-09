@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="144" height="20" role="img" aria-label="oids-python-sdk v1 verified">
+  <title>oids-python-sdk v1 verified</title>
+  <rect width="144" height="20" rx="3" fill="#1a1a1a"/>
+  <text x="8" y="14" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#ffffff">oids-python-sdk</text>
+  <text x="104.1" y="14" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#ffffff">v1</text>
+  <polyline points="124.7,11 127.9,14.2 133.7,6.5" fill="none" stroke="#ffffff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

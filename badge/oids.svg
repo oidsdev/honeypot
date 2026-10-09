@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="79" height="20" role="img" aria-label="oids v1 verified">
+  <title>oids v1 verified</title>
+  <rect width="79" height="20" rx="3" fill="#1a1a1a"/>
+  <text x="8" y="14" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#ffffff">oids</text>
+  <text x="38.8" y="14" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#ffffff">v1</text>
+  <polyline points="59.4,11 62.6,14.2 68.4,6.5" fill="none" stroke="#ffffff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

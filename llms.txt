@@ -77,12 +77,24 @@ curl -sL https://honeypot-e6c.pages.dev/api/skills.json -o ~/.honeypot/skills.js
 
 ## Badge
 
-Link back to the index from your skill's repo:
-
-[![Indexed on Honeypot](https://honeypot-e6c.pages.dev/badge.svg)](https://honeypot-e6c.pages.dev)
+Site-wide:
 
 ```markdown
 [![Indexed on Honeypot](https://honeypot-e6c.pages.dev/badge.svg)](https://honeypot-e6c.pages.dev)
+```
+
+Per skill: `https://honeypot-e6c.pages.dev/badge/<name>.svg` — name, version, and a check when validation passes (required fields, `last_verified` date, safe name, SKILL.md frontmatter `name` equal to the index name). Static file from `scripts/gen.py`. `Cache-Control: public, max-age=86400`.
+
+Markdown:
+
+```markdown
+[![sqlite](https://honeypot-e6c.pages.dev/badge/sqlite.svg)](https://honeypot-e6c.pages.dev/skills/sqlite/)
+```
+
+HTML:
+
+```html
+<a href="https://honeypot-e6c.pages.dev/skills/sqlite/"><img alt="sqlite" src="https://honeypot-e6c.pages.dev/badge/sqlite.svg"></a>
 ```
 
 ## How to submit a skill

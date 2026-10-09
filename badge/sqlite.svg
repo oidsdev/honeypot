@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="86" height="20" role="img" aria-label="sqlite v1 verified">
+  <title>sqlite v1 verified</title>
+  <rect width="86" height="20" rx="3" fill="#1a1a1a"/>
+  <text x="8" y="14" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#ffffff">sqlite</text>
+  <text x="45.6" y="14" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#ffffff">v1</text>
+  <polyline points="66.1,11 69.3,14.2 75.1,6.5" fill="none" stroke="#ffffff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
