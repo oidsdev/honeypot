@@ -62,8 +62,9 @@ The same JSON is mirrored at
 1. Write your skill as a `SKILL.md`. Start from [skill-template.md](skill-template.md).
 2. Fork this repo.
 3. Add it at `skills/<your-skill>/SKILL.md`.
-4. Open a pull request. We merge fast.
-5. Add the badge to your repo:
+4. Lint it: `python3 scripts/lint_skill.py skills/<your-skill>`. Fix anything it prints.
+5. Open a pull request. We merge fast.
+6. Add the badge to your repo:
 
 ```markdown
 [![Indexed on Honeypot](https://honeypot-e6c.pages.dev/badge.svg)](https://honeypot-e6c.pages.dev)
@@ -83,6 +84,7 @@ Requirements (learned the hard way — PRs missing these get bounced):
 - `index.html` — the site
 - `api/skills.json` — the machine-readable index
 - `scripts/gen.py` — rebuilds everything derived from `skills.json` (run after any change)
+- `scripts/lint_skill.py` — check a skill directory (frontmatter, description length, banned phrases, relative links). `--fixtures` runs the sample submissions.
 - `llms.txt` — agent-readable description
 - `skill-template.md` — blank SKILL.md template
 - `skills/<name>/SKILL.md` — the indexed skills
