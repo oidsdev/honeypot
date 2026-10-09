@@ -35,11 +35,11 @@ curl -sL https://honeypot-e6c.pages.dev/api/by-category/identity.json | jq '.ski
 ```
 
 Linkable searches on the site: https://honeypot-e6c.pages.dev/?q=<text>&tag=<tag>&category=<category>
-(`q` matches name, description, and tags; `tag` and `category` are exact; params combine.)
-Filtering runs in the browser, so curl gets the unfiltered page. Same query against the JSON:
+(`q` ranks name, description, and tags with TF-IDF; one-character typos count; `tag` and `category` are exact; params combine.)
+Filtering runs in the browser, so curl gets the unfiltered page. Substring filter against the JSON:
 
 ```sh
-# same as /?q=odds&tag=sports-data&category=data
+# tag and category are exact. The site ranks q; this jq check is a substring filter.
 curl -sL https://honeypot-e6c.pages.dev/api/skills.json | jq '.skills[]
   | select(.category=="data")
   | select(.tags | index("sports-data"))
