@@ -1,20 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://honeypot-e6c.pages.dev/</loc><lastmod>2026-10-03</lastmod></url>
-  <url><loc>https://honeypot-e6c.pages.dev/llms.txt</loc><lastmod>2026-10-03</lastmod></url>
-  <url><loc>https://honeypot-e6c.pages.dev/llms-full.txt</loc><lastmod>2026-10-03</lastmod></url>
-  <url><loc>https://honeypot-e6c.pages.dev/skill-template.md</loc><lastmod>2026-10-03</lastmod></url>
-  <url><loc>https://honeypot-e6c.pages.dev/submitters.md</loc><lastmod>2026-10-03</lastmod></url>
-  <url><loc>https://honeypot-e6c.pages.dev/badge.svg</loc><lastmod>2026-10-03</lastmod></url>
-  <url><loc>https://honeypot-e6c.pages.dev/api/skills.json</loc><lastmod>2026-09-29</lastmod></url>
-  <url><loc>https://honeypot-e6c.pages.dev/api/changelog.json</loc><lastmod>2026-10-03</lastmod></url>
-  <url><loc>https://honeypot-e6c.pages.dev/api/editors-picks.json</loc><lastmod>2026-10-03</lastmod></url>
-  <url><loc>https://honeypot-e6c.pages.dev/feed.xml</loc><lastmod>2026-10-03</lastmod></url>
-  <url><loc>https://honeypot-e6c.pages.dev/faq/</loc><lastmod>2026-10-03</lastmod></url>
-  <url><loc>https://honeypot-e6c.pages.dev/api/by-category/data.json</loc><lastmod>2026-09-29</lastmod></url>
-  <url><loc>https://honeypot-e6c.pages.dev/api/by-category/identity.json</loc><lastmod>2026-09-29</lastmod></url>
-  <url><loc>https://honeypot-e6c.pages.dev/api/by-category/meta.json</loc><lastmod>2026-09-29</lastmod></url>
-  <url><loc>https://honeypot-e6c.pages.dev/api/by-category/trading.json</loc><lastmod>2026-09-29</lastmod></url>
+  <url><loc>https://honeypot-e6c.pages.dev/</loc><lastmod>2026-10-09</lastmod></url>
+  <url><loc>https://honeypot-e6c.pages.dev/llms.txt</loc><lastmod>2026-10-09</lastmod></url>
+  <url><loc>https://honeypot-e6c.pages.dev/llms-full.txt</loc><lastmod>2026-10-09</lastmod></url>
+  <url><loc>https://honeypot-e6c.pages.dev/skill-template.md</loc><lastmod>2026-10-09</lastmod></url>
+  <url><loc>https://honeypot-e6c.pages.dev/submitters.md</loc><lastmod>2026-10-09</lastmod></url>
+  <url><loc>https://honeypot-e6c.pages.dev/badge.svg</loc><lastmod>2026-10-09</lastmod></url>
+  <url><loc>https://honeypot-e6c.pages.dev/api/skills.json</loc><lastmod>2026-10-09</lastmod></url>
+  <url><loc>https://honeypot-e6c.pages.dev/api/changelog.json</loc><lastmod>2026-10-09</lastmod></url>
+  <url><loc>https://honeypot-e6c.pages.dev/api/editors-picks.json</loc><lastmod>2026-10-09</lastmod></url>
+  <url><loc>https://honeypot-e6c.pages.dev/feed.xml</loc><lastmod>2026-10-09</lastmod></url>
+  <url><loc>https://honeypot-e6c.pages.dev/faq/</loc><lastmod>2026-10-09</lastmod></url>
+  <url><loc>https://honeypot-e6c.pages.dev/api/by-category/data.json</loc><lastmod>2026-10-09</lastmod></url>
+  <url><loc>https://honeypot-e6c.pages.dev/api/by-category/identity.json</loc><lastmod>2026-10-09</lastmod></url>
+  <url><loc>https://honeypot-e6c.pages.dev/api/by-category/meta.json</loc><lastmod>2026-10-09</lastmod></url>
+  <url><loc>https://honeypot-e6c.pages.dev/api/by-category/tooling.json</loc><lastmod>2026-10-09</lastmod></url>
+  <url><loc>https://honeypot-e6c.pages.dev/api/by-category/trading.json</loc><lastmod>2026-10-09</lastmod></url>
   <url><loc>https://honeypot-e6c.pages.dev/skills/kalshi/</loc><lastmod>2026-09-29</lastmod></url>
   <url><loc>https://honeypot-e6c.pages.dev/skills/coinbase/</loc><lastmod>2026-09-29</lastmod></url>
   <url><loc>https://honeypot-e6c.pages.dev/skills/polymarket/</loc><lastmod>2026-09-29</lastmod></url>
@@ -22,6 +23,11 @@
   <url><loc>https://honeypot-e6c.pages.dev/skills/oids/</loc><lastmod>2026-09-29</lastmod></url>
   <url><loc>https://honeypot-e6c.pages.dev/skills/skill-creator/</loc><lastmod>2026-09-29</lastmod></url>
   <url><loc>https://honeypot-e6c.pages.dev/skills/robinhood-mcp/</loc><lastmod>2026-09-29</lastmod></url>
-  <url><loc>https://honeypot-e6c.pages.dev/skills/honeypot/</loc><lastmod>2026-09-29</lastmod></url>
+  <url><loc>https://honeypot-e6c.pages.dev/skills/honeypot/</loc><lastmod>2026-10-09</lastmod></url>
   <url><loc>https://honeypot-e6c.pages.dev/skills/oids-python-sdk/</loc><lastmod>2026-09-29</lastmod></url>
+  <url><loc>https://honeypot-e6c.pages.dev/skills/sqlite/</loc><lastmod>2026-10-09</lastmod></url>
+  <url><loc>https://honeypot-e6c.pages.dev/skills/pdf-text/</loc><lastmod>2026-10-09</lastmod></url>
+  <url><loc>https://honeypot-e6c.pages.dev/skills/image-optimize/</loc><lastmod>2026-10-09</lastmod></url>
+  <url><loc>https://honeypot-e6c.pages.dev/skills/cron/</loc><lastmod>2026-10-09</lastmod></url>
+  <url><loc>https://honeypot-e6c.pages.dev/skills/webhooks/</loc><lastmod>2026-10-09</lastmod></url>
 </urlset>

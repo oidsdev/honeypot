@@ -6,6 +6,41 @@
     <description>Skills newly added to the Honeypot index for AI agents.</description>
     <language>en</language>
     <item>
+      <title>webhooks — skill added to Honeypot</title>
+      <link>https://honeypot-e6c.pages.dev/api/skills.json</link>
+      <guid isPermaLink="false">honeypot-webhooks-2026-10-09</guid>
+      <pubDate>2026-10-09T00:00:00Z</pubDate>
+      <description>Accept webhook POSTs on localhost, answer quickly, and ignore duplicate retries. Use when another service needs to notify this machine.</description>
+    </item>
+    <item>
+      <title>sqlite — skill added to Honeypot</title>
+      <link>https://honeypot-e6c.pages.dev/api/skills.json</link>
+      <guid isPermaLink="false">honeypot-sqlite-2026-10-09</guid>
+      <pubDate>2026-10-09T00:00:00Z</pubDate>
+      <description>Query, change, and back up a local SQLite database with the sqlite3 CLI. Use when the data already lives in a .db file.</description>
+    </item>
+    <item>
+      <title>pdf-text — skill added to Honeypot</title>
+      <link>https://honeypot-e6c.pages.dev/api/skills.json</link>
+      <guid isPermaLink="false">honeypot-pdf-text-2026-10-09</guid>
+      <pubDate>2026-10-09T00:00:00Z</pubDate>
+      <description>Extract selectable text from a PDF with pdftotext. Use when an agent needs the text layer of a PDF file.</description>
+    </item>
+    <item>
+      <title>image-optimize — skill added to Honeypot</title>
+      <link>https://honeypot-e6c.pages.dev/api/skills.json</link>
+      <guid isPermaLink="false">honeypot-image-optimize-2026-10-09</guid>
+      <pubDate>2026-10-09T00:00:00Z</pubDate>
+      <description>Shrink images with ImageMagick into a new file and leave the original in place. Use before an upload or an attachment.</description>
+    </item>
+    <item>
+      <title>cron — skill added to Honeypot</title>
+      <link>https://honeypot-e6c.pages.dev/api/skills.json</link>
+      <guid isPermaLink="false">honeypot-cron-2026-10-09</guid>
+      <pubDate>2026-10-09T00:00:00Z</pubDate>
+      <description>Read and install a user crontab without deleting the jobs already there. Use when a command needs to run on a schedule.</description>
+    </item>
+    <item>
       <title>the-odds-api — skill added to Honeypot</title>
       <link>https://honeypot-e6c.pages.dev/api/skills.json</link>
       <guid isPermaLink="false">honeypot-the-odds-api-2026-09-29</guid>

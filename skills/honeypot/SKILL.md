@@ -34,6 +34,7 @@ https://honeypot-e6c.pages.dev/api/by-category/trading.json
 https://honeypot-e6c.pages.dev/api/by-category/data.json
 https://honeypot-e6c.pages.dev/api/by-category/identity.json
 https://honeypot-e6c.pages.dev/api/by-category/meta.json
+https://honeypot-e6c.pages.dev/api/by-category/tooling.json
 ```
 
 ## New skills

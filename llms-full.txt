@@ -55,6 +55,90 @@ Every request sends `Authorization: Bearer <JWT>`: an ES256 JWT signed with the 
 Also on Honeypot — a free, open index of skills for AI agents: https://honeypot-e6c.pages.dev
 [![Indexed on Honeypot](https://honeypot-e6c.pages.dev/badge.svg)](https://honeypot-e6c.pages.dev)
 
+# ===== cron =====
+---
+name: "cron"
+description: "Read and install a user crontab without deleting the jobs already there. Use when a command needs to run on a schedule."
+---
+
+# Cron
+
+Schedule a command in the user's crontab. Read what is already there, add one line, check the syntax, then install the whole file.
+
+## When to use
+
+A command should run later on a clock: every night, once an hour, or at a fixed minute. This skill edits the user crontab for the account you are logged in as.
+
+## Install
+
+```sh
+command -v crontab
+```
+
+Debian and Ubuntu ship crontab in the `cron` package. The daemon has to be running or the table never fires.
+
+```sh
+sudo apt-get install cron
+sudo service cron start
+service cron status
+```
+
+macOS includes `crontab`. The system scheduler there is launchd; use this skill only when the user asked for cron.
+
+## Commands
+
+A user crontab line is five time fields and then the command:
+
+```text
+minute  hour  day-of-month  month  day-of-week  command
+```
+
+Minute `0-59`, hour `0-23`, day of month `1-31`, month `1-12`, day of week `0-7` (`0` and `7` are Sunday). `*` means every value.
+
+Save the current table first. A missing crontab makes `crontab -l` exit non-zero and write nothing; that empty backup is the right start.
+
+```sh
+crontab -l > "$HOME/crontab.backup" || true
+```
+
+If stderr says something other than "no crontab", stop. Do not install a new file over a table you could not read.
+
+Add one job onto the end of that backup. Use absolute paths. Cron's `PATH` is short, and the shell is `/bin/sh`. Send both stdout and stderr to a log you can read later.
+
+```sh
+cp "$HOME/crontab.backup" jobs.cron
+printf '%s\n' '15 3 * * * /usr/bin/python3 /home/me/jobs/backup.py >> /home/me/logs/backup.log 2>&1' >> jobs.cron
+```
+
+On Debian and Ubuntu, `-n` checks the file and does not install it:
+
+```sh
+crontab -n jobs.cron
+```
+
+Install, then list. Confirm the old lines are still there and the new line was added.
+
+```sh
+crontab jobs.cron
+crontab -l
+```
+
+Useful shortcuts on Vixie cron (Debian, cronie): `@hourly`, `@daily`, `@weekly`, `@monthly`, `@reboot`. They replace the five time fields.
+
+## Gotchas
+
+- `crontab jobs.cron` replaces the entire user crontab with that file. The backup step is what keeps the previous jobs.
+- `crontab -r` deletes every job. Do not run it.
+- A `%` in the command becomes a newline, and the rest of the line is fed to the command as stdin. Write a literal percent as `\%`.
+- If both the day-of-month and day-of-week fields are restricted (neither is `*`), cron runs the job when either field matches.
+- Jobs do not see your interactive `PATH`. The example uses `/usr/bin/python3` and an absolute script path for that reason.
+- Output with nowhere to go is mailed to the crontab owner. The `>> log 2>&1` redirect keeps it in a file. Create the log directory first; the redirect does not create parent directories.
+- Replace `/home/me` in the example with the real home directory before installing.
+
+---
+Also on Honeypot — a free, open index of skills for AI agents: https://honeypot-e6c.pages.dev
+[![Indexed on Honeypot](https://honeypot-e6c.pages.dev/badge.svg)](https://honeypot-e6c.pages.dev)
+
 # ===== honeypot =====
 ---
 name: "honeypot"
@@ -92,12 +176,88 @@ https://honeypot-e6c.pages.dev/api/by-category/trading.json
 https://honeypot-e6c.pages.dev/api/by-category/data.json
 https://honeypot-e6c.pages.dev/api/by-category/identity.json
 https://honeypot-e6c.pages.dev/api/by-category/meta.json
+https://honeypot-e6c.pages.dev/api/by-category/tooling.json
 ```
 
 ## New skills
 
 Changelog: https://honeypot-e6c.pages.dev/api/changelog.json
 RSS feed: https://honeypot-e6c.pages.dev/feed.xml
+
+---
+Also on Honeypot — a free, open index of skills for AI agents: https://honeypot-e6c.pages.dev
+[![Indexed on Honeypot](https://honeypot-e6c.pages.dev/badge.svg)](https://honeypot-e6c.pages.dev)
+
+# ===== image-optimize =====
+---
+name: "image-optimize"
+description: "Shrink images with ImageMagick into a new file and leave the original in place. Use before an upload or an attachment."
+---
+
+# Image optimization
+
+Make a smaller copy of a JPEG, PNG, or WebP with ImageMagick. The original file stays where it is.
+
+## When to use
+
+An image is larger than the place it is going: a page, an attachment, or a thumbnail. Resize it, drop the metadata, and write a new file. Compare the two before you replace anything.
+
+## Install
+
+ImageMagick 7 installs the `magick` command. ImageMagick 6 installs `convert`. Use whichever one exists.
+
+```sh
+magick -version || convert -version
+```
+
+```sh
+# Debian / Ubuntu
+sudo apt-get install imagemagick
+
+# macOS
+brew install imagemagick
+```
+
+Pick the binary once and reuse it:
+
+```sh
+if command -v magick >/dev/null; then IM=magick; else IM=convert; fi
+```
+
+## Commands
+
+Shrink a photo so the longest side is at most 1600 pixels, bake in the orientation, strip metadata, and write a JPEG. The `>` suffix means "only shrink". Quote it so the shell does not treat it as a redirect.
+
+```sh
+"$IM" input.jpg -auto-orient -resize '1600x1600>' -quality 82 -strip output.jpg
+```
+
+PNG, still a new file. `-strip` runs after `-auto-orient`, so the pixels are already rotated the right way.
+
+```sh
+"$IM" input.png -auto-orient -resize '1600x1600>' -strip output.png
+```
+
+WebP from the same source:
+
+```sh
+"$IM" input.png -auto-orient -resize '1600x1600>' -quality 80 -strip output.webp
+```
+
+Look at dimensions and byte sizes before you keep the result.
+
+```sh
+identify input.jpg output.jpg
+ls -l input.jpg output.jpg
+```
+
+## Gotchas
+
+- `mogrify` writes over the file you name. These examples use `magick` or `convert` so the original stays put.
+- `-strip` removes profiles, comments, and EXIF, including GPS. Run `-auto-orient` first, or a phone photo can come out sideways.
+- An unquoted `1600x1600>` is a shell redirect. Keep the quotes.
+- Quality `82` is a reasonable JPEG. Lower numbers get smaller and softer. Look at the output before you go further down.
+- A file that is already small can grow when you change format. Keep the original when `ls` shows the new file is larger.
 
 ---
 Also on Honeypot — a free, open index of skills for AI agents: https://honeypot-e6c.pages.dev
@@ -271,6 +431,69 @@ Errors raise `OidsError` with `.status`, `.code` (e.g. `username_taken`, `conten
 - Never invent posts, users, like counts, or leaderboard positions — state only what the API returned.
 - Transport is `curl` via subprocess (the API has been seen resetting bare-urllib writes). If curl is missing it falls back to urllib, which mostly works for reads.
 - Rate limits: 10 signup/login attempts per minute per IP; 100 posts/day, 200 DMs/day.
+
+---
+Also on Honeypot — a free, open index of skills for AI agents: https://honeypot-e6c.pages.dev
+[![Indexed on Honeypot](https://honeypot-e6c.pages.dev/badge.svg)](https://honeypot-e6c.pages.dev)
+
+# ===== pdf-text =====
+---
+name: "pdf-text"
+description: "Extract selectable text from a PDF with pdftotext. Use when an agent needs the text layer of a PDF file."
+---
+
+# PDF text
+
+Pull the text layer out of a PDF with Poppler's `pdftotext`. The result is plain text on stdout or in a file you name.
+
+## When to use
+
+The user hands you a PDF and wants the words in it: a page range, a whole document, or text that keeps the visual columns. This skill stops when the file has no text layer.
+
+## Install
+
+```sh
+pdftotext -v
+```
+
+If that fails, install Poppler utils:
+
+```sh
+# Debian / Ubuntu
+sudo apt-get install poppler-utils
+
+# macOS
+brew install poppler
+```
+
+`pdftotext -h` lists the flags for the build you have.
+
+## Commands
+
+Write the text to stdout. The second argument `-` means stdout. `-layout` keeps the columns where they were on the page. `-nopgbrk` leaves out the form-feed between pages.
+
+```sh
+pdftotext -layout -nopgbrk report.pdf -
+```
+
+Limit the range. Pages are numbered from 1.
+
+```sh
+pdftotext -f 1 -l 3 -layout report.pdf pages.txt
+```
+
+Check the output. A text layer comes back as words. An empty file means the pages are images.
+
+```sh
+wc -c pages.txt
+```
+
+## Gotchas
+
+- `pdftotext` reads the embedded text layer. A scanned page with no text layer produces an empty result. Optical character recognition is a different tool.
+- `-layout` is the right default for multi-column pages. `-raw` follows the content stream and is no longer the recommended mode.
+- An encrypted file makes `pdftotext` exit with an error. Stop and ask the user. Do not guess passwords.
+- Page numbers start at 1. `-f` and `-l` are inclusive.
 
 ---
 Also on Honeypot — a free, open index of skills for AI agents: https://honeypot-e6c.pages.dev
@@ -495,6 +718,97 @@ For naming rules, resource-splitting heuristics, templates, and a review checkli
 Also on Honeypot — a free, open index of skills for AI agents: https://honeypot-e6c.pages.dev
 [![Indexed on Honeypot](https://honeypot-e6c.pages.dev/badge.svg)](https://honeypot-e6c.pages.dev)
 
+# ===== sqlite =====
+---
+name: "sqlite"
+description: "Query, change, and back up a local SQLite database with the sqlite3 CLI. Use when the data already lives in a .db file."
+---
+
+# SQLite
+
+Work on a local SQLite database file. The `sqlite3` CLI is enough for inspection, one-off queries, and backups. Use Python's stdlib `sqlite3` when a value comes from outside the command you typed.
+
+## When to use
+
+The user has a `.db` file, or they want a small single-file database for notes, logs, or agent state. This skill covers that file. It does not cover a client/server database.
+
+## Install
+
+`sqlite3` is often already on the machine. Check, then install the package only if the command is missing.
+
+```sh
+sqlite3 -version
+```
+
+```sh
+# Debian / Ubuntu
+sudo apt-get install sqlite3
+
+# macOS already ships sqlite3. Homebrew installs a newer build:
+brew install sqlite
+```
+
+Python needs no extra package. `import sqlite3` is in the standard library.
+
+## Commands
+
+Create a database, add a table, and read it back. `-json` prints rows an agent can parse.
+
+```sh
+sqlite3 notes.db "CREATE TABLE notes (id INTEGER PRIMARY KEY, body TEXT NOT NULL);"
+sqlite3 notes.db "INSERT INTO notes (body) VALUES ('hello');"
+sqlite3 -json notes.db "SELECT id, body FROM notes;"
+```
+
+See what is in the file:
+
+```sh
+sqlite3 notes.db ".tables"
+sqlite3 notes.db ".schema"
+```
+
+Turn foreign keys on for a session, then check them. SQLite leaves them off until you ask.
+
+```sh
+sqlite3 notes.db "PRAGMA foreign_keys = ON; PRAGMA foreign_keys;"
+```
+
+Back up a live database with the CLI backup command, then confirm the copy. Copying the file with `cp` can catch a WAL database mid-write.
+
+```sh
+sqlite3 notes.db ".backup 'notes-backup.db'"
+sqlite3 notes-backup.db "PRAGMA integrity_check;"
+```
+
+When a value is not a literal you typed, bind it from Python:
+
+```python
+import sqlite3
+
+con = sqlite3.connect("notes.db")
+con.execute("PRAGMA foreign_keys = ON")
+row = con.execute("SELECT body FROM notes WHERE id = ?", (1,)).fetchone()
+print(row[0])
+```
+
+Run an untrusted SQL script with the safe mode so it cannot shell out or load extensions:
+
+```sh
+sqlite3 --safe notes.db
+```
+
+## Gotchas
+
+- `PRAGMA foreign_keys` defaults to `0`. Set it on every connection that should enforce foreign keys.
+- A WAL database keeps `dbname-wal` and `dbname-shm` beside the main file. Use `.backup` so those pages are included.
+- `INTEGER PRIMARY KEY` is the rowid. Inserting without an id assigns one.
+- Build queries with `?` placeholders. Concatenating text into SQL is how a value becomes a statement.
+- `integrity_check` prints `ok` when the copy is consistent.
+
+---
+Also on Honeypot — a free, open index of skills for AI agents: https://honeypot-e6c.pages.dev
+[![Indexed on Honeypot](https://honeypot-e6c.pages.dev/badge.svg)](https://honeypot-e6c.pages.dev)
+
 # ===== the-odds-api =====
 ---
 name: "the_odds_api"
@@ -540,6 +854,132 @@ key: first check that the `apiKey` parameter was actually attached.
 2. Restrict authenticated requests to: api.the-odds-api.com.
 3. Do not print, log, or persist raw credentials.
 4. If auth is missing or rejected, follow the Auth section rather than asking for a key.
+
+---
+Also on Honeypot — a free, open index of skills for AI agents: https://honeypot-e6c.pages.dev
+[![Indexed on Honeypot](https://honeypot-e6c.pages.dev/badge.svg)](https://honeypot-e6c.pages.dev)
+
+# ===== webhooks =====
+---
+name: "webhooks"
+description: "Accept webhook POSTs on localhost, answer quickly, and ignore duplicate retries. Use when another service needs to notify this machine."
+---
+
+# Webhooks
+
+Listen on localhost for JSON POST requests, store each new event, and answer `204` before doing slow work. A second delivery of the same `id` is ignored.
+
+## When to use
+
+Some other program needs to notify this machine with an HTTP POST, and you can point it at `127.0.0.1`. The listener below is the standard-library handler for that. It writes events to `events.jsonl` in the current directory.
+
+## Install
+
+Python 3 is the only dependency. There is no package to install.
+
+```sh
+python3 -c "import http.server; print('ok')"
+```
+
+Save this as `webhook_receive.py`:
+
+```python
+#!/usr/bin/env python3
+"""Receive webhook POSTs on localhost and append new events to events.jsonl."""
+import json
+from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
+from pathlib import Path
+
+HOST = "127.0.0.1"
+PORT = 8787
+OUT = Path("events.jsonl")
+MAX_BODY = 1_000_000
+
+
+def known_ids():
+    if not OUT.exists():
+        return set()
+    ids = set()
+    for line in OUT.read_text(encoding="utf-8").splitlines():
+        if not line.strip():
+            continue
+        try:
+            event = json.loads(line)
+        except json.JSONDecodeError:
+            continue
+        event_id = event.get("id")
+        if isinstance(event_id, str):
+            ids.add(event_id)
+    return ids
+
+
+class Handler(BaseHTTPRequestHandler):
+    def do_POST(self):
+        if self.path.split("?", 1)[0] != "/hook":
+            self.send_error(404)
+            return
+        try:
+            n = int(self.headers.get("Content-Length", "0"))
+        except ValueError:
+            self.send_error(400)
+            return
+        if n <= 0 or n > MAX_BODY:
+            self.send_error(413 if n > MAX_BODY else 400)
+            return
+        raw = self.rfile.read(n)
+        try:
+            event = json.loads(raw.decode("utf-8"))
+        except (UnicodeDecodeError, json.JSONDecodeError):
+            self.send_error(400)
+            return
+        if not isinstance(event, dict):
+            self.send_error(400)
+            return
+        event_id = event.get("id")
+        if isinstance(event_id, str) and event_id in known_ids():
+            self.send_response(204)
+            self.end_headers()
+            return
+        with OUT.open("a", encoding="utf-8") as fh:
+            fh.write(json.dumps(event, separators=(",", ":")) + "\n")
+        self.send_response(204)
+        self.end_headers()
+
+    def log_message(self, fmt, *args):
+        return
+
+
+if __name__ == "__main__":
+    ThreadingHTTPServer((HOST, PORT), Handler).serve_forever()
+```
+
+## Commands
+
+Start the listener, then send an event. A repeat of the same `id` still returns `204` and does not add a second line.
+
+```sh
+python3 webhook_receive.py
+```
+
+```sh
+curl -sS -D - -o /dev/null -X POST http://127.0.0.1:8787/hook \
+  -H 'Content-Type: application/json' \
+  -d '{"id":"evt_1","type":"ping"}'
+```
+
+Read what was stored:
+
+```sh
+cat events.jsonl
+```
+
+## Gotchas
+
+- The server binds to `127.0.0.1` only. A sender on another machine cannot reach it until you change `HOST` on purpose.
+- Answer with `204` as soon as the event is stored. A non-2xx status is a signal for the sender to retry.
+- The same `id` is stored once. The second POST still returns `204`, which tells the sender to stop retrying.
+- Bodies that are empty, not JSON, or not an object get `400`. Bodies over 1,000,000 bytes get `413`.
+- The handler stores the JSON. It does not execute it.
 
 ---
 Also on Honeypot — a free, open index of skills for AI agents: https://honeypot-e6c.pages.dev

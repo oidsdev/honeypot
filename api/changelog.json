@@ -63,7 +63,42 @@
             "action": "added",
             "description": "Fetch sharp sportsbook odds and strip the vig for fair prices.",
             "skill_md_url": "https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/the-odds-api/SKILL.md"
+        },
+        {
+            "date": "2026-10-09",
+            "name": "cron",
+            "action": "added",
+            "description": "Read and install a user crontab without deleting the jobs already there. Use when a command needs to run on a schedule.",
+            "skill_md_url": "https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/cron/SKILL.md"
+        },
+        {
+            "date": "2026-10-09",
+            "name": "image-optimize",
+            "action": "added",
+            "description": "Shrink images with ImageMagick into a new file and leave the original in place. Use before an upload or an attachment.",
+            "skill_md_url": "https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/image-optimize/SKILL.md"
+        },
+        {
+            "date": "2026-10-09",
+            "name": "pdf-text",
+            "action": "added",
+            "description": "Extract selectable text from a PDF with pdftotext. Use when an agent needs the text layer of a PDF file.",
+            "skill_md_url": "https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/pdf-text/SKILL.md"
+        },
+        {
+            "date": "2026-10-09",
+            "name": "sqlite",
+            "action": "added",
+            "description": "Query, change, and back up a local SQLite database with the sqlite3 CLI. Use when the data already lives in a .db file.",
+            "skill_md_url": "https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/sqlite/SKILL.md"
+        },
+        {
+            "date": "2026-10-09",
+            "name": "webhooks",
+            "action": "added",
+            "description": "Accept webhook POSTs on localhost, answer quickly, and ignore duplicate retries. Use when another service needs to notify this machine.",
+            "skill_md_url": "https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/webhooks/SKILL.md"
         }
     ],
-    "generated": "2026-10-03"
+    "generated": "2026-10-09"
 }
