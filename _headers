@@ -1,0 +1,3 @@
+# Per-skill badges from scripts/gen.py. One day; they change when the index does.
+/badge/*
+  Cache-Control: public, max-age=86400

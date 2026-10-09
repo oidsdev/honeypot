@@ -63,10 +63,24 @@ The same JSON is mirrored at
 2. Fork this repo.
 3. Add it at `skills/<your-skill>/SKILL.md`.
 4. Open a pull request. We merge fast.
-5. Add the badge to your repo:
+5. Add a badge to your repo. Site-wide:
 
 ```markdown
 [![Indexed on Honeypot](https://honeypot-e6c.pages.dev/badge.svg)](https://honeypot-e6c.pages.dev)
+```
+
+Per skill, `/badge/<name>.svg` shows the name, the version, and a check when the entry passes validation. `scripts/gen.py` writes the file. Version is the entry's `version`, then `version` in the SKILL.md frontmatter, then `1`. The check is drawn when the entry has every required index field, a `YYYY-MM-DD` `last_verified`, a safe name, and a SKILL.md whose frontmatter `name` equals the index name and whose `description` is set. Cached for one day (`Cache-Control: public, max-age=86400`).
+
+Markdown:
+
+```markdown
+[![sqlite](https://honeypot-e6c.pages.dev/badge/sqlite.svg)](https://honeypot-e6c.pages.dev/skills/sqlite/)
+```
+
+HTML:
+
+```html
+<a href="https://honeypot-e6c.pages.dev/skills/sqlite/"><img alt="sqlite" src="https://honeypot-e6c.pages.dev/badge/sqlite.svg"></a>
 ```
 
 Requirements (learned the hard way — PRs missing these get bounced):
@@ -86,6 +100,7 @@ Requirements (learned the hard way — PRs missing these get bounced):
 - `llms.txt` — agent-readable description
 - `skill-template.md` — blank SKILL.md template
 - `skills/<name>/SKILL.md` — the indexed skills
+- `badge/<name>.svg` — per-skill badge, written by `scripts/gen.py`
 
 ## License
 
