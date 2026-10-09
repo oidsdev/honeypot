@@ -36,6 +36,7 @@
   details.badge code { white-space: normal; word-break: break-all; }
   ol.submit li { margin-bottom: 0.5rem; }
   .count { font-size: 0.85rem; color: #666; }
+  mark { background: #f6e7a2; color: inherit; }
   #picks ul { padding-left: 1.2rem; margin: 0.5rem 0; }
   #picks .note { font-size: 0.85rem; color: #666; }
   ul.toc { list-style: none; padding: 0; margin: 0.5rem 0 0; display: flex; flex-wrap: wrap; gap: 0.25rem 1rem; font-size: 0.9rem; }
@@ -105,6 +106,7 @@
   <p>An <a href="https://tryoids.com">Oids</a> project — the comms layer for AI agents.</p>
   <p>Copyright contact: <a href="mailto:abuse@tryoids.com">abuse@tryoids.com</a> · DMCA agent DMCA-1081497</p>
 </footer>
+<script src="search.js"></script>
 <script>
 (function () {
   var cards = document.getElementById('cards');
@@ -155,23 +157,41 @@
     history.replaceState(null, '', location.pathname + (qs ? '?' + qs : '') + location.hash);
   }
 
+  function highlight(text, ranges) {
+    if (!ranges || !ranges.length) return esc(text);
+    var out = '';
+    var i = 0;
+    ranges.forEach(function (r) {
+      out += esc(text.slice(i, r[0])) + '<mark>' + esc(text.slice(r[0], r[1])) + '</mark>';
+      i = r[1];
+    });
+    return out + esc(text.slice(i));
+  }
+
   function render() {
-    var term = q.value.trim().toLowerCase();
+    var term = q.value.trim();
     var c = cat.value;
     var t = tag.value;
     var list = all.filter(function (s) {
       var tags = s.tags || [];
-      var okCat = !c || s.category === c;
-      var okTag = !t || tags.indexOf(t) !== -1;
-      var okTerm = !term || (s.name + ' ' + s.description + ' ' + tags.join(' ')).toLowerCase().indexOf(term) !== -1;
-      return okCat && okTag && okTerm;
+      return (!c || s.category === c) && (!t || tags.indexOf(t) !== -1);
     });
-    count.textContent = list.length + ' of ' + all.length + ' skills';
-    cards.innerHTML = list.map(function (s) {
+    var hits = HoneypotSearch.rank(list, term);
+    count.textContent = hits.length + ' of ' + all.length + ' skills';
+    cards.innerHTML = hits.map(function (hit) {
+      var s = hit.skill;
+      var tagHits = '';
+      if (term && !hit.ranges.name.length && !hit.ranges.description.length) {
+        (s.tags || []).forEach(function (tg, i) {
+          var rs = (hit.ranges.tags || [])[i] || [];
+          if (rs.length) tagHits += '<span class="tag">' + highlight(tg, rs) + '</span>';
+        });
+      }
       return '<div class="card">' +
-        '<h3>' + esc(s.name) + '</h3>' +
-        '<p>' + esc(s.description) + '</p>' +
+        '<h3>' + highlight(s.name, hit.ranges.name) + '</h3>' +
+        '<p>' + highlight(s.description, hit.ranges.description) + '</p>' +
         '<span class="tag">' + esc(s.category) + '</span>' +
+        tagHits +
         (s.skill_md_url ? '<a class="src" href="' + esc(s.skill_md_url) + '">SKILL.md</a>' : '') +
         (s.last_verified ? '<span class="verified">verified ' + esc(s.last_verified) + '</span>' : '') +
         (isStale(s) ? '<span class="tag stale" title="Not re-verified in over ' + staleAfterDays + ' days">stale</span>' : '') +
