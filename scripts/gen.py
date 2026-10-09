@@ -4,8 +4,9 @@
 - api/by-category/<category>.json — per-category indexes (same schema envelope)
 - api/changelog.json — append-only record of added skills
 - feed.xml — RSS 2.0 of newly added skills
-- sitemap.xml — static pages + skill pages + API endpoints for crawlers
+- sitemap.xml — static pages + skill pages + category pages + API endpoints for crawlers
 - skills/<name>/index.html — per-skill page (SEO tags, JSON-LD, backlinks)
+- categories/<category>/index.html — landing page for each of the 8 largest categories
 - llms-full.txt — every SKILL.md concatenated for crawlers
 - api/editors-picks.json — skills passing the published PICK_CRITERIA checklist
 
@@ -30,8 +31,11 @@ SITEMAP_XML = ROOT / "sitemap.xml"
 LLMS_FULL = ROOT / "llms-full.txt"
 EDITORS_PICKS = API / "editors-picks.json"
 SKILLS_DIR = ROOT / "skills"
+CATEGORIES_DIR = ROOT / "categories"
 
 SITE = "https://honeypot-e6c.pages.dev"
+# Landing pages for the largest categories only. Same cutoff as index.html.
+CATEGORY_PAGE_LIMIT = 8
 REQUIRED = ["name", "description", "category", "skill_md_url", "install", "tags", "last_verified"]
 
 # Editor's picks checklist. Published verbatim in api/editors-picks.json and on
@@ -159,6 +163,86 @@ def skill_page(s: dict) -> str:
 """
 
 
+def category_page(cat: str, items: list) -> str:
+    """Static category page: skill count, one line per skill, link back to the index."""
+    n = len(items)
+    count = "1 skill" if n == 1 else f"{n} skills"
+    blurb = f"{count} in the {cat} category."
+    rows = "\n".join(
+        f'    <li><a href="/skills/{escape(s["name"])}/">{escape(s["name"])}</a>'
+        f' — {escape(s["description"])}</li>'
+        for s in items
+    )
+    ld = {
+        "@context": "https://schema.org",
+        "@type": "CollectionPage",
+        "name": f"{cat} skills",
+        "description": blurb,
+        "url": f"{SITE}/categories/{cat}/",
+        "isPartOf": {"@type": "WebSite", "name": "Honeypot", "url": SITE},
+        "mainEntity": {
+            "@type": "ItemList",
+            "numberOfItems": n,
+            "itemListElement": [
+                {
+                    "@type": "ListItem",
+                    "position": i,
+                    "name": s["name"],
+                    "url": f"{SITE}/skills/{s['name']}/",
+                }
+                for i, s in enumerate(items, 1)
+            ],
+        },
+    }
+    return f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{escape(cat)} — skills on Honeypot</title>
+<meta name="description" content="{escape(blurb)}">
+<meta property="og:title" content="{escape(cat)} — skills on Honeypot">
+<meta property="og:description" content="{escape(blurb)}">
+<meta property="og:url" content="{SITE}/categories/{escape(cat)}/">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='%231a1a1a'/%3E%3Ccircle cx='16' cy='16' r='5' fill='%23fff'/%3E%3C/svg%3E">
+<script type="application/ld+json">
+{json.dumps(ld, indent=2)}
+</script>
+<style>
+  body {{ font-family: system-ui, sans-serif; max-width: 38rem; margin: 4rem auto; padding: 0 1rem; line-height: 1.6; color: #1a1a1a; }}
+  h1 {{ font-size: 1.6rem; margin-bottom: 0; }}
+  a {{ color: #1a1a1a; }}
+  .count {{ font-size: 0.85rem; color: #666; }}
+  ul {{ padding-left: 1.2rem; }}
+  footer {{ margin-top: 3rem; font-size: 0.85rem; color: #666; }}
+</style>
+</head>
+<body>
+<main>
+  <h1>{escape(cat)}</h1>
+  <p class="count">{count}</p>
+  <ul>
+{rows}
+  </ul>
+  <p><a href="/">Full index</a></p>
+</main>
+<footer>
+  Indexed on <a href="{SITE}">Honeypot</a>. Want your skill listed? <a href="https://github.com/oidsdev/honeypot#submit-a-skill">Submit a pull request</a>.
+</footer>
+</body>
+</html>
+"""
+
+
+def largest_categories(skills: list, limit: int = CATEGORY_PAGE_LIMIT) -> list:
+    """Category names, largest first. Name breaks ties."""
+    counts = {}
+    for s in skills:
+        counts[s["category"]] = counts.get(s["category"], 0) + 1
+    return sorted(counts, key=lambda c: (-counts[c], c))[:limit]
+
+
 def main() -> int:
     doc = json.loads(SKILLS_JSON.read_text())
     if not isinstance(doc, dict) or doc.get("schema_version") != "1":
@@ -265,7 +349,30 @@ def main() -> int:
     picks_doc = editors_picks(skills, date.fromisoformat(today))
     EDITORS_PICKS.write_text(json.dumps(picks_doc, indent=4) + "\n")
 
-    # 7. sitemap (static pages + skill pages + API endpoints, stays fresh automatically)
+    # 7. category landing pages (8 largest; drop pages for categories that fall out)
+    page_cats = largest_categories(skills)
+    CATEGORIES_DIR.mkdir(exist_ok=True)
+    for cat in page_cats:
+        if "/" in cat or cat in (".", ".."):
+            print(f"ERROR: bad category name {cat!r}", file=sys.stderr)
+            return 1
+        cat_skills = sorted((s for s in skills if s["category"] == cat), key=lambda s: s["name"])
+        dest = CATEGORIES_DIR / cat
+        dest.mkdir(exist_ok=True)
+        (dest / "index.html").write_text(category_page(cat, cat_skills))
+    if CATEGORIES_DIR.exists():
+        for d in CATEGORIES_DIR.iterdir():
+            if not d.is_dir() or d.name in page_cats:
+                continue
+            page = d / "index.html"
+            if page.exists():
+                page.unlink()
+            try:
+                d.rmdir()
+            except OSError:
+                pass
+
+    # 8. sitemap (static pages + skill pages + category pages + API endpoints)
     urls = [
         ("/", today),
         ("/llms.txt", today),
@@ -278,7 +385,9 @@ def main() -> int:
         ("/api/editors-picks.json", today),
         ("/feed.xml", today),
         ("/faq/", today),
-    ] + [(f"/api/by-category/{cat}.json", updated) for cat in cats] + skill_urls
+    ] + [(f"/categories/{cat}/", updated) for cat in page_cats] + [
+        (f"/api/by-category/{cat}.json", updated) for cat in cats
+    ] + skill_urls
     sm = (
         '<?xml version="1.0" encoding="UTF-8"?>\n'
         '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
@@ -287,7 +396,7 @@ def main() -> int:
     )
     SITEMAP_XML.write_text(sm)
 
-    # 8. validate everything we wrote
+    # 9. validate everything we wrote
     for p in [SKILLS_JSON, CHANGELOG_JSON, EDITORS_PICKS, *BY_CATEGORY.glob("*.json")]:
         json.loads(p.read_text())
     from xml.dom import minidom
@@ -295,8 +404,16 @@ def main() -> int:
     assert LLMS_FULL.exists() and LLMS_FULL.stat().st_size > 0
     for s in skills:
         assert (SKILLS_DIR / s["name"] / "index.html").exists()
+    for cat in page_cats:
+        text = (CATEGORIES_DIR / cat / "index.html").read_text()
+        assert f"{SITE}/categories/{cat}/" in text
+        assert "Full index" in text
+        for s in skills:
+            if s["category"] == cat:
+                assert f'/skills/{s["name"]}/' in text
 
     print(f"skills: {len(skills)} | categories: {', '.join(cats)} | "
+          f"category pages: {', '.join(page_cats)} | "
           f"changelog entries: {len(changelog['entries'])} (+{added} new) | feed items: {len(items)} | "
           f"editor's picks: {len(picks_doc['picks'])}")
     return 0

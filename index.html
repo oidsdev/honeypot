@@ -192,13 +192,21 @@
     });
     addOptions(cat, Object.keys(cats));
 
-    // Category TOC: each entry is a ?category= deep link
+    // Category TOC. The 8 largest get a static page (same cutoff as
+    // CATEGORY_PAGE_LIMIT in scripts/gen.py). The rest stay as ?category=.
     var counts = {};
     all.forEach(function (s) { counts[s.category] = (counts[s.category] || 0) + 1; });
+    var landing = {};
+    Object.keys(counts).sort(function (a, b) {
+      return counts[b] - counts[a] || (a < b ? -1 : a > b ? 1 : 0);
+    }).slice(0, 8).forEach(function (c) { landing[c] = true; });
     document.getElementById('toc').innerHTML =
       '<li><a href="./">all</a> <span class="n">(' + all.length + ')</span></li>' +
       Object.keys(counts).sort().map(function (c) {
-        return '<li><a href="?category=' + encodeURIComponent(c) + '">' + esc(c) + '</a> <span class="n">(' + counts[c] + ')</span></li>';
+        var href = landing[c]
+          ? 'categories/' + encodeURIComponent(c) + '/'
+          : '?category=' + encodeURIComponent(c);
+        return '<li><a href="' + href + '">' + esc(c) + '</a> <span class="n">(' + counts[c] + ')</span></li>';
       }).join('');
     addOptions(tag, Object.keys(tags));
 
