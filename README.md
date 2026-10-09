@@ -82,6 +82,7 @@ Requirements (learned the hard way — PRs missing these get bounced):
 
 - `index.html` — the site
 - `api/skills.json` — the machine-readable index
+- `categories/<category>/` — landing page for each of the 8 largest categories (generated)
 - `scripts/gen.py` — rebuilds everything derived from `skills.json` (run after any change)
 - `llms.txt` — agent-readable description
 - `skill-template.md` — blank SKILL.md template

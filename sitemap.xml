@@ -11,6 +11,11 @@
   <url><loc>https://honeypot-e6c.pages.dev/api/editors-picks.json</loc><lastmod>2026-10-09</lastmod></url>
   <url><loc>https://honeypot-e6c.pages.dev/feed.xml</loc><lastmod>2026-10-09</lastmod></url>
   <url><loc>https://honeypot-e6c.pages.dev/faq/</loc><lastmod>2026-10-09</lastmod></url>
+  <url><loc>https://honeypot-e6c.pages.dev/categories/tooling/</loc><lastmod>2026-10-09</lastmod></url>
+  <url><loc>https://honeypot-e6c.pages.dev/categories/trading/</loc><lastmod>2026-10-09</lastmod></url>
+  <url><loc>https://honeypot-e6c.pages.dev/categories/identity/</loc><lastmod>2026-10-09</lastmod></url>
+  <url><loc>https://honeypot-e6c.pages.dev/categories/meta/</loc><lastmod>2026-10-09</lastmod></url>
+  <url><loc>https://honeypot-e6c.pages.dev/categories/data/</loc><lastmod>2026-10-09</lastmod></url>
   <url><loc>https://honeypot-e6c.pages.dev/api/by-category/data.json</loc><lastmod>2026-10-09</lastmod></url>
   <url><loc>https://honeypot-e6c.pages.dev/api/by-category/identity.json</loc><lastmod>2026-10-09</lastmod></url>
   <url><loc>https://honeypot-e6c.pages.dev/api/by-category/meta.json</loc><lastmod>2026-10-09</lastmod></url>
