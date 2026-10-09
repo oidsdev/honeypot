@@ -70,7 +70,7 @@ TOOLS = [
                 "query": {"type": "string", "description": "Keyword to search for"},
                 "category": {
                     "type": "string",
-                    "description": "Exact category filter, e.g. 'trading', 'data', 'identity', 'meta'",
+                    "description": "Exact category filter, e.g. 'trading', 'data', 'identity', 'meta', 'tooling'",
                 },
                 "tag": {"type": "string", "description": "Exact tag filter"},
                 "limit": {"type": "integer", "default": 10, "maximum": 50},
