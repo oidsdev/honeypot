@@ -98,7 +98,14 @@
             "action": "added",
             "description": "Accept webhook POSTs on localhost, answer quickly, and ignore duplicate retries. Use when another service needs to notify this machine.",
             "skill_md_url": "https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/webhooks/SKILL.md"
+        },
+        {
+            "date": "2026-10-10",
+            "name": "playwright-mcp",
+            "action": "added",
+            "description": "Drive a local browser through Microsoft's Playwright MCP server. Use when an agent needs to open a page and act on it.",
+            "skill_md_url": "https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/playwright-mcp/SKILL.md"
         }
     ],
-    "generated": "2026-10-09"
+    "generated": "2026-10-10"
 }
