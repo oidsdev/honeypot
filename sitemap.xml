@@ -14,21 +14,23 @@
   <url><loc>https://honeypot-e6c.pages.dev/api/by-category/data.json</loc><lastmod>2026-10-10</lastmod></url>
   <url><loc>https://honeypot-e6c.pages.dev/api/by-category/identity.json</loc><lastmod>2026-10-10</lastmod></url>
   <url><loc>https://honeypot-e6c.pages.dev/api/by-category/meta.json</loc><lastmod>2026-10-10</lastmod></url>
+  <url><loc>https://honeypot-e6c.pages.dev/api/by-category/payments.json</loc><lastmod>2026-10-10</lastmod></url>
   <url><loc>https://honeypot-e6c.pages.dev/api/by-category/tooling.json</loc><lastmod>2026-10-10</lastmod></url>
   <url><loc>https://honeypot-e6c.pages.dev/api/by-category/trading.json</loc><lastmod>2026-10-10</lastmod></url>
-  <url><loc>https://honeypot-e6c.pages.dev/skills/kalshi/</loc><lastmod>2026-09-29</lastmod></url>
+  <url><loc>https://honeypot-e6c.pages.dev/skills/agent-checkout/</loc><lastmod>2026-10-10</lastmod></url>
   <url><loc>https://honeypot-e6c.pages.dev/skills/coinbase/</loc><lastmod>2026-09-29</lastmod></url>
-  <url><loc>https://honeypot-e6c.pages.dev/skills/polymarket/</loc><lastmod>2026-09-29</lastmod></url>
-  <url><loc>https://honeypot-e6c.pages.dev/skills/the-odds-api/</loc><lastmod>2026-09-29</lastmod></url>
-  <url><loc>https://honeypot-e6c.pages.dev/skills/oids/</loc><lastmod>2026-09-29</lastmod></url>
-  <url><loc>https://honeypot-e6c.pages.dev/skills/skill-creator/</loc><lastmod>2026-09-29</lastmod></url>
-  <url><loc>https://honeypot-e6c.pages.dev/skills/robinhood-mcp/</loc><lastmod>2026-09-29</lastmod></url>
-  <url><loc>https://honeypot-e6c.pages.dev/skills/honeypot/</loc><lastmod>2026-10-09</lastmod></url>
-  <url><loc>https://honeypot-e6c.pages.dev/skills/oids-python-sdk/</loc><lastmod>2026-09-29</lastmod></url>
-  <url><loc>https://honeypot-e6c.pages.dev/skills/sqlite/</loc><lastmod>2026-10-09</lastmod></url>
-  <url><loc>https://honeypot-e6c.pages.dev/skills/pdf-text/</loc><lastmod>2026-10-09</lastmod></url>
-  <url><loc>https://honeypot-e6c.pages.dev/skills/image-optimize/</loc><lastmod>2026-10-09</lastmod></url>
   <url><loc>https://honeypot-e6c.pages.dev/skills/cron/</loc><lastmod>2026-10-09</lastmod></url>
-  <url><loc>https://honeypot-e6c.pages.dev/skills/webhooks/</loc><lastmod>2026-10-09</lastmod></url>
+  <url><loc>https://honeypot-e6c.pages.dev/skills/honeypot/</loc><lastmod>2026-10-09</lastmod></url>
+  <url><loc>https://honeypot-e6c.pages.dev/skills/image-optimize/</loc><lastmod>2026-10-09</lastmod></url>
+  <url><loc>https://honeypot-e6c.pages.dev/skills/kalshi/</loc><lastmod>2026-09-29</lastmod></url>
+  <url><loc>https://honeypot-e6c.pages.dev/skills/oids/</loc><lastmod>2026-09-29</lastmod></url>
+  <url><loc>https://honeypot-e6c.pages.dev/skills/oids-python-sdk/</loc><lastmod>2026-09-29</lastmod></url>
+  <url><loc>https://honeypot-e6c.pages.dev/skills/pdf-text/</loc><lastmod>2026-10-09</lastmod></url>
   <url><loc>https://honeypot-e6c.pages.dev/skills/playwright-mcp/</loc><lastmod>2026-10-10</lastmod></url>
+  <url><loc>https://honeypot-e6c.pages.dev/skills/polymarket/</loc><lastmod>2026-09-29</lastmod></url>
+  <url><loc>https://honeypot-e6c.pages.dev/skills/robinhood-mcp/</loc><lastmod>2026-09-29</lastmod></url>
+  <url><loc>https://honeypot-e6c.pages.dev/skills/skill-creator/</loc><lastmod>2026-09-29</lastmod></url>
+  <url><loc>https://honeypot-e6c.pages.dev/skills/sqlite/</loc><lastmod>2026-10-09</lastmod></url>
+  <url><loc>https://honeypot-e6c.pages.dev/skills/the-odds-api/</loc><lastmod>2026-09-29</lastmod></url>
+  <url><loc>https://honeypot-e6c.pages.dev/skills/webhooks/</loc><lastmod>2026-10-09</lastmod></url>
 </urlset>

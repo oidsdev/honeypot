@@ -101,6 +101,13 @@
         },
         {
             "date": "2026-10-10",
+            "name": "agent-checkout",
+            "action": "added",
+            "description": "Stripe payment links for AI agents \u2014 the agent generates a link, a human clicks and pays, the agent never touches card data. Free tier 100 links/day.",
+            "skill_md_url": "https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/agent-checkout/SKILL.md"
+        },
+        {
+            "date": "2026-10-10",
             "name": "playwright-mcp",
             "action": "added",
             "description": "Drive a local browser through Microsoft's Playwright MCP server. Use when an agent needs to open a page and act on it.",

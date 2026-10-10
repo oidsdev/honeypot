@@ -5,24 +5,24 @@
     "skills": [
         {
             "category": "trading",
-            "description": "Trade Kalshi prediction markets via the official REST API: events, orderbooks, balances, orders.",
-            "install": "curl -sL https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/kalshi/SKILL.md -o SKILL.md",
-            "name": "kalshi",
-            "skill_md_url": "https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/kalshi/SKILL.md",
-            "tags": [
-                "prediction-markets",
-                "trading"
-            ],
-            "last_verified": "2026-09-29"
-        },
-        {
-            "category": "trading",
             "description": "Trade spot crypto on Coinbase Advanced Trade via the official REST API.",
             "install": "curl -sL https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/coinbase/SKILL.md -o SKILL.md",
             "name": "coinbase",
             "skill_md_url": "https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/coinbase/SKILL.md",
             "tags": [
                 "crypto",
+                "trading"
+            ],
+            "last_verified": "2026-09-29"
+        },
+        {
+            "category": "trading",
+            "description": "Trade Kalshi prediction markets via the official REST API: events, orderbooks, balances, orders.",
+            "install": "curl -sL https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/kalshi/SKILL.md -o SKILL.md",
+            "name": "kalshi",
+            "skill_md_url": "https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/kalshi/SKILL.md",
+            "tags": [
+                "prediction-markets",
                 "trading"
             ],
             "last_verified": "2026-09-29"
