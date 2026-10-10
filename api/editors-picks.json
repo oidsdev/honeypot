@@ -23,6 +23,14 @@
     "criteria_text": "Picked by checklist, not by score. A skill makes the list when it passes every check: description is at least 40 characters; has at least 1 tag; verified in the last 180 days; links a SKILL.md.",
     "picks": [
         {
+            "name": "agent-checkout",
+            "description": "Stripe payment links for AI agents \u2014 the agent generates a link, a human clicks and pays, the agent never touches card data. Free tier 100 links/day.",
+            "category": "payments",
+            "skill_md_url": "https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/agent-checkout/SKILL.md",
+            "install": "curl -sL https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/agent-checkout/SKILL.md -o SKILL.md",
+            "last_verified": "2026-10-10"
+        },
+        {
             "name": "coinbase",
             "description": "Trade spot crypto on Coinbase Advanced Trade via the official REST API.",
             "category": "trading",

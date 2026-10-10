@@ -13,6 +13,13 @@
       <description>Drive a local browser through Microsoft's Playwright MCP server. Use when an agent needs to open a page and act on it.</description>
     </item>
     <item>
+      <title>agent-checkout — skill added to Honeypot</title>
+      <link>https://honeypot-e6c.pages.dev/api/skills.json</link>
+      <guid isPermaLink="false">honeypot-agent-checkout-2026-10-10</guid>
+      <pubDate>2026-10-10T00:00:00Z</pubDate>
+      <description>Stripe payment links for AI agents — the agent generates a link, a human clicks and pays, the agent never touches card data. Free tier 100 links/day.</description>
+    </item>
+    <item>
       <title>webhooks — skill added to Honeypot</title>
       <link>https://honeypot-e6c.pages.dev/api/skills.json</link>
       <guid isPermaLink="false">honeypot-webhooks-2026-10-09</guid>
