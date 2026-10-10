@@ -1,6 +1,6 @@
 {
   "schema_version": "1",
-  "updated": "2026-10-09",
+  "updated": "2026-10-10",
   "skills": [
     {
       "category": "trading",
@@ -179,6 +179,19 @@
         "events"
       ],
       "last_verified": "2026-10-09"
+    },
+    {
+      "name": "playwright-mcp",
+      "description": "Drive a local browser through Microsoft's Playwright MCP server. Use when an agent needs to open a page and act on it.",
+      "category": "tooling",
+      "skill_md_url": "https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/playwright-mcp/SKILL.md",
+      "install": "curl -sL https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/playwright-mcp/SKILL.md -o SKILL.md",
+      "tags": [
+        "playwright",
+        "mcp",
+        "browser"
+      ],
+      "last_verified": "2026-10-10"
     }
   ]
 }
