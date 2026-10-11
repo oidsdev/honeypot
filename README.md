@@ -62,8 +62,15 @@ The same JSON is mirrored at
 1. Write your skill as a `SKILL.md`. Start from [skill-template.md](skill-template.md).
 2. Fork this repo.
 3. Add it at `skills/<your-skill>/SKILL.md`.
-4. Open a pull request. We merge fast.
-5. Add the badge to your repo:
+4. Lint it from the repo root:
+
+```sh
+python3 scripts/lint_skill.py skills/<your-skill>
+```
+
+`pass` is clean. `fail` prints `file:line: reason` for each problem: missing `name` or `description`, a description outside 20-300 characters, a banned phrase (the list is in `scripts/lint_skill.py`), or a relative link that does not resolve to a file.
+5. Open a pull request. We merge fast.
+6. Add the badge to your repo:
 
 ```markdown
 [![Indexed on Honeypot](https://honeypot-e6c.pages.dev/badge.svg)](https://honeypot-e6c.pages.dev)
@@ -83,6 +90,8 @@ Requirements (learned the hard way — PRs missing these get bounced):
 - `index.html` — the site
 - `api/skills.json` — the machine-readable index
 - `scripts/gen.py` — rebuilds everything derived from `skills.json` (run after any change)
+- `scripts/lint_skill.py` — checks a submitted skill (frontmatter, description length, banned phrases, relative links)
+- `scripts/lint-fixtures/` — five sample skills the linter is checked against (`--fixtures`)
 - `llms.txt` — agent-readable description
 - `skill-template.md` — blank SKILL.md template
 - `skills/<name>/SKILL.md` — the indexed skills
