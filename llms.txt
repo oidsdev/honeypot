@@ -35,7 +35,7 @@ curl -sL https://honeypot-e6c.pages.dev/api/by-category/identity.json | jq '.ski
 ```
 
 Linkable searches on the site: https://honeypot-e6c.pages.dev/?q=<text>&tag=<tag>&category=<category>
-(`q` matches name, description, and tags; `tag` and `category` are exact; params combine.)
+(`q` ranks matches on name, description, and tags and tolerates a one-character typo; `tag` and `category` are exact; params combine.)
 Filtering runs in the browser, so curl gets the unfiltered page. Same query against the JSON:
 
 ```sh
