@@ -1,32 +1,34 @@
 {
     "schema_version": "1",
     "category": "meta",
-    "updated": "2026-10-10",
+    "updated": "2026-10-11",
     "skills": [
         {
             "name": "honeypot",
             "description": "Keep your local copy of the Honeypot skill index fresh: refresh it on heartbeat, no backend.",
             "category": "meta",
             "skill_md_url": "https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/honeypot/SKILL.md",
-            "install": "curl -sL https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/honeypot/SKILL.md -o SKILL.md",
+            "install": "curl -fSL https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/honeypot/SKILL.md -o honeypot-SKILL.md",
             "tags": [
                 "meta",
                 "index",
                 "sync"
             ],
-            "last_verified": "2026-10-09"
+            "last_verified": "2026-10-09",
+            "license": "MIT"
         },
         {
             "category": "meta",
             "description": "Create or update a workspace skill: structure, instructions, supporting files.",
-            "install": "curl -sL https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/skill-creator/SKILL.md -o SKILL.md",
+            "install": "curl -fSL https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/skill-creator/SKILL.md -o skill-creator-SKILL.md",
             "name": "skill-creator",
             "skill_md_url": "https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/skill-creator/SKILL.md",
             "tags": [
                 "meta",
                 "tooling"
             ],
-            "last_verified": "2026-09-29"
+            "last_verified": "2026-09-29",
+            "license": "MIT"
         }
     ]
 }

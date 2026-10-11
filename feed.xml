@@ -1,117 +1,117 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0">
   <channel>
-    <title>Honeypot — new skills</title>
+    <title>Honeypot - new skills</title>
     <link>https://honeypot-e6c.pages.dev/</link>
     <description>Skills newly added to the Honeypot index for AI agents.</description>
     <language>en</language>
     <item>
-      <title>playwright-mcp — skill added to Honeypot</title>
+      <title>playwright-mcp - skill added to Honeypot</title>
       <link>https://honeypot-e6c.pages.dev/api/skills.json</link>
       <guid isPermaLink="false">honeypot-playwright-mcp-2026-10-10</guid>
       <pubDate>2026-10-10T00:00:00Z</pubDate>
       <description>Drive a local browser through Microsoft's Playwright MCP server. Use when an agent needs to open a page and act on it.</description>
     </item>
     <item>
-      <title>agent-checkout — skill added to Honeypot</title>
+      <title>agent-checkout - skill added to Honeypot</title>
       <link>https://honeypot-e6c.pages.dev/api/skills.json</link>
       <guid isPermaLink="false">honeypot-agent-checkout-2026-10-10</guid>
       <pubDate>2026-10-10T00:00:00Z</pubDate>
       <description>Stripe payment links for AI agents — the agent generates a link, a human clicks and pays, the agent never touches card data. Free tier 100 links/day.</description>
     </item>
     <item>
-      <title>webhooks — skill added to Honeypot</title>
+      <title>webhooks - skill added to Honeypot</title>
       <link>https://honeypot-e6c.pages.dev/api/skills.json</link>
       <guid isPermaLink="false">honeypot-webhooks-2026-10-09</guid>
       <pubDate>2026-10-09T00:00:00Z</pubDate>
       <description>Accept webhook POSTs on localhost, answer quickly, and ignore duplicate retries. Use when another service needs to notify this machine.</description>
     </item>
     <item>
-      <title>sqlite — skill added to Honeypot</title>
+      <title>sqlite - skill added to Honeypot</title>
       <link>https://honeypot-e6c.pages.dev/api/skills.json</link>
       <guid isPermaLink="false">honeypot-sqlite-2026-10-09</guid>
       <pubDate>2026-10-09T00:00:00Z</pubDate>
       <description>Query, change, and back up a local SQLite database with the sqlite3 CLI. Use when the data already lives in a .db file.</description>
     </item>
     <item>
-      <title>pdf-text — skill added to Honeypot</title>
+      <title>pdf-text - skill added to Honeypot</title>
       <link>https://honeypot-e6c.pages.dev/api/skills.json</link>
       <guid isPermaLink="false">honeypot-pdf-text-2026-10-09</guid>
       <pubDate>2026-10-09T00:00:00Z</pubDate>
       <description>Extract selectable text from a PDF with pdftotext. Use when an agent needs the text layer of a PDF file.</description>
     </item>
     <item>
-      <title>image-optimize — skill added to Honeypot</title>
+      <title>image-optimize - skill added to Honeypot</title>
       <link>https://honeypot-e6c.pages.dev/api/skills.json</link>
       <guid isPermaLink="false">honeypot-image-optimize-2026-10-09</guid>
       <pubDate>2026-10-09T00:00:00Z</pubDate>
       <description>Shrink images with ImageMagick into a new file and leave the original in place. Use before an upload or an attachment.</description>
     </item>
     <item>
-      <title>cron — skill added to Honeypot</title>
+      <title>cron - skill added to Honeypot</title>
       <link>https://honeypot-e6c.pages.dev/api/skills.json</link>
       <guid isPermaLink="false">honeypot-cron-2026-10-09</guid>
       <pubDate>2026-10-09T00:00:00Z</pubDate>
       <description>Read and install a user crontab without deleting the jobs already there. Use when a command needs to run on a schedule.</description>
     </item>
     <item>
-      <title>the-odds-api — skill added to Honeypot</title>
+      <title>the-odds-api - skill added to Honeypot</title>
       <link>https://honeypot-e6c.pages.dev/api/skills.json</link>
       <guid isPermaLink="false">honeypot-the-odds-api-2026-09-29</guid>
       <pubDate>2026-09-29T00:00:00Z</pubDate>
       <description>Fetch sharp sportsbook odds and strip the vig for fair prices.</description>
     </item>
     <item>
-      <title>skill-creator — skill added to Honeypot</title>
+      <title>skill-creator - skill added to Honeypot</title>
       <link>https://honeypot-e6c.pages.dev/api/skills.json</link>
       <guid isPermaLink="false">honeypot-skill-creator-2026-09-29</guid>
       <pubDate>2026-09-29T00:00:00Z</pubDate>
       <description>Create or update a workspace skill: structure, instructions, supporting files.</description>
     </item>
     <item>
-      <title>robinhood-mcp — skill added to Honeypot</title>
+      <title>robinhood-mcp - skill added to Honeypot</title>
       <link>https://honeypot-e6c.pages.dev/api/skills.json</link>
       <guid isPermaLink="false">honeypot-robinhood-mcp-2026-09-29</guid>
       <pubDate>2026-09-29T00:00:00Z</pubDate>
       <description>Trade Robinhood via the official Agentic Trading MCP server (OAuth DCR + PKCE): balances, positions, long equity/option orders in the Agentic account.</description>
     </item>
     <item>
-      <title>polymarket — skill added to Honeypot</title>
+      <title>polymarket - skill added to Honeypot</title>
       <link>https://honeypot-e6c.pages.dev/api/skills.json</link>
       <guid isPermaLink="false">honeypot-polymarket-2026-09-29</guid>
       <pubDate>2026-09-29T00:00:00Z</pubDate>
       <description>Trade Polymarket US (polymarket.us) via the official retail REST API.</description>
     </item>
     <item>
-      <title>oids-python-sdk — skill added to Honeypot</title>
+      <title>oids-python-sdk - skill added to Honeypot</title>
       <link>https://honeypot-e6c.pages.dev/api/skills.json</link>
       <guid isPermaLink="false">honeypot-oids-python-sdk-2026-09-29</guid>
       <pubDate>2026-09-29T00:00:00Z</pubDate>
       <description>Talk to Oids from Python: one stdlib-only file, no dependencies, no install step.</description>
     </item>
     <item>
-      <title>oids — skill added to Honeypot</title>
+      <title>oids - skill added to Honeypot</title>
       <link>https://honeypot-e6c.pages.dev/api/skills.json</link>
       <guid isPermaLink="false">honeypot-oids-2026-09-29</guid>
       <pubDate>2026-09-29T00:00:00Z</pubDate>
       <description>Join Oids: verified identity and reputation for AI agents.</description>
     </item>
     <item>
-      <title>kalshi — skill added to Honeypot</title>
+      <title>kalshi - skill added to Honeypot</title>
       <link>https://honeypot-e6c.pages.dev/api/skills.json</link>
       <guid isPermaLink="false">honeypot-kalshi-2026-09-29</guid>
       <pubDate>2026-09-29T00:00:00Z</pubDate>
       <description>Trade Kalshi prediction markets via the official REST API: events, orderbooks, balances, orders.</description>
     </item>
     <item>
-      <title>honeypot — skill added to Honeypot</title>
+      <title>honeypot - skill added to Honeypot</title>
       <link>https://honeypot-e6c.pages.dev/api/skills.json</link>
       <guid isPermaLink="false">honeypot-honeypot-2026-09-29</guid>
       <pubDate>2026-09-29T00:00:00Z</pubDate>
       <description>Keep your local copy of the Honeypot skill index fresh: refresh it on heartbeat, no backend.</description>
     </item>
     <item>
-      <title>coinbase — skill added to Honeypot</title>
+      <title>coinbase - skill added to Honeypot</title>
       <link>https://honeypot-e6c.pages.dev/api/skills.json</link>
       <guid isPermaLink="false">honeypot-coinbase-2026-09-29</guid>
       <pubDate>2026-09-29T00:00:00Z</pubDate>

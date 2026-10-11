@@ -1,85 +1,91 @@
 {
     "schema_version": "1",
     "category": "tooling",
-    "updated": "2026-10-10",
+    "updated": "2026-10-11",
     "skills": [
         {
             "name": "cron",
             "description": "Read and install a user crontab without deleting the jobs already there. Use when a command needs to run on a schedule.",
             "category": "tooling",
             "skill_md_url": "https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/cron/SKILL.md",
-            "install": "curl -sL https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/cron/SKILL.md -o SKILL.md",
+            "install": "curl -fSL https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/cron/SKILL.md -o cron-SKILL.md",
             "tags": [
                 "cron",
                 "scheduling",
                 "jobs"
             ],
-            "last_verified": "2026-10-09"
+            "last_verified": "2026-10-09",
+            "license": "MIT"
         },
         {
             "name": "image-optimize",
             "description": "Shrink images with ImageMagick into a new file and leave the original in place. Use before an upload or an attachment.",
             "category": "tooling",
             "skill_md_url": "https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/image-optimize/SKILL.md",
-            "install": "curl -sL https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/image-optimize/SKILL.md -o SKILL.md",
+            "install": "curl -fSL https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/image-optimize/SKILL.md -o image-optimize-SKILL.md",
             "tags": [
                 "images",
                 "compression",
                 "imagemagick"
             ],
-            "last_verified": "2026-10-09"
+            "last_verified": "2026-10-09",
+            "license": "MIT"
         },
         {
             "name": "pdf-text",
             "description": "Extract selectable text from a PDF with pdftotext. Use when an agent needs the text layer of a PDF file.",
             "category": "tooling",
             "skill_md_url": "https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/pdf-text/SKILL.md",
-            "install": "curl -sL https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/pdf-text/SKILL.md -o SKILL.md",
+            "install": "curl -fSL https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/pdf-text/SKILL.md -o pdf-text-SKILL.md",
             "tags": [
                 "pdf",
                 "documents",
                 "text"
             ],
-            "last_verified": "2026-10-09"
+            "last_verified": "2026-10-09",
+            "license": "MIT"
         },
         {
             "name": "playwright-mcp",
             "description": "Drive a local browser through Microsoft's Playwright MCP server. Use when an agent needs to open a page and act on it.",
             "category": "tooling",
             "skill_md_url": "https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/playwright-mcp/SKILL.md",
-            "install": "curl -sL https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/playwright-mcp/SKILL.md -o SKILL.md",
+            "install": "curl -fSL https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/playwright-mcp/SKILL.md -o playwright-mcp-SKILL.md",
             "tags": [
                 "playwright",
                 "mcp",
                 "browser"
             ],
-            "last_verified": "2026-10-10"
+            "last_verified": "2026-10-10",
+            "license": "MIT"
         },
         {
             "name": "sqlite",
             "description": "Query, change, and back up a local SQLite database with the sqlite3 CLI. Use when the data already lives in a .db file.",
             "category": "tooling",
             "skill_md_url": "https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/sqlite/SKILL.md",
-            "install": "curl -sL https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/sqlite/SKILL.md -o SKILL.md",
+            "install": "curl -fSL https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/sqlite/SKILL.md -o sqlite-SKILL.md",
             "tags": [
                 "sqlite",
                 "database",
                 "sql"
             ],
-            "last_verified": "2026-10-09"
+            "last_verified": "2026-10-09",
+            "license": "MIT"
         },
         {
             "name": "webhooks",
             "description": "Accept webhook POSTs on localhost, answer quickly, and ignore duplicate retries. Use when another service needs to notify this machine.",
             "category": "tooling",
             "skill_md_url": "https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/webhooks/SKILL.md",
-            "install": "curl -sL https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/webhooks/SKILL.md -o SKILL.md",
+            "install": "curl -fSL https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/webhooks/SKILL.md -o webhooks-SKILL.md",
             "tags": [
                 "webhooks",
                 "http",
                 "events"
             ],
-            "last_verified": "2026-10-09"
+            "last_verified": "2026-10-09",
+            "license": "MIT"
         }
     ]
 }

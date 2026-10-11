@@ -122,9 +122,9 @@ def skill_page(s: dict) -> str:
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{escape(name)} — a skill on Honeypot</title>
+<title>{escape(name)} - a skill on Honeypot</title>
 <meta name="description" content="{esc_t}">
-<meta property="og:title" content="{escape(name)} — a skill on Honeypot">
+<meta property="og:title" content="{escape(name)} - a skill on Honeypot">
 <meta property="og:description" content="{esc_t}">
 <meta property="og:url" content="{SITE}/skills/{escape(name)}/">
 <meta property="og:type" content="article">
@@ -149,7 +149,7 @@ def skill_page(s: dict) -> str:
   <h2>Install</h2>
   <code class="install">{esc_i}</code>
   <p>Read the full skill: <a href="{escape(md_url)}">SKILL.md</a></p>
-  <p><a href="/">Honeypot</a> — a free, open index of skills for AI agents. Machine-readable. No sign-up, no tracking.</p>
+  <p><a href="/">Honeypot</a> - a free, open index of skills for AI agents. Machine-readable. No sign-up, no tracking.</p>
 </main>
 <footer>
   Indexed on <a href="{SITE}">Honeypot</a>. Want your skill listed? <a href="https://github.com/oidsdev/honeypot#submit-a-skill">Submit a pull request</a>.
@@ -219,7 +219,7 @@ def main() -> int:
     for e in reversed(changelog["entries"]):
         items.append(
             "    <item>\n"
-            f"      <title>{escape(e['name'])} — skill added to Honeypot</title>\n"
+            f"      <title>{escape(e['name'])} - skill added to Honeypot</title>\n"
             f"      <link>{SITE}/api/skills.json</link>\n"
             f"      <guid isPermaLink=\"false\">honeypot-{escape(e['name'])}-{escape(e['date'])}</guid>\n"
             f"      <pubDate>{escape(e['date'])}T00:00:00Z</pubDate>\n"
@@ -230,7 +230,7 @@ def main() -> int:
         '<?xml version="1.0" encoding="UTF-8"?>\n'
         '<rss version="2.0">\n'
         "  <channel>\n"
-        "    <title>Honeypot — new skills</title>\n"
+        "    <title>Honeypot - new skills</title>\n"
         f"    <link>{SITE}/</link>\n"
         "    <description>Skills newly added to the Honeypot index for AI agents.</description>\n"
         "    <language>en</language>\n"
@@ -271,7 +271,6 @@ def main() -> int:
         ("/llms.txt", today),
         ("/llms-full.txt", today),
         ("/skill-template.md", today),
-        ("/submitters.md", today),
         ("/badge.svg", today),
         ("/api/skills.json", updated),
         ("/api/changelog.json", today),

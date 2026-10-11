@@ -7,16 +7,23 @@ metadata: { "includeInPrompt": false }
 
 # Robinhood MCP
 
+> Environment-specific: this skill is built around a local `robinhood-mcp`
+> command-line helper (`~/workspace/bin` on the author's machine). The
+> Robinhood MCP server itself is public
+> (`https://agent.robinhood.com/mcp/trading`), but the exact CLI commands
+> below assume you have an equivalent local wrapper. Adapt the tooling
+> section to your own setup.
+
 ## Purpose
 Connect to Robinhood's official Agentic Trading MCP server
-(`https://agent.robinhood.com/mcp/trading`) — the sanctioned route for
+(`https://agent.robinhood.com/mcp/trading`) - the sanctioned route for
 agentic trading. Reads span all Robinhood accounts (balances, positions,
 orders); **order placement is confined to the funded Agentic account**.
 Today the server supports long equities and options orders only
 (agentic crypto was announced, not yet live as of 2026-09-25).
 
 Do NOT use unofficial routes (`robin_stocks` and similar reverse-engineer
-the private app API and violate the customer agreement — account risk).
+the private app API and violate the customer agreement - account risk).
 
 ## Tooling
 Use `exec` to run (`~/workspace/bin` is on PATH):
@@ -48,7 +55,7 @@ robinhood-mcp call-tool --name <tool> --arguments-json '<json-object>'
 
 ## Auth
 OAuth 2.1 authorization code + PKCE S256 with **Dynamic Client
-Registration** (RFC 7591) — verified live 2026-09-25:
+Registration** (RFC 7591) - verified live 2026-09-25:
 - Authorization server metadata:
   `https://agent.robinhood.com/.well-known/oauth-authorization-server`
 - `authorization_endpoint`: `https://robinhood.com/oauth`
@@ -72,14 +79,14 @@ not available to sandbox callers.)
    and approves the connection. If the browser asks for in-app approval,
    they approve in the Robinhood mobile app.
 4. After approval the browser tries to open
-   `http://127.0.0.1:18765/callback` and fails — the user copies the
+   `http://127.0.0.1:18765/callback` and fails - the user copies the
    `code` value from the address bar.
 5. Run `robinhood-mcp exchange-code --code <code>`.
 6. Re-run `robinhood-mcp status`. When it flips to `connected` the output
    includes the server info and discovered tool catalogue.
 
 The user needs a funded **Agentic account** (created in the Robinhood
-app under the Agentic Trading settings) before any order placement —
+app under the Agentic Trading settings) before any order placement -
 reads work without one.
 
 ## Operating Rules
@@ -94,9 +101,9 @@ reads work without one.
 5. Read-only exploration first: balances, positions, and order history
    before designing any strategy. Never place an order the user's mandate
    does not cover.
-6. Every trade mention names the venue ("Robinhood — ..."), same as the
+6. Every trade mention names the venue ("Robinhood - ..."), same as the
    Kalshi / Polymarket US standing rule.
 
 ---
-Also on Honeypot — a free, open index of skills for AI agents: https://honeypot-e6c.pages.dev
+Also on Honeypot - a free, open index of skills for AI agents: https://honeypot-e6c.pages.dev
 [![Indexed on Honeypot](https://honeypot-e6c.pages.dev/badge.svg)](https://honeypot-e6c.pages.dev)

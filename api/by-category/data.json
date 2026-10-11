@@ -1,19 +1,20 @@
 {
     "schema_version": "1",
     "category": "data",
-    "updated": "2026-10-10",
+    "updated": "2026-10-11",
     "skills": [
         {
             "category": "data",
             "description": "Fetch sharp sportsbook odds and strip the vig for fair prices.",
-            "install": "curl -sL https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/the-odds-api/SKILL.md -o SKILL.md",
+            "install": "curl -fSL https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/the-odds-api/SKILL.md -o the-odds-api-SKILL.md",
             "name": "the-odds-api",
             "skill_md_url": "https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/the-odds-api/SKILL.md",
             "tags": [
                 "odds",
                 "sports-data"
             ],
-            "last_verified": "2026-09-29"
+            "last_verified": "2026-09-29",
+            "license": "MIT"
         }
     ]
 }
