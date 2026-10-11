@@ -6,6 +6,7 @@
 - feed.xml — RSS 2.0 of newly added skills
 - sitemap.xml — static pages + skill pages + API endpoints for crawlers
 - skills/<name>/index.html — per-skill page (SEO tags, JSON-LD, backlinks)
+- categories/<category>/index.html — landing page for each of the largest categories
 - llms-full.txt — every SKILL.md concatenated for crawlers
 - api/editors-picks.json — skills passing the published PICK_CRITERIA checklist
 - badge/<name>.svg — per-skill badge (name, version, verified check)
@@ -54,9 +55,15 @@ CHAR_WIDTH = {
     "_": 64, "+": 76, " ": 34,
 }
 BADGE_FONT = "system-ui, -apple-system, sans-serif"
+CATEGORIES_DIR = ROOT / "categories"
 
 SITE = "https://honeypot-e6c.pages.dev"
 REQUIRED = ["name", "description", "category", "skill_md_url", "install", "tags", "last_verified"]
+
+# Static landing pages for the largest categories only. Ranked by skill count,
+# then name, from api/skills.json. No hand-picked list.
+TOP_CATEGORY_PAGES = 8
+CATEGORY_SLUG = re.compile(r"^[a-z0-9][a-z0-9_-]*$")
 
 # Editor's picks checklist. Published verbatim in api/editors-picks.json and on
 # the site, so change it here and nowhere else. A skill is a pick when it passes
@@ -267,7 +274,111 @@ def git_added(path: str) -> str:
         return date.today().isoformat()
 
 
-def skill_page(s: dict) -> str:
+def largest_categories(skills: list) -> list:
+    """Up to TOP_CATEGORY_PAGES category slugs, largest first."""
+    counts = {}
+    for s in skills:
+        counts[s["category"]] = counts.get(s["category"], 0) + 1
+    ranked = sorted(counts, key=lambda c: (-counts[c], c))
+    safe = [c for c in ranked if CATEGORY_SLUG.fullmatch(c)]
+    return safe[:TOP_CATEGORY_PAGES]
+
+
+def _check_largest() -> None:
+    """Cap, tie-break, and slug filter. Independent of the live index."""
+    rows = []
+    for cat, n in (
+        ("z", 1), ("m", 5), ("a", 5), ("Bad Name", 9), ("q", 4),
+        ("b", 3), ("c", 3), ("d", 2), ("e", 2), ("f", 2), ("g", 1),
+    ):
+        rows.extend({"category": cat} for _ in range(n))
+    got = largest_categories(rows)
+    assert got == ["a", "m", "q", "b", "c", "d", "e", "f"], got
+    assert "Bad Name" not in got and "g" not in got and "z" not in got
+
+
+def category_page(cat: str, cat_skills: list) -> str:
+    """Static category page: skill count, one line per skill, link to the full index."""
+    cat_skills = sorted(cat_skills, key=lambda s: s["name"])
+    n = len(cat_skills)
+    noun = "skill" if n == 1 else "skills"
+    blurb = f"{n} {noun} in the {cat} category."
+    items = "\n".join(
+        f'    <li><a href="/skills/{escape(s["name"])}/">{escape(s["name"])}</a> '
+        f'{escape(s["description"])}</li>'
+        for s in cat_skills
+    )
+    ld = {
+        "@context": "https://schema.org",
+        "@type": "CollectionPage",
+        "name": f"{cat} skills on Honeypot",
+        "description": blurb,
+        "url": f"{SITE}/categories/{cat}/",
+        "isPartOf": {
+            "@type": "WebSite",
+            "name": "Honeypot",
+            "url": SITE,
+        },
+        "mainEntity": {
+            "@type": "ItemList",
+            "numberOfItems": n,
+            "itemListElement": [
+                {
+                    "@type": "ListItem",
+                    "position": i,
+                    "name": s["name"],
+                    "description": s["description"],
+                    "url": f"{SITE}/skills/{s['name']}/",
+                }
+                for i, s in enumerate(cat_skills, start=1)
+            ],
+        },
+    }
+    return f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{escape(cat)} — skills on Honeypot</title>
+<meta name="description" content="{escape(blurb)}">
+<meta property="og:title" content="{escape(cat)} — skills on Honeypot">
+<meta property="og:description" content="{escape(blurb)}">
+<meta property="og:url" content="{SITE}/categories/{escape(cat)}/">
+<meta property="og:type" content="website">
+<link rel="canonical" href="{SITE}/categories/{escape(cat)}/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='%231a1a1a'/%3E%3Ccircle cx='16' cy='16' r='5' fill='%23fff'/%3E%3C/svg%3E">
+<script type="application/ld+json">
+{json.dumps(ld, indent=2)}
+</script>
+<style>
+  body {{ font-family: system-ui, sans-serif; max-width: 38rem; margin: 4rem auto; padding: 0 1rem; line-height: 1.6; color: #1a1a1a; }}
+  h1 {{ font-size: 1.6rem; margin-bottom: 0; }}
+  a {{ color: #1a1a1a; }}
+  ul {{ padding-left: 1.2rem; margin: 1rem 0; }}
+  li {{ margin: 0.4rem 0; }}
+  .meta {{ font-size: 0.85rem; color: #666; }}
+  footer {{ margin-top: 3rem; font-size: 0.85rem; color: #666; }}
+</style>
+</head>
+<body>
+<main>
+  <h1>{escape(cat)}</h1>
+  <p class="meta">{n} {noun}</p>
+  <ul>
+{items}
+  </ul>
+  <p><a href="/">Full index</a></p>
+  <p class="meta">Machine-readable list: <a href="/api/by-category/{escape(cat)}.json"><code>/api/by-category/{escape(cat)}.json</code></a></p>
+</main>
+<footer>
+  Indexed on <a href="{SITE}">Honeypot</a>. Want your skill listed? <a href="https://github.com/oidsdev/honeypot#submit-a-skill">Submit a pull request</a>.
+</footer>
+</body>
+</html>
+"""
+
+
+def skill_page(s: dict, category_page: bool = False) -> str:
     """Static per-skill page: SEO tags, JSON-LD, links back to index + category."""
     name = s["name"]
     desc = s["description"]
@@ -285,6 +396,11 @@ def skill_page(s: dict) -> str:
     esc_i = escape(install)
     esc_label = escape(label)
     esc_embed = escape(badge_embed(name))
+    cat_href = (
+        f"/categories/{escape(cat)}/"
+        if category_page
+        else f"/api/by-category/{escape(cat)}.json"
+    )
     ld = {
         "@context": "https://schema.org",
         "@type": "SoftwareSourceCode",
@@ -327,7 +443,7 @@ def skill_page(s: dict) -> str:
 <main>
   <h1>{escape(name)}</h1>
   <p>{esc_t}</p>
-  <p class="meta">Category: <a href="/api/by-category/{escape(cat)}.json">{escape(cat)}</a> &middot; Tags: {escape(tags)} &middot; Verified {escape(verified)}</p>
+  <p class="meta">Category: <a href="{cat_href}">{escape(cat)}</a> &middot; Tags: {escape(tags)} &middot; Verified {escape(verified)}</p>
   <h2>Install</h2>
   <code class="install">{esc_i}</code>
   <h2>Badge</h2>
@@ -346,6 +462,7 @@ def skill_page(s: dict) -> str:
 
 def main() -> int:
     self_check()
+    _check_largest()
     doc = json.loads(SKILLS_JSON.read_text())
     if not isinstance(doc, dict) or doc.get("schema_version") != "1":
         print("ERROR: api/skills.json must be an object with schema_version '1'", file=sys.stderr)
@@ -425,8 +542,31 @@ def main() -> int:
     )
     FEED_XML.write_text(feed)
 
-    # 4. per-skill badges and pages (SEO + JSON-LD, links back to index/category)
+    # 4. category landing pages (largest categories), per-skill badges and pages
     BADGE_DIR.mkdir(exist_ok=True)
+    page_cats = largest_categories(skills)
+    page_cat_set = set(page_cats)
+    counts = {}
+    for s in skills:
+        counts[s["category"]] = counts.get(s["category"], 0) + 1
+    CATEGORIES_DIR.mkdir(exist_ok=True)
+    for cat in page_cats:
+        dest = CATEGORIES_DIR / cat
+        dest.mkdir(exist_ok=True)
+        (dest / "index.html").write_text(
+            category_page(cat, [s for s in skills if s["category"] == cat])
+        )
+    for dest in CATEGORIES_DIR.iterdir():
+        if not dest.is_dir() or dest.name in page_cat_set:
+            continue
+        page = dest / "index.html"
+        if page.exists():
+            page.unlink()
+        try:
+            dest.rmdir()
+        except OSError:
+            pass
+
     skill_urls = []
     badge_urls = []
     verified_n = 0
@@ -443,7 +583,7 @@ def main() -> int:
         (BADGE_DIR / f"{s['name']}.svg").write_text(badge_svg(s["name"], version, not errors))
         badge_urls.append((f"/badge/{s['name']}.svg", s["last_verified"]))
         page = SKILLS_DIR / s["name"] / "index.html"
-        page.write_text(skill_page(s))
+        page.write_text(skill_page(s, category_page=s["category"] in page_cat_set))
         skill_urls.append((f"/skills/{s['name']}/", s["last_verified"]))
     for f in BADGE_DIR.glob("*.svg"):
         if f.stem not in set(names):
@@ -481,7 +621,9 @@ def main() -> int:
         ("/api/editors-picks.json", today),
         ("/feed.xml", today),
         ("/faq/", today),
-    ] + [(f"/api/by-category/{cat}.json", updated) for cat in cats] + skill_urls
+    ] + [(f"/categories/{cat}/", updated) for cat in page_cats] + [
+        (f"/api/by-category/{cat}.json", updated) for cat in cats
+    ] + skill_urls
     sm = (
         '<?xml version="1.0" encoding="UTF-8"?>\n'
         '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
@@ -506,8 +648,19 @@ def main() -> int:
             assert 'id="verified"' not in badge_doc
         else:
             assert 'id="verified"' in badge_doc
+    safe_cats = [c for c in cats if CATEGORY_SLUG.fullmatch(c)]
+    assert page_cats == sorted(safe_cats, key=lambda c: (-counts[c], c))[:TOP_CATEGORY_PAGES]
+    for cat in page_cats:
+        html = (CATEGORIES_DIR / cat / "index.html").read_text()
+        assert f"{counts[cat]} skill" in html
+        assert 'href="/">Full index</a>' in html
+        for s in skills:
+            if s["category"] == cat:
+                assert f'/skills/{s["name"]}/' in html
+                assert escape(s["description"]) in html
 
     print(f"skills: {len(skills)} | categories: {', '.join(cats)} | "
+          f"category pages: {', '.join(page_cats)} | "
           f"changelog entries: {len(changelog['entries'])} (+{added} new) | feed items: {len(items)} | "
           f"editor's picks: {len(picks_doc['picks'])} | "
           f"badges: {verified_n}/{len(skills)} verified")
