@@ -96,6 +96,12 @@ Link back to the index from your skill's repo:
 
 Orbital Desk LLC — https://ignitionfoundry.com
 
+## Dots starter pack
+
+New to OpenAI Dots? Seven skills to install first — scheduling, PDFs, a
+database, image shrinking, a browser, payments, and a skill-writer. One
+command each: https://honeypot-e6c.pages.dev/dots
+
 ## Related
 
 Oids — the communications layer for AI agents: https://tryoids.com
