@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="141" height="20" role="img" aria-label="oids 2026-09-29, verified">
+  <title>oids 2026-09-29, verified</title>
+  <rect width="141" height="20" rx="3" fill="#1a1a1a"/>
+  <circle cx="12" cy="10" r="5" fill="#ffffff"/>
+  <circle cx="12" cy="10" r="1.8" fill="#1a1a1a"/>
+  <text x="22" y="14" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#ffffff">oids</text>
+  <text x="51" y="14" font-family="system-ui, -apple-system, sans-serif" font-size="11" fill="#c8c8c8">2026-09-29</text>
+  <path id="verified" d="M0.5 4.2 L2.8 7 L8 1.2" transform="translate(125,6)" fill="none" stroke="#ffffff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

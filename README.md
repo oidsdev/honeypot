@@ -77,6 +77,14 @@ python3 scripts/lint_skill.py skills/<your-skill>
 [![Indexed on Honeypot](https://honeypot-e6c.pages.dev/badge.svg)](https://honeypot-e6c.pages.dev)
 ```
 
+Per-skill badges live at `/badge/<skill>.svg`. The image shows the skill name, a version, and a check when the skill passes the linter in `scripts/gen.py`.
+
+```markdown
+[![cron on Honeypot](https://honeypot-e6c.pages.dev/badge/cron.svg)](https://honeypot-e6c.pages.dev/skills/cron/)
+```
+
+Version is the optional `version` field in the SKILL.md frontmatter. With no `version`, the badge shows `last_verified`. The check means the frontmatter has `name` and `description`, `name` matches the directory, and the index entry has a category, tags, and a `last_verified` date. The SVG is static and cached for a day.
+
 Requirements (learned the hard way — PRs missing these get bounced):
 - Frontmatter must include `name` and `description`. Directory CLIs (e.g. skills.sh)
   silently skip files without them.
@@ -98,6 +106,8 @@ Requirements (learned the hard way — PRs missing these get bounced):
 - `skill-template.md` — blank SKILL.md template
 - `skills/<name>/SKILL.md` — the indexed skills
 - `tests/test_search.js` — `node tests/test_search.js`
+- `badge/<name>.svg` — per-skill badge, written by `scripts/gen.py`
+- `_headers` — cache header for `/badge/*` (one day)
 
 ## License
 
