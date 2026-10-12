@@ -98,6 +98,7 @@ Requirements (learned the hard way — PRs missing these get bounced):
 
 - `index.html` — the site
 - `search.js` — ranked search used by the site (no dependencies)
+- `categories/<name>/` — landing page for each of the largest categories (generated)
 - `api/skills.json` — the machine-readable index
 - `scripts/gen.py` — rebuilds everything derived from `skills.json` (run after any change)
 - `scripts/lint_skill.py` — checks a submitted skill (frontmatter, description length, banned phrases, relative links)
