@@ -112,7 +112,14 @@
             "action": "added",
             "description": "Drive a local browser through Microsoft's Playwright MCP server. Use when an agent needs to open a page and act on it.",
             "skill_md_url": "https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/playwright-mcp/SKILL.md"
+        },
+        {
+            "date": "2026-10-12",
+            "name": "context7",
+            "action": "added",
+            "description": "Look up current library docs through Upstash Context7. Use when an agent needs the current API for a package.",
+            "skill_md_url": "https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/context7/SKILL.md"
         }
     ],
-    "generated": "2026-10-11"
+    "generated": "2026-10-12"
 }

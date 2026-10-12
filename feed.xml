@@ -6,6 +6,13 @@
     <description>Skills newly added to the Honeypot index for AI agents.</description>
     <language>en</language>
     <item>
+      <title>context7 - skill added to Honeypot</title>
+      <link>https://honeypot-e6c.pages.dev/api/skills.json</link>
+      <guid isPermaLink="false">honeypot-context7-2026-10-12</guid>
+      <pubDate>2026-10-12T00:00:00Z</pubDate>
+      <description>Look up current library docs through Upstash Context7. Use when an agent needs the current API for a package.</description>
+    </item>
+    <item>
       <title>playwright-mcp - skill added to Honeypot</title>
       <link>https://honeypot-e6c.pages.dev/api/skills.json</link>
       <guid isPermaLink="false">honeypot-playwright-mcp-2026-10-10</guid>

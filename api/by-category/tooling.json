@@ -1,8 +1,22 @@
 {
     "schema_version": "1",
     "category": "tooling",
-    "updated": "2026-10-11",
+    "updated": "2026-10-12",
     "skills": [
+        {
+            "name": "context7",
+            "description": "Look up current library docs through Upstash Context7. Use when an agent needs the current API for a package.",
+            "category": "tooling",
+            "skill_md_url": "https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/context7/SKILL.md",
+            "install": "curl -fSL https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/context7/SKILL.md -o context7-SKILL.md",
+            "tags": [
+                "context7",
+                "mcp",
+                "docs"
+            ],
+            "last_verified": "2026-10-12",
+            "license": "MIT"
+        },
         {
             "name": "cron",
             "description": "Read and install a user crontab without deleting the jobs already there. Use when a command needs to run on a schedule.",
