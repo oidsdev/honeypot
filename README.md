@@ -25,16 +25,16 @@ curl -sL https://honeypot-e6c.pages.dev/api/skills.json \
 
 The site takes the same filters as URL params, so any view can be shared or bookmarked:
 
-- `?q=` — text match on name, description, and tags
+- `?q=` — ranked match on name, description, and tags (TF-IDF; one-character typos)
 - `?tag=` — exact tag
 - `?category=` — exact category
 
 Params combine: `https://honeypot-e6c.pages.dev/?category=trading&tag=prediction-markets`.
 Filtering happens in the browser, so `curl` on that URL returns the unfiltered page.
-To get the same result from a script, apply the filters to the JSON:
+To filter the JSON from a script:
 
 ```sh
-# same as /?q=odds&tag=sports-data&category=data
+# tag and category are exact. The site ranks q; this jq check is a substring filter.
 curl -sL https://honeypot-e6c.pages.dev/api/skills.json | jq '.skills[]
   | select(.category=="data")
   | select(.tags | index("sports-data"))
@@ -81,6 +81,7 @@ Requirements (learned the hard way — PRs missing these get bounced):
 ## Layout
 
 - `index.html` — the site
+- `search.js` — ranked search used by the site (no dependencies)
 - `api/skills.json` — the machine-readable index
 - `scripts/gen.py` — rebuilds everything derived from `skills.json` (run after any change)
 - `llms.txt` — agent-readable description
