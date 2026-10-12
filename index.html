@@ -36,6 +36,8 @@
   details.badge code { white-space: normal; word-break: break-all; }
   ol.submit li { margin-bottom: 0.5rem; }
   .count { font-size: 0.85rem; color: #666; }
+  mark { background: #f3e7b3; color: inherit; padding: 0 0.05em; }
+  .snippet { margin: 0.35rem 0 0; }
   #picks ul { padding-left: 1.2rem; margin: 0.5rem 0; }
   #picks .note { font-size: 0.85rem; color: #666; }
   ul.toc { list-style: none; padding: 0; margin: 0.5rem 0 0; display: flex; flex-wrap: wrap; gap: 0.25rem 1rem; font-size: 0.9rem; }
@@ -108,6 +110,7 @@
   <p>An <a href="https://tryoids.com">Oids</a> project: the comms layer for AI agents.</p>
   <p>Copyright contact: <a href="mailto:abuse@tryoids.com">abuse@tryoids.com</a> · DMCA agent DMCA-1081497</p>
 </footer>
+<script src="search.js"></script>
 <script>
 (function () {
   var cards = document.getElementById('cards');
@@ -159,21 +162,28 @@
   }
 
   function render() {
-    var term = q.value.trim().toLowerCase();
+    var term = q.value.trim();
     var c = cat.value;
     var t = tag.value;
-    var list = all.filter(function (s) {
+    var hits = term ? HoneypotSearch.search(all, term) : all.map(function (s) {
+      return { skill: s };
+    });
+    var list = hits.filter(function (h) {
+      var s = h.skill;
       var tags = s.tags || [];
-      var okCat = !c || s.category === c;
-      var okTag = !t || tags.indexOf(t) !== -1;
-      var okTerm = !term || (s.name + ' ' + s.description + ' ' + tags.join(' ')).toLowerCase().indexOf(term) !== -1;
-      return okCat && okTag && okTerm;
+      return (!c || s.category === c) && (!t || tags.indexOf(t) !== -1);
     });
     count.textContent = list.length + ' of ' + all.length + ' skills';
-    cards.innerHTML = list.map(function (s) {
+    cards.innerHTML = list.map(function (h) {
+      var s = h.skill;
+      var name = term ? h.nameHtml : esc(s.name);
+      var desc = term ? h.descriptionHtml : esc(s.description);
+      var tagLine = term && !h.descriptionHit && h.matchedTagsHtml
+        ? '<p class="snippet">' + h.matchedTagsHtml + '</p>' : '';
       return '<div class="card">' +
-        '<h3>' + esc(s.name) + '</h3>' +
-        '<p>' + esc(s.description) + '</p>' +
+        '<h3>' + name + '</h3>' +
+        '<p>' + desc + '</p>' +
+        tagLine +
         '<span class="tag">' + esc(s.category) + '</span>' +
         (s.skill_md_url ? '<a class="src" href="' + esc(s.skill_md_url) + '">SKILL.md</a>' : '') +
         (s.last_verified ? '<span class="verified">verified ' + esc(s.last_verified) + '</span>' : '') +

@@ -25,16 +25,17 @@ curl -sL https://honeypot-e6c.pages.dev/api/skills.json \
 
 The site takes the same filters as URL params, so any view can be shared or bookmarked:
 
-- `?q=` — text match on name, description, and tags
+- `?q=` — ranked match on name, description, and tags (a one-character typo still matches; hits are highlighted)
 - `?tag=` — exact tag
 - `?category=` — exact category
 
 Params combine: `https://honeypot-e6c.pages.dev/?category=trading&tag=prediction-markets`.
 Filtering happens in the browser, so `curl` on that URL returns the unfiltered page.
-To get the same result from a script, apply the filters to the JSON:
+The page ranks matches and tolerates a one-character typo. A script can apply the
+same category and tag filters, plus a plain substring check, to the JSON:
 
 ```sh
-# same as /?q=odds&tag=sports-data&category=data
+# substring stand-in for ?q= (the page ranks; this check does not)
 curl -sL https://honeypot-e6c.pages.dev/api/skills.json | jq '.skills[]
   | select(.category=="data")
   | select(.tags | index("sports-data"))
@@ -88,6 +89,7 @@ Requirements (learned the hard way — PRs missing these get bounced):
 ## Layout
 
 - `index.html` — the site
+- `search.js` — ranked search used by the site (no dependencies)
 - `api/skills.json` — the machine-readable index
 - `scripts/gen.py` — rebuilds everything derived from `skills.json` (run after any change)
 - `scripts/lint_skill.py` — checks a submitted skill (frontmatter, description length, banned phrases, relative links)
@@ -95,6 +97,7 @@ Requirements (learned the hard way — PRs missing these get bounced):
 - `llms.txt` — agent-readable description
 - `skill-template.md` — blank SKILL.md template
 - `skills/<name>/SKILL.md` — the indexed skills
+- `tests/test_search.js` — `node tests/test_search.js`
 
 ## License
 
