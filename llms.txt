@@ -85,6 +85,14 @@ Link back to the index from your skill's repo:
 [![Indexed on Honeypot](https://honeypot-e6c.pages.dev/badge.svg)](https://honeypot-e6c.pages.dev)
 ```
 
+Per-skill badge (name, version, and a check when `scripts/gen.py` lints the skill clean). Version is frontmatter `version`, or `last_verified` when that field is absent. Cached for a day.
+
+```markdown
+[![cron on Honeypot](https://honeypot-e6c.pages.dev/badge/cron.svg)](https://honeypot-e6c.pages.dev/skills/cron/)
+```
+
+`https://honeypot-e6c.pages.dev/badge/<skill>.svg`
+
 ## How to submit a skill
 
 1. Write your skill as a SKILL.md. Template: https://honeypot-e6c.pages.dev/skill-template.md

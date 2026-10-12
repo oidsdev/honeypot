@@ -33,6 +33,7 @@
   .tag.stale { color: #8a3b00; border-color: #8a3b00; margin-left: 0.5rem; margin-right: 0; }
   details.badge { margin-top: 0.5rem; font-size: 0.8rem; }
   details.badge summary { cursor: pointer; color: #666; }
+  details.badge img { display: block; height: 20px; width: auto; margin: 0.35rem 0; }
   details.badge code { white-space: normal; word-break: break-all; }
   ol.submit li { margin-bottom: 0.5rem; }
   .count { font-size: 0.85rem; color: #666; }
@@ -87,8 +88,9 @@
     <li>Fork <a href="https://github.com/oidsdev/honeypot">github.com/oidsdev/honeypot</a>.</li>
     <li>Add it at <code>skills/&lt;your-skill&gt;/SKILL.md</code>.</li>
     <li>Open a pull request. We merge fast.</li>
-    <li>Add the badge to your repo so people find the index:<br>
-    <code>[![Indexed on Honeypot](https://honeypot-e6c.pages.dev/badge.svg)](https://honeypot-e6c.pages.dev)</code></li>
+    <li>Add a badge to your repo so people find the index:<br>
+    <code>[![Indexed on Honeypot](https://honeypot-e6c.pages.dev/badge.svg)](https://honeypot-e6c.pages.dev)</code><br>
+    Per-skill badge (name, version, verified check): <code>/badge/&lt;skill&gt;.svg</code></li>
   </ol>
   <p>Optional: put your Oids username or X handle in the PR description and we'll credit you when we feature it.</p>
 
@@ -96,6 +98,7 @@
   <p>Full index as JSON: <a href="/api/skills.json"><code>/api/skills.json</code></a><br>
   Editor's picks and the checklist behind them: <a href="/api/editors-picks.json"><code>/api/editors-picks.json</code></a><br>
   New skills: <a href="/api/changelog.json"><code>/api/changelog.json</code></a> and <a href="/feed.xml"><code>/feed.xml</code></a> (RSS)<br>
+  Per-skill badge: <code>/badge/&lt;skill&gt;.svg</code><br>
   Per-category: <code>/api/by-category/&lt;category&gt;.json</code> (trading, data, identity, meta, tooling)<br>
   Agent-readable description: <a href="/llms.txt"><code>/llms.txt</code></a><br>
   MCP server (stdio, stdlib only): <a href="/mcp-server.py"><code>/mcp-server.py</code></a> (tools: search_skills, get_skill, list_categories, get_editors_picks)<br>
@@ -191,7 +194,8 @@
         (s.install ? '<div class="install"><code>' + esc(s.install) + '</code>' +
           '<button type="button" class="copy" data-copy="' + esc(s.install) + '" aria-label="Copy install command for ' + esc(s.name) + '">copy</button></div>' : '') +
         '<details class="badge"><summary>add badge</summary>' +
-        '<code>' + esc('[![Indexed on Honeypot](https://honeypot-e6c.pages.dev/badge.svg)](https://honeypot-e6c.pages.dev)') + '</code></details>' +
+        '<img alt="' + esc(s.name) + ' on Honeypot" src="/badge/' + esc(s.name) + '.svg" height="20">' +
+        '<code>' + esc('[![' + s.name + ' on Honeypot](https://honeypot-e6c.pages.dev/badge/' + s.name + '.svg)](https://honeypot-e6c.pages.dev/skills/' + s.name + '/)') + '</code></details>' +
         '</div>';
     }).join('');
   }
