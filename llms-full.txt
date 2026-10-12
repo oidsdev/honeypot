@@ -281,6 +281,170 @@ Useful shortcuts on Vixie cron (Debian, cronie): `@hourly`, `@daily`, `@weekly`,
 Also on Honeypot — a free, open index of skills for AI agents: https://honeypot-e6c.pages.dev
 [![Indexed on Honeypot](https://honeypot-e6c.pages.dev/badge.svg)](https://honeypot-e6c.pages.dev)
 
+# ===== cursor =====
+---
+name: "cursor"
+description: "Cursor Cloud Agents API: launch background coding agents on GitHub repos, check run status, collect PRs. Use when the user asks for Cursor, cloud agents, or background coding runs."
+---
+
+# Cursor Cloud Agents
+
+## Purpose
+Drive Cursor Cloud Agents programmatically: launch an agent on a GitHub
+repo with a prompt, poll its run, and collect the pull request it opens.
+Good for delegating well-scoped coding tasks (fixes, docs, tests, small
+features) to a background agent while you keep working.
+
+## Tooling
+Call the REST API at `https://api.cursor.com` (v1) directly, or wrap it in
+a thin CLI. The core calls:
+
+```bash
+BASE=https://api.cursor.com
+AUTH="Authorization: Bearer $CURSOR_API_KEY"
+
+curl -s -H "$AUTH" "$BASE/v1/me"                            # auth check
+curl -s -H "$AUTH" "$BASE/v1/repositories"                  # connected GitHub repos
+curl -s -H "$AUTH" "$BASE/v1/models"                        # available models
+
+# Launch: creates the agent AND enqueues its first run.
+curl -s -X POST -H "$AUTH" -H "Content-Type: application/json" -d '{
+  "prompt": {"text": "Fix the failing test in tests/test_api.py"},
+  "repos": [{"url": "https://github.com/you/your-repo"}],
+  "autoCreatePR": true,
+  "skipReviewerRequest": true,
+  "mode": "agent"
+}' "$BASE/v1/agents"        # -> {agent: {id}, run: {id, status}}
+
+curl -s -H "$AUTH" "$BASE/v1/agents/<agent_id>/runs/<run_id>"   # status, duration, PR URLs
+curl -s -H "$AUTH" "$BASE/v1/agents/<agent_id>/runs"            # all runs for an agent
+curl -s -X POST -H "$AUTH" -H "Content-Type: application/json" \
+  -d '{"prompt": {"text": "Now add a test for the fix"}}' \
+  "$BASE/v1/agents/<agent_id>/runs"                             # follow-up run on same agent
+curl -s -X POST -H "$AUTH" "$BASE/v1/agents/<agent_id>/runs/<run_id>/cancel"
+curl -s -H "$AUTH" "$BASE/v1/agents/<agent_id>/usage"           # token usage
+```
+
+The launch response carries `agent.id` and `run.id` — save both; every
+later call needs them. A finished run's status response includes its PR
+URL(s) and branch.
+
+## Auth
+- Create an API key in your Cursor account settings and pass it as a
+  Bearer token from an environment variable at runtime — never hardcoded,
+  never written to files, logs, or memory.
+- `GET /v1/me` is the cheap auth check. A 401/403 with the header attached
+  means the key itself is wrong or revoked — rotate it in settings.
+
+## Operating Rules
+1. **The GitHub repo must already be connected** to the Cursor account —
+   check `GET /v1/repositories` before launching; there is no API-side
+   way to connect a new repo.
+2. **Don't pin a `model` unless you mean it.** Omitting it uses the
+   account's default models and included usage pool; an explicit model can
+   draw from a different (metered) pool. Check `GET /v1/models` first.
+3. With `autoCreatePR`, a completed run opens a PR. **Agents push branches;
+   humans merge.** Review every PR before it lands — never auto-merge
+   agent output.
+4. Keep prompts PR-sized: one task, clear acceptance criteria, named files
+   where you know them. A follow-up run on the same agent is cheaper than
+   a fresh launch when context carries over.
+5. The API is public beta — if calls start failing in new ways, check the
+   current endpoint docs at https://cursor.com/docs/cloud-agent/api/endpoints
+   before blaming the key.
+6. Report PR URLs and run status, never the API key.
+
+---
+Also on Honeypot — a free, open index of skills for AI agents: https://honeypot-e6c.pages.dev
+[![Indexed on Honeypot](https://honeypot-e6c.pages.dev/badge.svg)](https://honeypot-e6c.pages.dev)
+
+# ===== discord =====
+---
+name: "discord"
+description: "Use the Discord Bot API from an agent: read and post messages, list servers and channels, add reactions, and build an invite link. Use when the user wants Discord posting, monitoring, or a bot set up."
+---
+
+# Discord (Bot API)
+
+## Purpose
+Give an agent a presence on Discord through an official **bot application**:
+see which servers the bot is in, list channels, read recent messages, post,
+and react. This is the only sanctioned route — automating a personal user
+account (a "self-bot") violates Discord's Terms of Service and gets the
+account banned.
+
+## Setup
+1. Go to the [Discord Developer Portal](https://discord.com/developers/applications)
+   and create an application, then add a **Bot** to it.
+2. Copy the bot token (shown once) and store it in a local file with mode
+   0600, e.g. `~/.discord-bot-token`. Never commit it, log it, or paste it
+   into chat.
+3. Under **Bot → Privileged Gateway Intents**, enable the intents you need:
+   - **Server Members** — list/enumerate guild members
+   - **Message Content** — read message text via the Gateway (REST history
+     reads work without it, but anything event-driven needs it)
+   - **Presence** — see member online status
+4. Invite the bot to a server with the OAuth2 URL (see Tooling). A **server
+   admin** must open it and pick the server — bots cannot accept normal
+   `discord.gg` invite links and cannot join servers on their own.
+
+## Tooling
+Plain REST against `https://discord.com/api/v10` with any HTTP client.
+Every request sends `Authorization: Bot <token>`. A small wrapper script
+with subcommands (`info`, `guilds`, `channels`, `read`, `post`, `react`,
+`invite`) keeps the calls one line each; the raw endpoints are:
+
+```bash
+BASE=https://discord.com/api/v10
+AUTH="Authorization: Bot $(cat ~/.discord-bot-token)"
+
+curl -s -H "$AUTH" "$BASE/users/@me"                       # who am I (bot identity)
+curl -s -H "$AUTH" "$BASE/users/@me/guilds"                # servers the bot is in
+curl -s -H "$AUTH" "$BASE/guilds/<guild_id>/channels"      # channels in a server
+curl -s -H "$AUTH" "$BASE/channels/<channel_id>/messages?limit=20"   # recent messages
+curl -s -X POST -H "$AUTH" -H "Content-Type: application/json" \
+  -d '{"content":"hello"}' "$BASE/channels/<channel_id>/messages"    # post
+curl -s -X PUT -H "$AUTH" \
+  "$BASE/channels/<channel_id>/messages/<message_id>/reactions/%F0%9F%91%8D/@me"  # react (URL-encoded emoji)
+```
+
+Invite URL (permissions are a bitfield; `3072` = View Channel + Send
+Messages, a sensible read/post minimum):
+
+```text
+https://discord.com/oauth2/authorize?client_id=<your_application_id>&permissions=3072&scope=bot
+```
+
+Creating channels, roles, or webhooks needs the matching permissions in
+that bitfield (e.g. Manage Channels). If a call returns 403, the bot's
+permissions in that server are the first suspect, not the token.
+
+## Auth
+- Token lives in a local 0600 file and is read at runtime — never hardcoded,
+  never written to logs or memory.
+- If the token is reset in the Developer Portal, update the file; the old
+  token dies immediately.
+- A 401 means the token is wrong or revoked. A 403 means the bot lacks a
+  permission (or isn't in that server/channel at all).
+
+## Operating Rules
+1. **Bots only.** Never automate a user account, and never ask a user for
+   their personal Discord token.
+2. The bot can only act in servers it has been invited to. To reach a new
+   server, an admin there must open the invite URL — there is no workaround.
+3. Respect rate limits: on HTTP 429, wait the `retry_after` seconds in the
+   response body instead of retrying immediately.
+4. Disclose the bot as a bot where it interacts with people (profile bio is
+   a good place) — several jurisdictions require bot disclosure when a bot
+   communicates to sell or influence.
+5. Follow each server's own rules (self-promotion channels, posting
+   frequency) — a bot that spams gets removed, and the removal is usually
+   permanent.
+
+---
+Also on Honeypot — a free, open index of skills for AI agents: https://honeypot-e6c.pages.dev
+[![Indexed on Honeypot](https://honeypot-e6c.pages.dev/badge.svg)](https://honeypot-e6c.pages.dev)
+
 # ===== honeypot =====
 ---
 name: "honeypot"
@@ -747,7 +911,7 @@ Authenticated requests sign `f"{timestamp_ms}{METHOD}{path}"` with Ed25519 (base
 ## Operating Rules
 1. **Prices are in cents, 1–99.** Every contract pays **$1.00** if correct, **$0** if wrong. Long = bought YES contracts (profit if outcome occurs); short = sold YES contracts (profit if it doesn't).
 2. **Every order is real money — no sandbox exists.** Before placing any order, present market / side / size / price / total cost and require the user's explicit confirmation. Never skip this, never batch it silently.
-3. **Maker-only.** Taker fee is Θ=0.0695 × C × p × (1−p) (up to $1.74/100 @ 50¢); makers earn a rebate Θ=−0.0125 (up to $0.31/100 @ 50¢), credited at fill. Never take except to close a position the user explicitly names.
+3. **Fees punish taking.** Taker fee is Θ=0.0695 × C × p × (1−p) (up to $1.74/100 @ 50¢); makers earn a rebate Θ=−0.0125 (up to $0.31/100 @ 50¢), credited at fill. Run the fee math before deciding to cross the spread — on most prices, posting as a maker is materially cheaper.
 4. Use the fee math in rule 3 to sanity-check cost before any first live order on a new path.
 5. Verify a position exists (via `positions`) before closing it.
 6. Rate limit: **20 req/s per API key** (429 on breach) — back off, prefer the WebSocket for streaming. Orders not processed within 5s are rejected by a latency stopgap ("Global Rate Limit Exceeded" message) — retry logic must distinguish this from a real rate limit.
@@ -768,26 +932,22 @@ metadata: { "includeInPrompt": false }
 
 # Robinhood MCP
 
-> Environment-specific: this skill is built around a local `robinhood-mcp`
-> command-line helper (`~/workspace/bin` on the author's machine). The
-> Robinhood MCP server itself is public
-> (`https://agent.robinhood.com/mcp/trading`), but the exact CLI commands
-> below assume you have an equivalent local wrapper. Adapt the tooling
-> section to your own setup.
-
 ## Purpose
 Connect to Robinhood's official Agentic Trading MCP server
-(`https://agent.robinhood.com/mcp/trading`) - the sanctioned route for
+(`https://agent.robinhood.com/mcp/trading`) — the sanctioned route for
 agentic trading. Reads span all Robinhood accounts (balances, positions,
 orders); **order placement is confined to the funded Agentic account**.
-Today the server supports long equities and options orders only
-(agentic crypto was announced, not yet live as of 2026-09-25).
+The server supports long equities and options orders (agentic crypto was
+announced but not live as of late 2026).
 
 Do NOT use unofficial routes (`robin_stocks` and similar reverse-engineer
-the private app API and violate the customer agreement - account risk).
+the private app API and violate the customer agreement — account risk).
 
 ## Tooling
-Use `exec` to run (`~/workspace/bin` is on PATH):
+The MCP server is a standard JSON-RPC endpoint, so any MCP client can talk
+to it directly. This skill's examples use a small local wrapper CLI named
+`robinhood-mcp` — write an equivalent wrapper around your own MCP client
+(the subcommands below map 1:1 onto the connection flow and tool calls):
 
 ```sh
 robinhood-mcp <subcommand> [options]
@@ -816,7 +976,7 @@ robinhood-mcp call-tool --name <tool> --arguments-json '<json-object>'
 
 ## Auth
 OAuth 2.1 authorization code + PKCE S256 with **Dynamic Client
-Registration** (RFC 7591) - verified live 2026-09-25:
+Registration** (RFC 7591):
 - Authorization server metadata:
   `https://agent.robinhood.com/.well-known/oauth-authorization-server`
 - `authorization_endpoint`: `https://robinhood.com/oauth`
@@ -826,10 +986,9 @@ Registration** (RFC 7591) - verified live 2026-09-25:
 - Public client (`token_endpoint_auth_methods_supported: ["none"]`);
   PKCE is what protects the exchange. Scope is fixed: `internal`.
 
-OAuth state lives in `~/.config/robinhood-mcp/state.json` (mode 0600).
-The credential never leaves this VM. (Unlike Meta's built-in connectors,
-this CLI keeps its own OAuth state because authd credential writes are
-not available to sandbox callers.)
+Store the OAuth state (client registration + tokens) in a local file with
+mode 0600, e.g. `~/.config/robinhood-mcp/state.json`. Tokens never leave
+the machine running the agent.
 
 ## First-use setup flow
 
@@ -840,14 +999,14 @@ not available to sandbox callers.)
    and approves the connection. If the browser asks for in-app approval,
    they approve in the Robinhood mobile app.
 4. After approval the browser tries to open
-   `http://127.0.0.1:18765/callback` and fails - the user copies the
+   `http://127.0.0.1:18765/callback` and fails — the user copies the
    `code` value from the address bar.
 5. Run `robinhood-mcp exchange-code --code <code>`.
 6. Re-run `robinhood-mcp status`. When it flips to `connected` the output
    includes the server info and discovered tool catalogue.
 
 The user needs a funded **Agentic account** (created in the Robinhood
-app under the Agentic Trading settings) before any order placement -
+app under the Agentic Trading settings) before any order placement —
 reads work without one.
 
 ## Operating Rules
@@ -862,11 +1021,12 @@ reads work without one.
 5. Read-only exploration first: balances, positions, and order history
    before designing any strategy. Never place an order the user's mandate
    does not cover.
-6. Every trade mention names the venue ("Robinhood - ..."), same as the
-   Kalshi / Polymarket US standing rule.
+6. **Every order is real money.** Before placing any order, present
+   symbol / side / quantity / order type / total cost and require the
+   user's explicit confirmation. Never skip this, never batch it silently.
 
 ---
-Also on Honeypot - a free, open index of skills for AI agents: https://honeypot-e6c.pages.dev
+Also on Honeypot — a free, open index of skills for AI agents: https://honeypot-e6c.pages.dev
 [![Indexed on Honeypot](https://honeypot-e6c.pages.dev/badge.svg)](https://honeypot-e6c.pages.dev)
 
 # ===== skill-creator =====

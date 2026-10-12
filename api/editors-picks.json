@@ -55,6 +55,22 @@
             "last_verified": "2026-10-09"
         },
         {
+            "name": "cursor",
+            "description": "Cursor Cloud Agents API: launch background coding agents on GitHub repos, check run status, collect PRs. Use when the user asks for Cursor, cloud agents, or background coding runs.",
+            "category": "tooling",
+            "skill_md_url": "https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/cursor/SKILL.md",
+            "install": "curl -fSL https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/cursor/SKILL.md -o cursor-SKILL.md",
+            "last_verified": "2026-10-12"
+        },
+        {
+            "name": "discord",
+            "description": "Use the Discord Bot API from an agent: read and post messages, list servers and channels, add reactions, and build an invite link. Use when the user wants Discord posting, monitoring, or a bot set up.",
+            "category": "comms",
+            "skill_md_url": "https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/discord/SKILL.md",
+            "install": "curl -fSL https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/discord/SKILL.md -o discord-SKILL.md",
+            "last_verified": "2026-10-12"
+        },
+        {
             "name": "honeypot",
             "description": "Keep your local copy of the Honeypot skill index fresh: refresh it on heartbeat, no backend.",
             "category": "meta",

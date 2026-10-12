@@ -100,6 +100,20 @@
             ],
             "last_verified": "2026-10-09",
             "license": "MIT"
+        },
+        {
+            "name": "cursor",
+            "description": "Cursor Cloud Agents API: launch background coding agents on GitHub repos, check run status, collect PRs. Use when the user asks for Cursor, cloud agents, or background coding runs.",
+            "category": "tooling",
+            "skill_md_url": "https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/cursor/SKILL.md",
+            "install": "curl -fSL https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/cursor/SKILL.md -o cursor-SKILL.md",
+            "tags": [
+                "cursor",
+                "coding-agents",
+                "github"
+            ],
+            "last_verified": "2026-10-12",
+            "license": "MIT"
         }
     ]
 }

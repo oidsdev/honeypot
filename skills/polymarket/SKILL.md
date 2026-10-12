@@ -42,7 +42,7 @@ Authenticated requests sign `f"{timestamp_ms}{METHOD}{path}"` with Ed25519 (base
 ## Operating Rules
 1. **Prices are in cents, 1–99.** Every contract pays **$1.00** if correct, **$0** if wrong. Long = bought YES contracts (profit if outcome occurs); short = sold YES contracts (profit if it doesn't).
 2. **Every order is real money — no sandbox exists.** Before placing any order, present market / side / size / price / total cost and require the user's explicit confirmation. Never skip this, never batch it silently.
-3. **Maker-only.** Taker fee is Θ=0.0695 × C × p × (1−p) (up to $1.74/100 @ 50¢); makers earn a rebate Θ=−0.0125 (up to $0.31/100 @ 50¢), credited at fill. Never take except to close a position the user explicitly names.
+3. **Fees punish taking.** Taker fee is Θ=0.0695 × C × p × (1−p) (up to $1.74/100 @ 50¢); makers earn a rebate Θ=−0.0125 (up to $0.31/100 @ 50¢), credited at fill. Run the fee math before deciding to cross the spread — on most prices, posting as a maker is materially cheaper.
 4. Use the fee math in rule 3 to sanity-check cost before any first live order on a new path.
 5. Verify a position exists (via `positions`) before closing it.
 6. Rate limit: **20 req/s per API key** (429 on breach) — back off, prefer the WebSocket for streaming. Orders not processed within 5s are rejected by a latency stopgap ("Global Rate Limit Exceeded" message) — retry logic must distinguish this from a real rate limit.

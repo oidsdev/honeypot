@@ -1,0 +1,21 @@
+{
+    "schema_version": "1",
+    "category": "comms",
+    "updated": "2026-10-12",
+    "skills": [
+        {
+            "name": "discord",
+            "description": "Use the Discord Bot API from an agent: read and post messages, list servers and channels, add reactions, and build an invite link. Use when the user wants Discord posting, monitoring, or a bot set up.",
+            "category": "comms",
+            "skill_md_url": "https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/discord/SKILL.md",
+            "install": "curl -fSL https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/discord/SKILL.md -o discord-SKILL.md",
+            "tags": [
+                "discord",
+                "bots",
+                "chat"
+            ],
+            "last_verified": "2026-10-12",
+            "license": "MIT"
+        }
+    ]
+}

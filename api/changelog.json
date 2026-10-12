@@ -119,6 +119,20 @@
             "action": "added",
             "description": "Look up current library docs through Upstash Context7. Use when an agent needs the current API for a package.",
             "skill_md_url": "https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/context7/SKILL.md"
+        },
+        {
+            "date": "2026-10-12",
+            "name": "cursor",
+            "action": "added",
+            "description": "Cursor Cloud Agents API: launch background coding agents on GitHub repos, check run status, collect PRs. Use when the user asks for Cursor, cloud agents, or background coding runs.",
+            "skill_md_url": "https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/cursor/SKILL.md"
+        },
+        {
+            "date": "2026-10-12",
+            "name": "discord",
+            "action": "added",
+            "description": "Use the Discord Bot API from an agent: read and post messages, list servers and channels, add reactions, and build an invite link. Use when the user wants Discord posting, monitoring, or a bot set up.",
+            "skill_md_url": "https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/discord/SKILL.md"
         }
     ],
     "generated": "2026-10-12"
