@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Grok bot starter pack — Honeypot</title>
+<meta name="description" content="Running a Grok bot? Seven free skills to plug in first. One command each, no sign-up. From Honeypot, the open skill index for AI agents.">
+<meta property="og:title" content="Grok bot starter pack — Honeypot">
+<meta property="og:description" content="Running a Grok bot? Seven free skills to plug in first. One command each, no sign-up.">
+<meta property="og:url" content="https://honeypot-e6c.pages.dev/grok">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='%231a1a1a'/%3E%3Ccircle cx='16' cy='16' r='5' fill='%23fff'/%3E%3C/svg%3E">
+<style>
+  body { font-family: system-ui, sans-serif; max-width: 38rem; margin: 4rem auto; padding: 0 1rem; line-height: 1.6; color: #1a1a1a; }
+  h1 { font-size: 1.6rem; margin-bottom: 0; }
+  h2 { font-size: 1.15rem; margin-top: 2.5rem; }
+  a { color: #1a1a1a; }
+  footer { margin-top: 3rem; font-size: 0.85rem; color: #666; }
+  .card { border: 1px solid #ddd; border-radius: 6px; padding: 1rem; margin-bottom: 1rem; }
+  .card h3 { margin: 0 0 0.25rem; font-size: 1.05rem; }
+  .card p { margin: 0.25rem 0; }
+  .card code { display: block; font-size: 0.8rem; background: #f5f5f5; padding: 0.5rem; border-radius: 4px; margin-top: 0.5rem; overflow-x: auto; white-space: nowrap; }
+  .card .install { display: flex; gap: 0.5rem; align-items: stretch; margin-top: 0.5rem; }
+  .card .install code { flex: 1; margin-top: 0; }
+  .card .install button { font: inherit; font-size: 0.8rem; padding: 0 0.6rem; border: 1px solid #999; border-radius: 4px; background: #fff; color: #1a1a1a; cursor: pointer; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Running a Grok bot?</h1>
+  <p>A Grok bot works in public: posting, watching feeds, running a community. That takes a browser, media handling, and a few live feeds of its own. Here's what to plug in first.</p>
+
+  <p>Each one downloads with a single command (saves as its own file, no overwrites). Tell your bot to run it, or paste it into the bot's terminal yourself.</p>
+
+  <div class="card">
+    <h3>discord</h3>
+    <p>Run a Discord bot through the official Bot API: read and post messages, list servers and channels, add reactions, build an invite link. Community duty, handled.</p>
+    <div class="install"><code>curl -sL https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/discord/SKILL.md -o discord-SKILL.md</code><button onclick="navigator.clipboard.writeText(this.previousElementSibling.textContent)">copy</button></div>
+  </div>
+
+  <div class="card">
+    <h3>image-optimize</h3>
+    <p>Shrinks images before they post. Smaller files, faster uploads, originals untouched.</p>
+    <div class="install"><code>curl -sL https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/image-optimize/SKILL.md -o image-optimize-SKILL.md</code><button onclick="navigator.clipboard.writeText(this.previousElementSibling.textContent)">copy</button></div>
+  </div>
+
+  <div class="card">
+    <h3>playwright-mcp</h3>
+    <p>A real browser your bot can drive: open the page, read it, act on it. For the sites with no API worth using.</p>
+    <div class="install"><code>curl -sL https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/playwright-mcp/SKILL.md -o playwright-mcp-SKILL.md</code><button onclick="navigator.clipboard.writeText(this.previousElementSibling.textContent)">copy</button></div>
+  </div>
+
+  <div class="card">
+    <h3>the-odds-api</h3>
+    <p>Sharp sportsbook odds with the vig stripped out. Fair prices for the posts that quote them.</p>
+    <div class="install"><code>curl -sL https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/the-odds-api/SKILL.md -o the-odds-api-SKILL.md</code><button onclick="navigator.clipboard.writeText(this.previousElementSibling.textContent)">copy</button></div>
+  </div>
+
+  <div class="card">
+    <h3>oids</h3>
+    <p>A verified identity and an inbox on the agent network. How your bot introduces itself to other agents and gets messages back.</p>
+    <div class="install"><code>curl -sL https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/oids/SKILL.md -o oids-SKILL.md</code><button onclick="navigator.clipboard.writeText(this.previousElementSibling.textContent)">copy</button></div>
+  </div>
+
+  <div class="card">
+    <h3>honeypot</h3>
+    <p>Keeps your bot's local copy of this skill index fresh on a heartbeat, no backend. It always knows what tools exist.</p>
+    <div class="install"><code>curl -sL https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/honeypot/SKILL.md -o honeypot-SKILL.md</code><button onclick="navigator.clipboard.writeText(this.previousElementSibling.textContent)">copy</button></div>
+  </div>
+
+  <div class="card">
+    <h3>webhooks</h3>
+    <p>Lets other services poke your bot — a mention, a payment, a new post — so it reacts when things happen instead of polling all day.</p>
+    <div class="install"><code>curl -sL https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/webhooks/SKILL.md -o webhooks-SKILL.md</code><button onclick="navigator.clipboard.writeText(this.previousElementSibling.textContent)">copy</button></div>
+  </div>
+
+  <h2>Want more?</h2>
+  <p>These seven are the starter set. The full index has more — trading, databases, scheduling, all of it. <a href="/">Browse the whole thing</a>, or pull the machine-readable list straight from <a href="/api/skills.json"><code>/api/skills.json</code></a>.</p>
+
+  <footer>
+    <p>Honeypot — a free, open index of skills for AI agents. No sign-up, no tracking. <a href="https://github.com/oidsdev/honeypot">GitHub</a></p>
+  </footer>
+</main>
+</body>
+</html>

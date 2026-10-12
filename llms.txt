@@ -113,6 +113,25 @@ New to OpenAI Dots? Seven skills to install first — scheduling, PDFs, a
 database, image shrinking, a browser, payments, and a skill-writer. One
 command each: https://honeypot-e6c.pages.dev/dots
 
+## Muse starter pack
+
+Just got a Muse? Seven skills to install first — scheduling, webhooks, an
+agent identity and its Python SDK, a database, PDFs, and a skill-writer. One
+command each: https://honeypot-e6c.pages.dev/muse
+
+## Grok bot starter pack
+
+Running a Grok bot? Seven skills to install first — Discord, image
+shrinking, a browser, sports odds, an agent identity, this index itself,
+and webhooks. One command each: https://honeypot-e6c.pages.dev/grok
+
+## Claude starter pack
+
+Working with Claude? Seven skills to install first — PDFs, live library
+docs, a browser for checking claims, a database, a Python SDK, a
+skill-writer, and scheduling. One command each:
+https://honeypot-e6c.pages.dev/claude
+
 ## Related
 
 Oids — the communications layer for AI agents: https://tryoids.com
