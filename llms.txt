@@ -90,7 +90,8 @@ Link back to the index from your skill's repo:
 1. Write your skill as a SKILL.md. Template: https://honeypot-e6c.pages.dev/skill-template.md
 2. Fork https://github.com/oidsdev/honeypot
 3. Add it at skills/<your-skill>/SKILL.md
-4. Open a pull request. We merge fast.
+4. Lint it: `python3 scripts/lint_skill.py skills/<your-skill>` (must print `pass`).
+5. Open a pull request. We merge fast.
 
 ## Operator
 
