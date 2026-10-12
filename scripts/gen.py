@@ -10,6 +10,13 @@
 - llms-full.txt — every SKILL.md concatenated for crawlers
 - api/editors-picks.json — skills passing the published PICK_CRITERIA checklist
 - badge/<name>.svg — per-skill badge (name, version, verified check)
+- index.html — the homepage's dynamic regions (picks section, category TOC,
+  filter options, result count, skill cards) pre-rendered between
+  <!-- gen:* --> markers, so first paint already holds the full layout and
+  the client-side render() replaces it with identical markup (no layout
+  shift). The inline script in index.html must stay byte-compatible with
+  the templates below; if the markers are missing, index regen is skipped
+  with a warning rather than failing the run.
 
 Run from the repo root:  python3 scripts/gen.py
 Run it whenever skills.json changes (a weekly cron regenerates changelog/feed).
@@ -21,6 +28,7 @@ import subprocess
 import sys
 from datetime import date, timedelta
 from pathlib import Path
+from urllib.parse import quote
 from xml.sax.saxutils import escape
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -56,6 +64,7 @@ CHAR_WIDTH = {
 }
 BADGE_FONT = "system-ui, -apple-system, sans-serif"
 CATEGORIES_DIR = ROOT / "categories"
+INDEX_HTML = ROOT / "index.html"
 
 SITE = "https://honeypot-e6c.pages.dev"
 REQUIRED = ["name", "description", "category", "skill_md_url", "install", "tags", "last_verified"]
@@ -260,6 +269,137 @@ def self_check() -> None:
         minidom.parseString(doc)
     width = int(re.search(r'width="(\d+)"', ok).group(1))
     assert width >= 22 + text_width("cron") + 8 + text_width("2026-10-09") + 7 + 9
+def esc(s) -> str:
+    """Mirror of index.html's esc(): same replacements, same order."""
+    return (
+        str(s)
+        .replace("&", "&amp;")
+        .replace("<", "&lt;")
+        .replace(">", "&gt;")
+        .replace('"', "&quot;")
+        .replace("'", "&#39;")
+    )
+
+
+def uri_component(s) -> str:
+    """Mirror of JS encodeURIComponent()."""
+    return quote(str(s), safe="-_.!~*'()")
+
+
+def card_is_stale(s: dict, today: date) -> bool:
+    """Mirror of index.html's isStale() with staleAfterDays = STALE_AFTER_DAYS."""
+    try:
+        age = (today - date.fromisoformat(s.get("last_verified") or "")).days
+    except ValueError:
+        return True  # JS: unparseable date -> age null -> stale
+    return age > STALE_AFTER_DAYS
+
+
+BADGE_MD = "[![Indexed on Honeypot](https://honeypot-e6c.pages.dev/badge.svg)](https://honeypot-e6c.pages.dev)"
+
+
+def index_card(s: dict, today: date) -> str:
+    """One skill card, byte-identical to index.html render()'s output."""
+    out = '<div class="card">'
+    out += "<h3>" + esc(s["name"]) + "</h3>"
+    out += "<p>" + esc(s["description"]) + "</p>"
+    out += '<span class="tag">' + esc(s["category"]) + "</span>"
+    if s.get("skill_md_url"):
+        out += '<a class="src" href="' + esc(s["skill_md_url"]) + '">SKILL.md</a>'
+    if s.get("last_verified"):
+        out += '<span class="verified">verified ' + esc(s["last_verified"]) + "</span>"
+    if card_is_stale(s, today):
+        out += (
+            '<span class="tag stale" title="Not re-verified in over '
+            + str(STALE_AFTER_DAYS)
+            + ' days">stale</span>'
+        )
+    if s.get("install"):
+        out += (
+            '<div class="install"><code>' + esc(s["install"]) + "</code>"
+            + '<button type="button" class="copy" data-copy="' + esc(s["install"])
+            + '" aria-label="Copy install command for ' + esc(s["name"]) + '">copy</button></div>'
+        )
+    out += (
+        '<details class="badge"><summary>add badge</summary><code>'
+        + esc(BADGE_MD)
+        + "</code></details>"
+    )
+    out += "</div>"
+    return out
+
+
+def index_regions(skills: list, picks_doc: dict, today: date) -> dict:
+    """The dynamic regions of index.html, rendered from the same data the
+    page's inline script fetches (api/skills.json + editors-picks.json), so
+    the pre-render and the client render agree."""
+    counts = {}
+    for s in skills:
+        counts[s["category"]] = counts.get(s["category"], 0) + 1
+    toc = '<li><a href="./">all</a> <span class="n">(' + str(len(skills)) + ")</span></li>"
+    toc += "".join(
+        '<li><a href="?category=' + uri_component(c) + '">' + esc(c)
+        + '</a> <span class="n">(' + str(counts[c]) + ")</span></li>"
+        for c in sorted(counts)
+    )
+    cat_options = "".join(
+        '<option value="' + esc(c) + '">' + esc(c) + "</option>" for c in sorted(counts)
+    )
+    all_tags = sorted({t for s in skills for t in s.get("tags") or []})
+    tag_options = "".join(
+        '<option value="' + esc(t) + '">' + esc(t) + "</option>" for t in all_tags
+    )
+    picks = picks_doc.get("picks") or []
+    if picks:
+        items = "".join(
+            '<li><a href="skills/' + uri_component(p["name"]) + '/">'
+            + esc(p["name"]) + "</a> " + esc(p["description"]) + "</li>"
+            for p in picks
+        )
+        picks_section = (
+            '<section id="picks">\n'
+            "    <h2>Editor's picks</h2>\n"
+            '    <ul id="picks-list">' + items + "</ul>\n"
+            '    <p class="note"><span id="picks-note">' + esc(picks_doc.get("criteria_text", ""))
+            + '</span> Raw list: <a href="/api/editors-picks.json"><code>/api/editors-picks.json</code></a></p>\n'
+            "  </section>"
+        )
+    else:
+        picks_section = (
+            '<section id="picks" hidden>\n'
+            "    <h2>Editor's picks</h2>\n"
+            '    <ul id="picks-list"></ul>\n'
+            '    <p class="note"><span id="picks-note"></span> Raw list: '
+            '<a href="/api/editors-picks.json"><code>/api/editors-picks.json</code></a></p>\n'
+            "  </section>"
+        )
+    return {
+        "picks": picks_section,
+        "toc": toc,
+        "cat-options": cat_options,
+        "tag-options": tag_options,
+        "count": str(len(skills)) + " of " + str(len(skills)) + " skills",
+        "cards": "".join(index_card(s, today) for s in skills),
+    }
+
+
+def render_index(skills: list, picks_doc: dict, today: date) -> bool:
+    """Splice index_regions() into index.html between <!-- gen:* --> markers.
+    Returns False (with a warning) if the markers are gone, so a hand-edit
+    that drops them degrades to the old client-rendered page instead of
+    breaking the whole regen."""
+    html = INDEX_HTML.read_text()
+    for name, content in index_regions(skills, picks_doc, today).items():
+        pattern = re.compile(
+            r"(<!-- gen:" + name + r" -->).*?(<!-- /gen:" + name + r" -->)", re.DOTALL
+        )
+        html, n = pattern.subn(lambda m: m.group(1) + content + m.group(2), html)
+        if n != 1:
+            print(f"WARNING: index.html is missing its gen:{name} markers; "
+                  "skipping homepage pre-render", file=sys.stderr)
+            return False
+    INDEX_HTML.write_text(html)
+    return True
 
 
 def git_added(path: str) -> str:
@@ -479,6 +619,8 @@ def main() -> int:
             return 1
 
     updated = doc.get("updated", date.today().isoformat())
+    today_d = date.today()
+    picks_doc = editors_picks(skills, today_d)
 
     # 1. per-category indexes
     BY_CATEGORY.mkdir(exist_ok=True)
@@ -604,8 +746,7 @@ def main() -> int:
     LLMS_FULL.write_text("\n".join(parts))
 
     # 6. editor's picks (deterministic checklist above; same date as the sitemap)
-    today = date.today().isoformat()
-    picks_doc = editors_picks(skills, date.fromisoformat(today))
+    today = today_d.isoformat()
     EDITORS_PICKS.write_text(json.dumps(picks_doc, indent=4) + "\n")
 
     # 7. sitemap (static pages + skill pages + API endpoints, stays fresh automatically)
@@ -632,7 +773,10 @@ def main() -> int:
     )
     SITEMAP_XML.write_text(sm)
 
-    # 8. validate everything we wrote
+    # 8. homepage pre-render (CLS fix: dynamic regions ship as static HTML)
+    render_index(skills, picks_doc, today_d)
+
+    # 9. validate everything we wrote
     for p in [SKILLS_JSON, CHANGELOG_JSON, EDITORS_PICKS, *BY_CATEGORY.glob("*.json")]:
         json.loads(p.read_text())
     from xml.dom import minidom
