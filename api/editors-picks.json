@@ -1,6 +1,6 @@
 {
     "schema_version": "1",
-    "as_of": "2026-10-11",
+    "as_of": "2026-10-12",
     "stale_after_days": 180,
     "criteria": [
         {
@@ -37,6 +37,14 @@
             "skill_md_url": "https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/coinbase/SKILL.md",
             "install": "curl -fSL https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/coinbase/SKILL.md -o coinbase-SKILL.md",
             "last_verified": "2026-09-29"
+        },
+        {
+            "name": "context7",
+            "description": "Look up current library docs through Upstash Context7. Use when an agent needs the current API for a package.",
+            "category": "tooling",
+            "skill_md_url": "https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/context7/SKILL.md",
+            "install": "curl -fSL https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/context7/SKILL.md -o context7-SKILL.md",
+            "last_verified": "2026-10-12"
         },
         {
             "name": "cron",

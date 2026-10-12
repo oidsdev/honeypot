@@ -1,6 +1,6 @@
 {
     "schema_version": "1",
-    "updated": "2026-10-11",
+    "updated": "2026-10-12",
     "skills": [
         {
             "name": "agent-checkout",
@@ -28,6 +28,20 @@
                 "trading"
             ],
             "last_verified": "2026-09-29",
+            "license": "MIT"
+        },
+        {
+            "name": "context7",
+            "description": "Look up current library docs through Upstash Context7. Use when an agent needs the current API for a package.",
+            "category": "tooling",
+            "skill_md_url": "https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/context7/SKILL.md",
+            "install": "curl -fSL https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/context7/SKILL.md -o context7-SKILL.md",
+            "tags": [
+                "context7",
+                "mcp",
+                "docs"
+            ],
+            "last_verified": "2026-10-12",
             "license": "MIT"
         },
         {
