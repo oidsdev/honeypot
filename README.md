@@ -107,6 +107,7 @@ Requirements (learned the hard way — PRs missing these get bounced):
 - `skill-template.md` — blank SKILL.md template
 - `skills/<name>/SKILL.md` — the indexed skills
 - `tests/test_search.js` — `node tests/test_search.js`
+- `tests/test_gen.py` — `python3 -m pytest tests/test_gen.py`
 - `badge/<name>.svg` — per-skill badge, written by `scripts/gen.py`
 - `_headers` — cache header for `/badge/*` (one day)
 
