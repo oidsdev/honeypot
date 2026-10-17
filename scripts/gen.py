@@ -17,6 +17,11 @@
   shift). The inline script in index.html must stay byte-compatible with
   the templates below; if the markers are missing, index regen is skipped
   with a warning rather than failing the run.
+- ja/index.html — the same regions for the Japanese homepage. Static chrome
+  is hand-written; only the marker regions are rewritten. Skill names,
+  descriptions, categories, tags, install commands, URLs, and numbers stay
+  identical to the English page. The inline script's UI strings must match
+  the ja templates below. Missing markers skip that file with a warning.
 
 Run from the repo root:  python3 scripts/gen.py
 Run it whenever skills.json changes (a weekly cron regenerates changelog/feed).
@@ -65,6 +70,7 @@ CHAR_WIDTH = {
 BADGE_FONT = "system-ui, -apple-system, sans-serif"
 CATEGORIES_DIR = ROOT / "categories"
 INDEX_HTML = ROOT / "index.html"
+JA_INDEX = ROOT / "ja" / "index.html"
 
 SITE = "https://honeypot-e6c.pages.dev"
 REQUIRED = ["name", "description", "category", "skill_md_url", "install", "tags", "last_verified"]
@@ -298,8 +304,39 @@ def card_is_stale(s: dict, today: date) -> bool:
 BADGE_MD = "[![Indexed on Honeypot](https://honeypot-e6c.pages.dev/badge.svg)](https://honeypot-e6c.pages.dev)"
 
 
-def index_card(s: dict, today: date) -> str:
-    """One skill card, byte-identical to index.html render()'s output."""
+def ja_criteria_text() -> str:
+    """Japanese checklist sentence. Same thresholds as PICK_CRITERIA."""
+    return (
+        "スコアではなくチェックリストで選んでいます。"
+        "条件をすべて満たしたスキルだけが載ります。"
+        f"説明は{PICK_MIN_DESCRIPTION}文字以上。"
+        f"タグは{PICK_MIN_TAGS}つ以上。"
+        f"過去{STALE_AFTER_DAYS}日以内に検証済み。"
+        "SKILL.mdへのリンクがある。"
+    )
+
+
+def index_card(s: dict, today: date, lang: str = "en") -> str:
+    """One skill card. lang='en' matches index.html's pre-render.
+
+    The English strings are the ones index.html's render() paints for the
+    shared fields. Japanese uses the same data and the labels in ja/index.html's
+    script. Descriptions, install commands, and dates are not translated.
+    """
+    if lang == "ja":
+        verified = "検証 "
+        stale_title = f"{STALE_AFTER_DAYS}日以上再確認されていません"
+        stale_word = "未更新"
+        aria = esc(s["name"]) + "のインストールコマンドをコピー"
+        copy_word = "コピー"
+        badge_summary = "バッジを追加"
+    else:
+        verified = "verified "
+        stale_title = f"Not re-verified in over {STALE_AFTER_DAYS} days"
+        stale_word = "stale"
+        aria = "Copy install command for " + esc(s["name"])
+        copy_word = "copy"
+        badge_summary = "add badge"
     out = '<div class="card">'
     out += "<h3>" + esc(s["name"]) + "</h3>"
     out += "<p>" + esc(s["description"]) + "</p>"
@@ -307,36 +344,64 @@ def index_card(s: dict, today: date) -> str:
     if s.get("skill_md_url"):
         out += '<a class="src" href="' + esc(s["skill_md_url"]) + '">SKILL.md</a>'
     if s.get("last_verified"):
-        out += '<span class="verified">verified ' + esc(s["last_verified"]) + "</span>"
+        out += '<span class="verified">' + verified + esc(s["last_verified"]) + "</span>"
     if card_is_stale(s, today):
         out += (
-            '<span class="tag stale" title="Not re-verified in over '
-            + str(STALE_AFTER_DAYS)
-            + ' days">stale</span>'
+            '<span class="tag stale" title="'
+            + stale_title
+            + '">' + stale_word + "</span>"
         )
     if s.get("install"):
         out += (
             '<div class="install"><code>' + esc(s["install"]) + "</code>"
             + '<button type="button" class="copy" data-copy="' + esc(s["install"])
-            + '" aria-label="Copy install command for ' + esc(s["name"]) + '">copy</button></div>'
+            + '" aria-label="' + aria + '">' + copy_word + "</button></div>"
         )
-    out += (
-        '<details class="badge"><summary>add badge</summary><code>'
-        + esc(BADGE_MD)
-        + "</code></details>"
-    )
+    # English pre-render keeps the shared badge markdown. Japanese matches
+    # ja/index.html render(), including the per-skill image, so hydration
+    # does not change the card.
+    if lang == "ja":
+        badge_body = (
+            "<summary>" + badge_summary + "</summary>"
+            '<img alt="' + esc(s["name"]) + ' on Honeypot" src="/badge/' + esc(s["name"])
+            + '.svg" height="20"><code>' + esc(badge_embed(s["name"])) + "</code>"
+        )
+    else:
+        badge_body = "<summary>" + badge_summary + "</summary><code>" + esc(BADGE_MD) + "</code>"
+    out += '<details class="badge">' + badge_body + "</details>"
     out += "</div>"
     return out
 
 
-def index_regions(skills: list, picks_doc: dict, today: date) -> dict:
-    """The dynamic regions of index.html, rendered from the same data the
-    page's inline script fetches (api/skills.json + editors-picks.json), so
-    the pre-render and the client render agree."""
+def index_regions(skills: list, picks_doc: dict, today: date, lang: str = "en") -> dict:
+    """Dynamic regions of a homepage, from the same data the page's script fetches.
+
+    lang='en' is byte-identical to the previous index.html pre-render.
+    lang='ja' translates only the chrome. Picks link to /skills/ so they
+    resolve from /ja/. Category slugs stay on ?category= so the Japanese
+    page keeps its own filtered view.
+    """
     counts = {}
     for s in skills:
         counts[s["category"]] = counts.get(s["category"], 0) + 1
-    toc = '<li><a href="./">all</a> <span class="n">(' + str(len(skills)) + ")</span></li>"
+    if lang == "ja":
+        all_label = "すべて"
+        picks_h2 = "編集部ピック"
+        raw_list = "元データ: "
+        criteria = ja_criteria_text()
+        count = str(len(skills)) + "件中" + str(len(skills)) + "件"
+        skill_prefix = "/skills/"
+    else:
+        all_label = "all"
+        picks_h2 = "Editor's picks"
+        raw_list = "Raw list: "
+        criteria = picks_doc.get("criteria_text", "")
+        count = str(len(skills)) + " of " + str(len(skills)) + " skills"
+        skill_prefix = "skills/"
+    toc = (
+        '<li><a href="./">' + all_label + "</a> <span class=\"n\">("
+        + str(len(skills)) + ")</span></li>"
+    )
     toc += "".join(
         '<li><a href="?category=' + uri_component(c) + '">' + esc(c)
         + '</a> <span class="n">(' + str(counts[c]) + ")</span></li>"
@@ -352,25 +417,26 @@ def index_regions(skills: list, picks_doc: dict, today: date) -> dict:
     picks = picks_doc.get("picks") or []
     if picks:
         items = "".join(
-            '<li><a href="skills/' + uri_component(p["name"]) + '/">'
+            '<li><a href="' + skill_prefix + uri_component(p["name"]) + '/">'
             + esc(p["name"]) + "</a> " + esc(p["description"]) + "</li>"
             for p in picks
         )
         picks_section = (
             '<section id="picks">\n'
-            "    <h2>Editor's picks</h2>\n"
+            "    <h2>" + picks_h2 + "</h2>\n"
             '    <ul id="picks-list">' + items + "</ul>\n"
-            '    <p class="note"><span id="picks-note">' + esc(picks_doc.get("criteria_text", ""))
-            + '</span> Raw list: <a href="/api/editors-picks.json"><code>/api/editors-picks.json</code></a></p>\n'
+            '    <p class="note"><span id="picks-note">' + esc(criteria)
+            + "</span> " + raw_list
+            + '<a href="/api/editors-picks.json"><code>/api/editors-picks.json</code></a></p>\n'
             "  </section>"
         )
     else:
         picks_section = (
             '<section id="picks" hidden>\n'
-            "    <h2>Editor's picks</h2>\n"
+            "    <h2>" + picks_h2 + "</h2>\n"
             '    <ul id="picks-list"></ul>\n'
-            '    <p class="note"><span id="picks-note"></span> Raw list: '
-            '<a href="/api/editors-picks.json"><code>/api/editors-picks.json</code></a></p>\n'
+            '    <p class="note"><span id="picks-note"></span> ' + raw_list
+            + '<a href="/api/editors-picks.json"><code>/api/editors-picks.json</code></a></p>\n'
             "  </section>"
         )
     return {
@@ -378,28 +444,41 @@ def index_regions(skills: list, picks_doc: dict, today: date) -> dict:
         "toc": toc,
         "cat-options": cat_options,
         "tag-options": tag_options,
-        "count": str(len(skills)) + " of " + str(len(skills)) + " skills",
-        "cards": "".join(index_card(s, today) for s in skills),
+        "count": count,
+        "cards": "".join(index_card(s, today, lang) for s in skills),
     }
 
 
-def render_index(skills: list, picks_doc: dict, today: date) -> bool:
-    """Splice index_regions() into index.html between <!-- gen:* --> markers.
-    Returns False (with a warning) if the markers are gone, so a hand-edit
-    that drops them degrades to the old client-rendered page instead of
-    breaking the whole regen."""
-    html = INDEX_HTML.read_text()
-    for name, content in index_regions(skills, picks_doc, today).items():
+def splice_regions(path: Path, regions: dict, label: str) -> bool:
+    """Splice regions between <!-- gen:* --> markers. Warn and skip if any are missing."""
+    if not path.is_file():
+        print(f"WARNING: {label} is missing; skipping its pre-render", file=sys.stderr)
+        return False
+    html = path.read_text()
+    for name, content in regions.items():
         pattern = re.compile(
             r"(<!-- gen:" + name + r" -->).*?(<!-- /gen:" + name + r" -->)", re.DOTALL
         )
-        html, n = pattern.subn(lambda m: m.group(1) + content + m.group(2), html)
+        html, n = pattern.subn(
+            lambda m, content=content: m.group(1) + content + m.group(2), html
+        )
         if n != 1:
-            print(f"WARNING: index.html is missing its gen:{name} markers; "
-                  "skipping homepage pre-render", file=sys.stderr)
+            print(f"WARNING: {label} is missing its gen:{name} markers; "
+                  "skipping its pre-render", file=sys.stderr)
             return False
-    INDEX_HTML.write_text(html)
+    path.write_text(html)
     return True
+
+
+def render_index(skills: list, picks_doc: dict, today: date) -> bool:
+    """Pre-render index.html and ja/index.html. One file failing does not block the other."""
+    en_ok = splice_regions(
+        INDEX_HTML, index_regions(skills, picks_doc, today, "en"), "index.html"
+    )
+    ja_ok = splice_regions(
+        JA_INDEX, index_regions(skills, picks_doc, today, "ja"), "ja/index.html"
+    )
+    return en_ok and ja_ok
 
 
 def git_added(path: str) -> str:
@@ -600,6 +679,44 @@ def skill_page(s: dict, category_page: bool = False) -> str:
 """
 
 
+def _check_homepages(skills: list, picks_doc: dict) -> None:
+    """English pre-render stayed put, and /ja/ mirrors it without translating data."""
+    en = INDEX_HTML.read_text()
+    ja = JA_INDEX.read_text()
+    n = len(skills)
+    assert f"{n} of {n} skills" in en
+    assert f"{n}件中{n}件" in ja
+    assert "Editor's picks" in en and "Editor's picks" not in ja
+    assert picks_doc["criteria_text"] not in ja
+    assert esc(ja_criteria_text()) in ja
+    for number in (PICK_MIN_DESCRIPTION, PICK_MIN_TAGS, STALE_AFTER_DAYS):
+        assert str(number) in ja_criteria_text()
+    assert 'href="/ja/" hreflang="ja" lang="ja">日本語</a>' in en
+    assert 'hreflang="en" lang="en">English</a>' in ja
+    assert '<html lang="ja">' in ja
+    assert "fetch('/api/skills.json')" in ja and "fetch('api/skills.json')" not in ja
+    assert "fetch('/api/editors-picks.json')" in ja
+    assert 'src="/search.js"' in ja and 'src="search.js"' not in ja
+    assert 'href="skills/' not in ja
+    assert ">copy<" not in ja and ">コピー<" in ja
+    assert ">add badge<" not in ja and ">バッジを追加<" in ja
+    assert "検証 " in ja and "すべて" in ja
+    assert "のインストールコマンドをコピー" in ja
+    # The day count is concatenated at render time. The checklist sentence
+    # on the page already contains STALE_AFTER_DAYS.
+    assert "日以上再確認されていません" in ja
+    assert "未更新" in ja
+    assert "criteria_text" not in ja
+    for path in ("/dots", "/muse", "/grok", "/claude"):
+        assert f'href="{path}"' in ja
+        assert f'href="{path}"' in en
+    for s in skills:
+        assert esc(s["install"]) in ja
+        assert esc(s["description"]) in ja
+        assert s["name"] in ja
+    assert f"<loc>{SITE}/ja/</loc>" in SITEMAP_XML.read_text()
+
+
 def main() -> int:
     self_check()
     _check_largest()
@@ -752,6 +869,7 @@ def main() -> int:
     # 7. sitemap (static pages + skill pages + API endpoints, stays fresh automatically)
     urls = [
         ("/", today),
+        ("/ja/", today),
         ("/llms.txt", today),
         ("/llms-full.txt", today),
         ("/skill-template.md", today),
@@ -802,6 +920,8 @@ def main() -> int:
             if s["category"] == cat:
                 assert f'/skills/{s["name"]}/' in html
                 assert escape(s["description"]) in html
+
+    _check_homepages(skills, picks_doc)
 
     print(f"skills: {len(skills)} | categories: {', '.join(cats)} | "
           f"category pages: {', '.join(page_cats)} | "

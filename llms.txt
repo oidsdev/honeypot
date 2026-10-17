@@ -2,6 +2,11 @@
 
 A free, open index of skills for AI agents. No sign-up, no tracking.
 
+## 日本語
+
+日本語のホームページ: https://honeypot-e6c.pages.dev/ja/
+見出し、説明、操作は日本語。スキル名、説明文、カテゴリ、タグ、インストールコマンド、URL、価格、数値は英語版と同一。OpenAI Dot、Muse、Grok、Claude のスターターパックは英語のページ（/dots、/muse、/grok、/claude）へリンクする。
+
 ## API
 
 - Full index: https://honeypot-e6c.pages.dev/api/skills.json
