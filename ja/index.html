@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Honeypot: AIエージェント向けスキル索引</title>
+<meta name="description" content="Honeypotは、AIエージェント向けスキルの無料でオープンな機械可読索引です。検索し、SKILL.mdを直接取得し、自分のスキルを投稿できます。登録不要。トラッキングなし。">
+<meta property="og:title" content="Honeypot: AIエージェント向けスキル索引">
+<meta property="og:description" content="AIエージェント向けスキルの無料でオープンな機械可読索引。登録不要。トラッキングなし。">
+<meta property="og:url" content="https://honeypot-e6c.pages.dev/ja/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="ja_JP">
+<link rel="canonical" href="https://honeypot-e6c.pages.dev/ja/">
+<link rel="alternate" hreflang="ja" href="https://honeypot-e6c.pages.dev/ja/">
+<link rel="alternate" hreflang="en" href="https://honeypot-e6c.pages.dev/">
+<link rel="alternate" hreflang="x-default" href="https://honeypot-e6c.pages.dev/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='%231a1a1a'/%3E%3Ccircle cx='16' cy='16' r='5' fill='%23fff'/%3E%3C/svg%3E">
+<style>
+  body { font-family: system-ui, "Hiragino Sans", "Noto Sans JP", "Noto Sans CJK JP", sans-serif; max-width: 38rem; margin: 4rem auto; padding: 0 1rem; line-height: 1.6; color: #1a1a1a; }
+  h1 { font-size: 1.6rem; margin-bottom: 0; }
+  h2 { font-size: 1.15rem; margin-top: 2.5rem; }
+  a { color: #1a1a1a; }
+  footer { margin-top: 3rem; font-size: 0.85rem; color: #666; }
+  .controls { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 1.5rem 0; }
+  .controls input, .controls select { font: inherit; padding: 0.4rem 0.6rem; border: 1px solid #999; border-radius: 4px; background: #fff; color: #1a1a1a; }
+  .controls input { flex: 1 1 12rem; }
+  .card { border: 1px solid #ddd; border-radius: 6px; padding: 1rem; margin-bottom: 1rem; }
+  .card h3 { margin: 0 0 0.25rem; font-size: 1.05rem; }
+  .card p { margin: 0.25rem 0; }
+  .tag { display: inline-block; font-size: 0.75rem; color: #666; border: 1px solid #ccc; border-radius: 3px; padding: 0.1rem 0.4rem; margin-right: 0.5rem; }
+  .card code { display: block; font-size: 0.8rem; background: #f5f5f5; padding: 0.5rem; border-radius: 4px; margin-top: 0.5rem; overflow-x: auto; white-space: nowrap; }
+  .card .src { font-size: 0.8rem; }
+  .card .install { display: flex; gap: 0.5rem; align-items: stretch; margin-top: 0.5rem; }
+  .card .install code { flex: 1; margin-top: 0; }
+  .card .install button { font: inherit; font-size: 0.8rem; padding: 0 0.6rem; border: 1px solid #999; border-radius: 4px; background: #fff; color: #1a1a1a; cursor: pointer; }
+  .card .verified { font-size: 0.8rem; color: #666; margin-left: 0.5rem; }
+  .tag.stale { color: #8a3b00; border-color: #8a3b00; margin-left: 0.5rem; margin-right: 0; }
+  details.badge { margin-top: 0.5rem; font-size: 0.8rem; }
+  details.badge summary { cursor: pointer; color: #666; }
+  details.badge img { display: block; height: 20px; width: auto; margin: 0.35rem 0; }
+  details.badge code { white-space: normal; word-break: break-all; }
+  ol.submit li { margin-bottom: 0.5rem; }
+  .count { font-size: 0.85rem; color: #666; }
+  mark { background: #f3e7b3; color: inherit; padding: 0 0.05em; }
+  .snippet { margin: 0.35rem 0 0; }
+  #picks ul { padding-left: 1.2rem; margin: 0.5rem 0; }
+  #picks .note { font-size: 0.85rem; color: #666; }
+  ul.toc { list-style: none; padding: 0; margin: 0.5rem 0 0; display: flex; flex-wrap: wrap; gap: 0.25rem 1rem; font-size: 0.9rem; }
+  ul.toc .n { color: #666; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Honeypot</h1>
+  <p>AIエージェント向けスキルの無料索引。機械可読。登録不要。</p>
+  <p>OpenAI Dotを使い始めたばかりですか。<a href="/dots">まずはここから。7つのスキル、それぞれ1コマンド。</a></p>
+  <p>Museを手に入れたばかりですか。<a href="/muse">まずはここから。7つのスキル、それぞれ1コマンド。</a></p>
+  <p>Grokボットを動かしていますか。<a href="/grok">まずはここから。7つのスキル、それぞれ1コマンド。</a></p>
+  <p>Claudeで作業していますか。<a href="/claude">まずはここから。7つのスキル、それぞれ1コマンド。</a></p>
+  <p><a href="/faq">FAQ</a> · <a href="/api/skills.json">API</a> · <a href="/llms.txt">llms.txt</a> · <a href="/" hreflang="en" lang="en">English</a></p>
+
+  <!-- gen:picks --><section id="picks">
+    <h2>編集部ピック</h2>
+    <ul id="picks-list"><li><a href="/skills/agent-checkout/">agent-checkout</a> Stripe payment links for merchants with AI agents - generate a link for your own product, a customer clicks and pays, you never touch card data. Free tier 100 links/day.</li><li><a href="/skills/coinbase/">coinbase</a> Trade spot crypto on Coinbase Advanced Trade via the official REST API.</li><li><a href="/skills/context7/">context7</a> Look up current library docs through Upstash Context7. Use when an agent needs the current API for a package.</li><li><a href="/skills/cron/">cron</a> Read and install a user crontab without deleting the jobs already there. Use when a command needs to run on a schedule.</li><li><a href="/skills/cursor/">cursor</a> Cursor Cloud Agents API: launch background coding agents on GitHub repos, check run status, collect PRs. Use when the user asks for Cursor, cloud agents, or background coding runs.</li><li><a href="/skills/discord/">discord</a> Use the Discord Bot API from an agent: read and post messages, list servers and channels, add reactions, and build an invite link. Use when the user wants Discord posting, monitoring, or a bot set up.</li><li><a href="/skills/honeypot/">honeypot</a> Keep your local copy of the Honeypot skill index fresh: refresh it on heartbeat, no backend.</li><li><a href="/skills/image-optimize/">image-optimize</a> Shrink images with ImageMagick into a new file and leave the original in place. Use before an upload or an attachment.</li><li><a href="/skills/kalshi/">kalshi</a> Trade Kalshi prediction markets via the official REST API: events, orderbooks, balances, orders.</li><li><a href="/skills/oids/">oids</a> Join Oids: verified identity and reputation for AI agents.</li><li><a href="/skills/oids-python-sdk/">oids-python-sdk</a> Talk to Oids from Python: one stdlib-only file, no dependencies, no install step.</li><li><a href="/skills/pdf-text/">pdf-text</a> Extract selectable text from a PDF with pdftotext. Use when an agent needs the text layer of a PDF file.</li><li><a href="/skills/playwright-mcp/">playwright-mcp</a> Drive a local browser through Microsoft&#39;s Playwright MCP server. Use when an agent needs to open a page and act on it.</li><li><a href="/skills/polymarket/">polymarket</a> Trade Polymarket US (polymarket.us) via the official retail REST API.</li><li><a href="/skills/robinhood-mcp/">robinhood-mcp</a> Trade Robinhood via the official Agentic Trading MCP server (OAuth DCR + PKCE): balances, positions, long equity/option orders in the Agentic account.</li><li><a href="/skills/skill-creator/">skill-creator</a> Create or update a workspace skill: structure, instructions, supporting files.</li><li><a href="/skills/sqlite/">sqlite</a> Query, change, and back up a local SQLite database with the sqlite3 CLI. Use when the data already lives in a .db file.</li><li><a href="/skills/the-odds-api/">the-odds-api</a> Fetch sharp sportsbook odds and strip the vig for fair prices.</li><li><a href="/skills/webhooks/">webhooks</a> Accept webhook POSTs on localhost, answer quickly, and ignore duplicate retries. Use when another service needs to notify this machine.</li></ul>
+    <p class="note"><span id="picks-note">スコアではなくチェックリストで選んでいます。条件をすべて満たしたスキルだけが載ります。説明は40文字以上。タグは1つ以上。過去180日以内に検証済み。SKILL.mdへのリンクがある。</span> 元データ: <a href="/api/editors-picks.json"><code>/api/editors-picks.json</code></a></p>
+  </section><!-- /gen:picks -->
+
+  <h2>カテゴリから探す</h2>
+  <ul class="toc" id="toc"><!-- gen:toc --><li><a href="./">すべて</a> <span class="n">(19)</span></li><li><a href="?category=comms">comms</a> <span class="n">(1)</span></li><li><a href="?category=data">data</a> <span class="n">(1)</span></li><li><a href="?category=identity">identity</a> <span class="n">(2)</span></li><li><a href="?category=meta">meta</a> <span class="n">(2)</span></li><li><a href="?category=payments">payments</a> <span class="n">(1)</span></li><li><a href="?category=tooling">tooling</a> <span class="n">(8)</span></li><li><a href="?category=trading">trading</a> <span class="n">(4)</span></li><!-- /gen:toc --></ul>
+
+  <div class="controls">
+    <input id="q" type="search" placeholder="スキルを検索…" aria-label="スキルを検索">
+    <select id="cat" aria-label="カテゴリで絞り込み">
+      <option value="">すべてのカテゴリ</option>
+      <!-- gen:cat-options --><option value="comms">comms</option><option value="data">data</option><option value="identity">identity</option><option value="meta">meta</option><option value="payments">payments</option><option value="tooling">tooling</option><option value="trading">trading</option><!-- /gen:cat-options -->
+    </select>
+    <select id="tag" aria-label="タグで絞り込み">
+      <option value="">すべてのタグ</option>
+      <!-- gen:tag-options --><option value="agent-comms">agent-comms</option><option value="agents">agents</option><option value="bots">bots</option><option value="browser">browser</option><option value="chat">chat</option><option value="checkout">checkout</option><option value="client">client</option><option value="coding-agents">coding-agents</option><option value="compression">compression</option><option value="context7">context7</option><option value="cron">cron</option><option value="crypto">crypto</option><option value="cursor">cursor</option><option value="database">database</option><option value="discord">discord</option><option value="docs">docs</option><option value="documents">documents</option><option value="events">events</option><option value="github">github</option><option value="http">http</option><option value="identity">identity</option><option value="imagemagick">imagemagick</option><option value="images">images</option><option value="index">index</option><option value="jobs">jobs</option><option value="mcp">mcp</option><option value="meta">meta</option><option value="odds">odds</option><option value="oids">oids</option><option value="options">options</option><option value="payments">payments</option><option value="pdf">pdf</option><option value="playwright">playwright</option><option value="prediction-markets">prediction-markets</option><option value="python">python</option><option value="scheduling">scheduling</option><option value="sdk">sdk</option><option value="sports-data">sports-data</option><option value="sql">sql</option><option value="sqlite">sqlite</option><option value="stocks">stocks</option><option value="stripe">stripe</option><option value="sync">sync</option><option value="text">text</option><option value="tooling">tooling</option><option value="trading">trading</option><option value="webhooks">webhooks</option><!-- /gen:tag-options -->
+    </select>
+  </div>
+  <p class="count" id="count"><!-- gen:count -->19件中19件<!-- /gen:count --></p>
+  <div id="cards"><!-- gen:cards --><div class="card"><h3>agent-checkout</h3><p>Stripe payment links for merchants with AI agents - generate a link for your own product, a customer clicks and pays, you never touch card data. Free tier 100 links/day.</p><span class="tag">payments</span><a class="src" href="https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/agent-checkout/SKILL.md">SKILL.md</a><span class="verified">検証 2026-10-10</span><div class="install"><code>curl -fSL https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/agent-checkout/SKILL.md -o agent-checkout-SKILL.md</code><button type="button" class="copy" data-copy="curl -fSL https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/agent-checkout/SKILL.md -o agent-checkout-SKILL.md" aria-label="agent-checkoutのインストールコマンドをコピー">コピー</button></div><details class="badge"><summary>バッジを追加</summary><img alt="agent-checkout on Honeypot" src="/badge/agent-checkout.svg" height="20"><code>[![agent-checkout on Honeypot](https://honeypot-e6c.pages.dev/badge/agent-checkout.svg)](https://honeypot-e6c.pages.dev/skills/agent-checkout/)</code></details></div><div class="card"><h3>coinbase</h3><p>Trade spot crypto on Coinbase Advanced Trade via the official REST API.</p><span class="tag">trading</span><a class="src" href="https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/coinbase/SKILL.md">SKILL.md</a><span class="verified">検証 2026-09-29</span><div class="install"><code>curl -fSL https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/coinbase/SKILL.md -o coinbase-SKILL.md</code><button type="button" class="copy" data-copy="curl -fSL https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/coinbase/SKILL.md -o coinbase-SKILL.md" aria-label="coinbaseのインストールコマンドをコピー">コピー</button></div><details class="badge"><summary>バッジを追加</summary><img alt="coinbase on Honeypot" src="/badge/coinbase.svg" height="20"><code>[![coinbase on Honeypot](https://honeypot-e6c.pages.dev/badge/coinbase.svg)](https://honeypot-e6c.pages.dev/skills/coinbase/)</code></details></div><div class="card"><h3>context7</h3><p>Look up current library docs through Upstash Context7. Use when an agent needs the current API for a package.</p><span class="tag">tooling</span><a class="src" href="https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/context7/SKILL.md">SKILL.md</a><span class="verified">検証 2026-10-12</span><div class="install"><code>curl -fSL https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/context7/SKILL.md -o context7-SKILL.md</code><button type="button" class="copy" data-copy="curl -fSL https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/context7/SKILL.md -o context7-SKILL.md" aria-label="context7のインストールコマンドをコピー">コピー</button></div><details class="badge"><summary>バッジを追加</summary><img alt="context7 on Honeypot" src="/badge/context7.svg" height="20"><code>[![context7 on Honeypot](https://honeypot-e6c.pages.dev/badge/context7.svg)](https://honeypot-e6c.pages.dev/skills/context7/)</code></details></div><div class="card"><h3>cron</h3><p>Read and install a user crontab without deleting the jobs already there. Use when a command needs to run on a schedule.</p><span class="tag">tooling</span><a class="src" href="https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/cron/SKILL.md">SKILL.md</a><span class="verified">検証 2026-10-09</span><div class="install"><code>curl -fSL https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/cron/SKILL.md -o cron-SKILL.md</code><button type="button" class="copy" data-copy="curl -fSL https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/cron/SKILL.md -o cron-SKILL.md" aria-label="cronのインストールコマンドをコピー">コピー</button></div><details class="badge"><summary>バッジを追加</summary><img alt="cron on Honeypot" src="/badge/cron.svg" height="20"><code>[![cron on Honeypot](https://honeypot-e6c.pages.dev/badge/cron.svg)](https://honeypot-e6c.pages.dev/skills/cron/)</code></details></div><div class="card"><h3>honeypot</h3><p>Keep your local copy of the Honeypot skill index fresh: refresh it on heartbeat, no backend.</p><span class="tag">meta</span><a class="src" href="https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/honeypot/SKILL.md">SKILL.md</a><span class="verified">検証 2026-10-09</span><div class="install"><code>curl -fSL https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/honeypot/SKILL.md -o honeypot-SKILL.md</code><button type="button" class="copy" data-copy="curl -fSL https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/honeypot/SKILL.md -o honeypot-SKILL.md" aria-label="honeypotのインストールコマンドをコピー">コピー</button></div><details class="badge"><summary>バッジを追加</summary><img alt="honeypot on Honeypot" src="/badge/honeypot.svg" height="20"><code>[![honeypot on Honeypot](https://honeypot-e6c.pages.dev/badge/honeypot.svg)](https://honeypot-e6c.pages.dev/skills/honeypot/)</code></details></div><div class="card"><h3>image-optimize</h3><p>Shrink images with ImageMagick into a new file and leave the original in place. Use before an upload or an attachment.</p><span class="tag">tooling</span><a class="src" href="https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/image-optimize/SKILL.md">SKILL.md</a><span class="verified">検証 2026-10-09</span><div class="install"><code>curl -fSL https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/image-optimize/SKILL.md -o image-optimize-SKILL.md</code><button type="button" class="copy" data-copy="curl -fSL https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/image-optimize/SKILL.md -o image-optimize-SKILL.md" aria-label="image-optimizeのインストールコマンドをコピー">コピー</button></div><details class="badge"><summary>バッジを追加</summary><img alt="image-optimize on Honeypot" src="/badge/image-optimize.svg" height="20"><code>[![image-optimize on Honeypot](https://honeypot-e6c.pages.dev/badge/image-optimize.svg)](https://honeypot-e6c.pages.dev/skills/image-optimize/)</code></details></div><div class="card"><h3>kalshi</h3><p>Trade Kalshi prediction markets via the official REST API: events, orderbooks, balances, orders.</p><span class="tag">trading</span><a class="src" href="https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/kalshi/SKILL.md">SKILL.md</a><span class="verified">検証 2026-09-29</span><div class="install"><code>curl -fSL https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/kalshi/SKILL.md -o kalshi-SKILL.md</code><button type="button" class="copy" data-copy="curl -fSL https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/kalshi/SKILL.md -o kalshi-SKILL.md" aria-label="kalshiのインストールコマンドをコピー">コピー</button></div><details class="badge"><summary>バッジを追加</summary><img alt="kalshi on Honeypot" src="/badge/kalshi.svg" height="20"><code>[![kalshi on Honeypot](https://honeypot-e6c.pages.dev/badge/kalshi.svg)](https://honeypot-e6c.pages.dev/skills/kalshi/)</code></details></div><div class="card"><h3>oids</h3><p>Join Oids: verified identity and reputation for AI agents.</p><span class="tag">identity</span><a class="src" href="https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/oids/SKILL.md">SKILL.md</a><span class="verified">検証 2026-09-29</span><div class="install"><code>curl -fSL https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/oids/SKILL.md -o oids-SKILL.md</code><button type="button" class="copy" data-copy="curl -fSL https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/oids/SKILL.md -o oids-SKILL.md" aria-label="oidsのインストールコマンドをコピー">コピー</button></div><details class="badge"><summary>バッジを追加</summary><img alt="oids on Honeypot" src="/badge/oids.svg" height="20"><code>[![oids on Honeypot](https://honeypot-e6c.pages.dev/badge/oids.svg)](https://honeypot-e6c.pages.dev/skills/oids/)</code></details></div><div class="card"><h3>oids-python-sdk</h3><p>Talk to Oids from Python: one stdlib-only file, no dependencies, no install step.</p><span class="tag">identity</span><a class="src" href="https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/oids-python-sdk/SKILL.md">SKILL.md</a><span class="verified">検証 2026-09-29</span><div class="install"><code>curl -fSL https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/oids-python-sdk/oids_client.py -o oids_client.py</code><button type="button" class="copy" data-copy="curl -fSL https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/oids-python-sdk/oids_client.py -o oids_client.py" aria-label="oids-python-sdkのインストールコマンドをコピー">コピー</button></div><details class="badge"><summary>バッジを追加</summary><img alt="oids-python-sdk on Honeypot" src="/badge/oids-python-sdk.svg" height="20"><code>[![oids-python-sdk on Honeypot](https://honeypot-e6c.pages.dev/badge/oids-python-sdk.svg)](https://honeypot-e6c.pages.dev/skills/oids-python-sdk/)</code></details></div><div class="card"><h3>pdf-text</h3><p>Extract selectable text from a PDF with pdftotext. Use when an agent needs the text layer of a PDF file.</p><span class="tag">tooling</span><a class="src" href="https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/pdf-text/SKILL.md">SKILL.md</a><span class="verified">検証 2026-10-09</span><div class="install"><code>curl -fSL https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/pdf-text/SKILL.md -o pdf-text-SKILL.md</code><button type="button" class="copy" data-copy="curl -fSL https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/pdf-text/SKILL.md -o pdf-text-SKILL.md" aria-label="pdf-textのインストールコマンドをコピー">コピー</button></div><details class="badge"><summary>バッジを追加</summary><img alt="pdf-text on Honeypot" src="/badge/pdf-text.svg" height="20"><code>[![pdf-text on Honeypot](https://honeypot-e6c.pages.dev/badge/pdf-text.svg)](https://honeypot-e6c.pages.dev/skills/pdf-text/)</code></details></div><div class="card"><h3>playwright-mcp</h3><p>Drive a local browser through Microsoft&#39;s Playwright MCP server. Use when an agent needs to open a page and act on it.</p><span class="tag">tooling</span><a class="src" href="https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/playwright-mcp/SKILL.md">SKILL.md</a><span class="verified">検証 2026-10-10</span><div class="install"><code>curl -fSL https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/playwright-mcp/SKILL.md -o playwright-mcp-SKILL.md</code><button type="button" class="copy" data-copy="curl -fSL https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/playwright-mcp/SKILL.md -o playwright-mcp-SKILL.md" aria-label="playwright-mcpのインストールコマンドをコピー">コピー</button></div><details class="badge"><summary>バッジを追加</summary><img alt="playwright-mcp on Honeypot" src="/badge/playwright-mcp.svg" height="20"><code>[![playwright-mcp on Honeypot](https://honeypot-e6c.pages.dev/badge/playwright-mcp.svg)](https://honeypot-e6c.pages.dev/skills/playwright-mcp/)</code></details></div><div class="card"><h3>polymarket</h3><p>Trade Polymarket US (polymarket.us) via the official retail REST API.</p><span class="tag">trading</span><a class="src" href="https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/polymarket/SKILL.md">SKILL.md</a><span class="verified">検証 2026-09-29</span><div class="install"><code>curl -fSL https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/polymarket/SKILL.md -o polymarket-SKILL.md</code><button type="button" class="copy" data-copy="curl -fSL https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/polymarket/SKILL.md -o polymarket-SKILL.md" aria-label="polymarketのインストールコマンドをコピー">コピー</button></div><details class="badge"><summary>バッジを追加</summary><img alt="polymarket on Honeypot" src="/badge/polymarket.svg" height="20"><code>[![polymarket on Honeypot](https://honeypot-e6c.pages.dev/badge/polymarket.svg)](https://honeypot-e6c.pages.dev/skills/polymarket/)</code></details></div><div class="card"><h3>robinhood-mcp</h3><p>Trade Robinhood via the official Agentic Trading MCP server (OAuth DCR + PKCE): balances, positions, long equity/option orders in the Agentic account.</p><span class="tag">trading</span><a class="src" href="https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/robinhood-mcp/SKILL.md">SKILL.md</a><span class="verified">検証 2026-09-29</span><div class="install"><code>curl -fSL https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/robinhood-mcp/SKILL.md -o robinhood-mcp-SKILL.md</code><button type="button" class="copy" data-copy="curl -fSL https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/robinhood-mcp/SKILL.md -o robinhood-mcp-SKILL.md" aria-label="robinhood-mcpのインストールコマンドをコピー">コピー</button></div><details class="badge"><summary>バッジを追加</summary><img alt="robinhood-mcp on Honeypot" src="/badge/robinhood-mcp.svg" height="20"><code>[![robinhood-mcp on Honeypot](https://honeypot-e6c.pages.dev/badge/robinhood-mcp.svg)](https://honeypot-e6c.pages.dev/skills/robinhood-mcp/)</code></details></div><div class="card"><h3>skill-creator</h3><p>Create or update a workspace skill: structure, instructions, supporting files.</p><span class="tag">meta</span><a class="src" href="https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/skill-creator/SKILL.md">SKILL.md</a><span class="verified">検証 2026-09-29</span><div class="install"><code>curl -fSL https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/skill-creator/SKILL.md -o skill-creator-SKILL.md</code><button type="button" class="copy" data-copy="curl -fSL https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/skill-creator/SKILL.md -o skill-creator-SKILL.md" aria-label="skill-creatorのインストールコマンドをコピー">コピー</button></div><details class="badge"><summary>バッジを追加</summary><img alt="skill-creator on Honeypot" src="/badge/skill-creator.svg" height="20"><code>[![skill-creator on Honeypot](https://honeypot-e6c.pages.dev/badge/skill-creator.svg)](https://honeypot-e6c.pages.dev/skills/skill-creator/)</code></details></div><div class="card"><h3>sqlite</h3><p>Query, change, and back up a local SQLite database with the sqlite3 CLI. Use when the data already lives in a .db file.</p><span class="tag">tooling</span><a class="src" href="https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/sqlite/SKILL.md">SKILL.md</a><span class="verified">検証 2026-10-09</span><div class="install"><code>curl -fSL https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/sqlite/SKILL.md -o sqlite-SKILL.md</code><button type="button" class="copy" data-copy="curl -fSL https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/sqlite/SKILL.md -o sqlite-SKILL.md" aria-label="sqliteのインストールコマンドをコピー">コピー</button></div><details class="badge"><summary>バッジを追加</summary><img alt="sqlite on Honeypot" src="/badge/sqlite.svg" height="20"><code>[![sqlite on Honeypot](https://honeypot-e6c.pages.dev/badge/sqlite.svg)](https://honeypot-e6c.pages.dev/skills/sqlite/)</code></details></div><div class="card"><h3>the-odds-api</h3><p>Fetch sharp sportsbook odds and strip the vig for fair prices.</p><span class="tag">data</span><a class="src" href="https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/the-odds-api/SKILL.md">SKILL.md</a><span class="verified">検証 2026-09-29</span><div class="install"><code>curl -fSL https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/the-odds-api/SKILL.md -o the-odds-api-SKILL.md</code><button type="button" class="copy" data-copy="curl -fSL https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/the-odds-api/SKILL.md -o the-odds-api-SKILL.md" aria-label="the-odds-apiのインストールコマンドをコピー">コピー</button></div><details class="badge"><summary>バッジを追加</summary><img alt="the-odds-api on Honeypot" src="/badge/the-odds-api.svg" height="20"><code>[![the-odds-api on Honeypot](https://honeypot-e6c.pages.dev/badge/the-odds-api.svg)](https://honeypot-e6c.pages.dev/skills/the-odds-api/)</code></details></div><div class="card"><h3>webhooks</h3><p>Accept webhook POSTs on localhost, answer quickly, and ignore duplicate retries. Use when another service needs to notify this machine.</p><span class="tag">tooling</span><a class="src" href="https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/webhooks/SKILL.md">SKILL.md</a><span class="verified">検証 2026-10-09</span><div class="install"><code>curl -fSL https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/webhooks/SKILL.md -o webhooks-SKILL.md</code><button type="button" class="copy" data-copy="curl -fSL https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/webhooks/SKILL.md -o webhooks-SKILL.md" aria-label="webhooksのインストールコマンドをコピー">コピー</button></div><details class="badge"><summary>バッジを追加</summary><img alt="webhooks on Honeypot" src="/badge/webhooks.svg" height="20"><code>[![webhooks on Honeypot](https://honeypot-e6c.pages.dev/badge/webhooks.svg)](https://honeypot-e6c.pages.dev/skills/webhooks/)</code></details></div><div class="card"><h3>discord</h3><p>Use the Discord Bot API from an agent: read and post messages, list servers and channels, add reactions, and build an invite link. Use when the user wants Discord posting, monitoring, or a bot set up.</p><span class="tag">comms</span><a class="src" href="https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/discord/SKILL.md">SKILL.md</a><span class="verified">検証 2026-10-12</span><div class="install"><code>curl -fSL https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/discord/SKILL.md -o discord-SKILL.md</code><button type="button" class="copy" data-copy="curl -fSL https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/discord/SKILL.md -o discord-SKILL.md" aria-label="discordのインストールコマンドをコピー">コピー</button></div><details class="badge"><summary>バッジを追加</summary><img alt="discord on Honeypot" src="/badge/discord.svg" height="20"><code>[![discord on Honeypot](https://honeypot-e6c.pages.dev/badge/discord.svg)](https://honeypot-e6c.pages.dev/skills/discord/)</code></details></div><div class="card"><h3>cursor</h3><p>Cursor Cloud Agents API: launch background coding agents on GitHub repos, check run status, collect PRs. Use when the user asks for Cursor, cloud agents, or background coding runs.</p><span class="tag">tooling</span><a class="src" href="https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/cursor/SKILL.md">SKILL.md</a><span class="verified">検証 2026-10-12</span><div class="install"><code>curl -fSL https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/cursor/SKILL.md -o cursor-SKILL.md</code><button type="button" class="copy" data-copy="curl -fSL https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/cursor/SKILL.md -o cursor-SKILL.md" aria-label="cursorのインストールコマンドをコピー">コピー</button></div><details class="badge"><summary>バッジを追加</summary><img alt="cursor on Honeypot" src="/badge/cursor.svg" height="20"><code>[![cursor on Honeypot](https://honeypot-e6c.pages.dev/badge/cursor.svg)](https://honeypot-e6c.pages.dev/skills/cursor/)</code></details></div><!-- /gen:cards --></div>
+  <p class="note" style="font-size:0.85rem;color:#666;margin-top:1rem">スキルは作者が投稿し、公開前に軽く確認しています。インストールコマンドは実行前に中身を見てください。現状有姿。保証はありません。</p>
+
+  <h2>掲載基準</h2>
+  <p>どのスキルも、プルリクエストを通して載ります。マージする前に、一つずつ読んでいます。</p>
+  <ul>
+    <li>スパム、重複、悪意のあるものはクローズします。</li>
+    <li>ライセンスはMIT互換のみです。再配布できないものは索引に載せられません。</li>
+    <li>SKILL.mdのフロントマターには <code>name</code> と <code>description</code> が必要です。無いPRは差し戻します。</li>
+  </ul>
+
+  <h2>スキルを投稿する</h2>
+  <ol class="submit">
+    <li>スキルは <code>SKILL.md</code> に書いてください。<a href="/skill-template.md">テンプレート</a>から書き始められます。</li>
+    <li><a href="https://github.com/oidsdev/honeypot">github.com/oidsdev/honeypot</a> をフォークしてください。</li>
+    <li><code>skills/&lt;your-skill&gt;/SKILL.md</code> に追加してください。</li>
+    <li>プルリクエストを開いてください。すぐマージします。</li>
+    <li>索引を見つけてもらえるよう、リポジトリにバッジを置いてください。<br>
+    <code>[![Indexed on Honeypot](https://honeypot-e6c.pages.dev/badge.svg)](https://honeypot-e6c.pages.dev)</code><br>
+    スキル別バッジ（名前、バージョン、検証マーク）: <code>/badge/&lt;skill&gt;.svg</code></li>
+  </ol>
+  <p>任意です。PRの説明にOidsのユーザー名かXのハンドルを書くと、取り上げるときに名前を出します。</p>
+
+  <h2>機械向け</h2>
+  <p>全索引（JSON）: <a href="/api/skills.json"><code>/api/skills.json</code></a><br>
+  編集部ピックとチェックリスト: <a href="/api/editors-picks.json"><code>/api/editors-picks.json</code></a><br>
+  追加されたスキル: <a href="/api/changelog.json"><code>/api/changelog.json</code></a> と <a href="/feed.xml"><code>/feed.xml</code></a> (RSS)<br>
+  スキル別バッジ: <code>/badge/&lt;skill&gt;.svg</code><br>
+  カテゴリ別: <code>/api/by-category/&lt;category&gt;.json</code> (trading, data, identity, meta, tooling)<br>
+  カテゴリページ: <code>/categories/&lt;category&gt;/</code><br>
+  エージェント向けの説明: <a href="/llms.txt"><code>/llms.txt</code></a><br>
+  MCPサーバー（stdio、標準ライブラリのみ）: <a href="/mcp-server.py"><code>/mcp-server.py</code></a> (tools: search_skills, get_skill, list_categories, get_editors_picks)<br>
+  リンクできる検索: <code>/?q=&lt;text&gt;&amp;tag=&lt;tag&gt;&amp;category=&lt;category&gt;</code>（例: <a href="/?tag=prediction-markets"><code>/?tag=prediction-markets</code></a>）</p>
+<h2>関連ツール</h2>
+<p><a href="https://pack-check.pages.dev">Pack Check</a>: プロンプトパックは基準を満たしていますか。
+<a href="https://agent-house-rules.pages.dev">Agent House Rules</a>: 質問は10個。エージェントに貼る、平易な英語の安全ルール。
+<a href="https://agent-census.pages.dev">Agent Census</a>: エージェント、ボット、スキル、MCPサーバーのオープンなディレクトリ。</p>
+</main>
+<footer>
+  <p>© 2026 Orbital Desk LLC · <a href="https://ignitionfoundry.com">ignitionfoundry.com</a></p>
+  <p><a href="https://tryoids.com">Oids</a>のプロジェクト。AIエージェント向けの通信レイヤーです。</p>
+  <p>著作権の連絡先: <a href="mailto:abuse@tryoids.com">abuse@tryoids.com</a> · DMCA agent DMCA-1081497</p>
+</footer>
+<script src="/search.js"></script>
+<script>
+(function () {
+  var cards = document.getElementById('cards');
+  var q = document.getElementById('q');
+  var cat = document.getElementById('cat');
+  var tag = document.getElementById('tag');
+  var count = document.getElementById('count');
+  var all = [];
+  // Stale threshold in days. Comes from gen.py's STALE_AFTER_DAYS via
+  // api/editors-picks.json; until that loads, no card is marked stale.
+  // Labels below match scripts/gen.py's ja pre-render. The checklist
+  // sentence stays as pre-rendered Japanese; the JSON sentence is English.
+  var staleAfterDays = null;
+
+  function esc(s) {
+    return String(s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+
+  // Whole days since a YYYY-MM-DD date, counted in calendar days like gen.py.
+  function ageDays(ymd) {
+    var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(ymd || '');
+    if (!m) return null;
+    var now = new Date();
+    return Math.round((Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()) - Date.UTC(+m[1], m[2] - 1, +m[3])) / 86400000);
+  }
+
+  function isStale(s) {
+    if (staleAfterDays === null) return false;
+    var age = ageDays(s.last_verified);
+    return age === null || age > staleAfterDays;
+  }
+
+  function addOptions(select, values) {
+    // Options are pre-rendered into the HTML by gen.py; skip any that are
+    // already present so the select never grows (and shifts layout) on load.
+    var have = {};
+    for (var i = 0; i < select.options.length; i++) have[select.options[i].value] = true;
+    values.sort().forEach(function (v) {
+      if (have[v]) return;
+      var o = document.createElement('option');
+      o.value = v; o.textContent = v;
+      select.appendChild(o);
+    });
+  }
+
+  // Keep the address bar in sync so any view can be shared as ?q=&tag=&category=
+  function syncUrl() {
+    var p = new URLSearchParams();
+    if (q.value.trim()) p.set('q', q.value.trim());
+    if (tag.value) p.set('tag', tag.value);
+    if (cat.value) p.set('category', cat.value);
+    var qs = p.toString();
+    history.replaceState(null, '', location.pathname + (qs ? '?' + qs : '') + location.hash);
+  }
+
+  function render() {
+    var term = q.value.trim();
+    var c = cat.value;
+    var t = tag.value;
+    var hits = term ? HoneypotSearch.search(all, term) : all.map(function (s) {
+      return { skill: s };
+    });
+    var list = hits.filter(function (h) {
+      var s = h.skill;
+      var tags = s.tags || [];
+      return (!c || s.category === c) && (!t || tags.indexOf(t) !== -1);
+    });
+    count.textContent = all.length + '件中' + list.length + '件';
+    cards.innerHTML = list.map(function (h) {
+      var s = h.skill;
+      var name = term ? h.nameHtml : esc(s.name);
+      var desc = term ? h.descriptionHtml : esc(s.description);
+      var tagLine = term && !h.descriptionHit && h.matchedTagsHtml
+        ? '<p class="snippet">' + h.matchedTagsHtml + '</p>' : '';
+      return '<div class="card">' +
+        '<h3>' + name + '</h3>' +
+        '<p>' + desc + '</p>' +
+        tagLine +
+        '<span class="tag">' + esc(s.category) + '</span>' +
+        (s.skill_md_url ? '<a class="src" href="' + esc(s.skill_md_url) + '">SKILL.md</a>' : '') +
+        (s.last_verified ? '<span class="verified">検証 ' + esc(s.last_verified) + '</span>' : '') +
+        (isStale(s) ? '<span class="tag stale" title="' + staleAfterDays + '日以上再確認されていません">未更新</span>' : '') +
+        (s.install ? '<div class="install"><code>' + esc(s.install) + '</code>' +
+          '<button type="button" class="copy" data-copy="' + esc(s.install) + '" aria-label="' + esc(s.name) + 'のインストールコマンドをコピー">コピー</button></div>' : '') +
+        '<details class="badge"><summary>バッジを追加</summary>' +
+        '<img alt="' + esc(s.name) + ' on Honeypot" src="/badge/' + esc(s.name) + '.svg" height="20">' +
+        '<code>' + esc('[![' + s.name + ' on Honeypot](https://honeypot-e6c.pages.dev/badge/' + s.name + '.svg)](https://honeypot-e6c.pages.dev/skills/' + s.name + '/)') + '</code></details>' +
+        '</div>';
+    }).join('');
+  }
+
+  fetch('/api/skills.json').then(function (r) { return r.json(); }).then(function (data) {
+    all = data.skills || data;
+    var cats = {}, tags = {};
+    all.forEach(function (s) {
+      cats[s.category] = true;
+      (s.tags || []).forEach(function (t) { tags[t] = true; });
+    });
+    addOptions(cat, Object.keys(cats));
+
+    // Stay on this page's ?category= filter. Category landing pages are English.
+    var counts = {};
+    all.forEach(function (s) { counts[s.category] = (counts[s.category] || 0) + 1; });
+    document.getElementById('toc').innerHTML =
+      '<li><a href="./">すべて</a> <span class="n">(' + all.length + ')</span></li>' +
+      Object.keys(counts).sort().map(function (c) {
+        return '<li><a href="?category=' + encodeURIComponent(c) + '">' + esc(c) + '</a> <span class="n">(' + counts[c] + ')</span></li>';
+      }).join('');
+    addOptions(tag, Object.keys(tags));
+
+    // Pre-fill controls from ?q=, ?tag=, ?category=
+    var params = new URLSearchParams(location.search);
+    q.value = params.get('q') || '';
+    var pc = params.get('category'), pt = params.get('tag');
+    if (pc && cats[pc]) cat.value = pc;
+    if (pt && tags[pt]) tag.value = pt;
+    render();
+  }).catch(function () {
+    cards.innerHTML = '<p>索引を読み込めませんでした。</p>';
+  });
+
+  function update() { render(); syncUrl(); }
+  // Copy buttons: clipboard API where allowed, hidden-textarea fallback elsewhere
+  // (e.g. plain http on a LAN address, where navigator.clipboard is missing).
+  function fallbackCopy(text) {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.setAttribute('readonly', '');
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    var ok = false;
+    try { ok = document.execCommand('copy'); } catch (e) {}
+    document.body.removeChild(ta);
+    return ok;
+  }
+
+  function copyText(text) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      return navigator.clipboard.writeText(text).catch(function () {
+        if (!fallbackCopy(text)) throw new Error('copy failed');
+      });
+    }
+    return fallbackCopy(text) ? Promise.resolve() : Promise.reject(new Error('copy failed'));
+  }
+
+  cards.addEventListener('click', function (e) {
+    var btn = e.target.closest && e.target.closest('button.copy');
+    if (!btn) return;
+    copyText(btn.getAttribute('data-copy')).then(function () {
+      btn.textContent = 'コピーしました';
+    }, function () {
+      // Last resort: select the command so it can be copied by hand
+      var code = btn.parentNode.querySelector('code');
+      if (code && window.getSelection) window.getSelection().selectAllChildren(code);
+      btn.textContent = 'Ctrl+Cを押す';
+    }).then(function () {
+      setTimeout(function () { btn.textContent = 'コピー'; }, 1500);
+    });
+  });
+
+  // Picks list comes from gen.py's output. The note stays Japanese.
+  fetch('/api/editors-picks.json').then(function (r) { return r.json(); }).then(function (p) {
+    if (typeof p.stale_after_days === 'number') {
+      staleAfterDays = p.stale_after_days;
+      if (all.length) render();
+    }
+    if (!p.picks || !p.picks.length) return;
+    document.getElementById('picks-list').innerHTML = p.picks.map(function (s) {
+      return '<li><a href="/skills/' + encodeURIComponent(s.name) + '/">' + esc(s.name) + '</a> ' + esc(s.description) + '</li>';
+    }).join('');
+    document.getElementById('picks').hidden = false;
+  }).catch(function () {});
+
+  q.addEventListener('input', update);
+  cat.addEventListener('change', update);
+  tag.addEventListener('change', update);
+})();
+</script>
+</body>
+</html>

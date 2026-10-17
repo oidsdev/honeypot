@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://honeypot-e6c.pages.dev/</loc><lastmod>2026-10-12</lastmod></url>
-  <url><loc>https://honeypot-e6c.pages.dev/llms.txt</loc><lastmod>2026-10-12</lastmod></url>
-  <url><loc>https://honeypot-e6c.pages.dev/llms-full.txt</loc><lastmod>2026-10-12</lastmod></url>
-  <url><loc>https://honeypot-e6c.pages.dev/skill-template.md</loc><lastmod>2026-10-12</lastmod></url>
-  <url><loc>https://honeypot-e6c.pages.dev/badge.svg</loc><lastmod>2026-10-12</lastmod></url>
+  <url><loc>https://honeypot-e6c.pages.dev/</loc><lastmod>2026-10-17</lastmod></url>
+  <url><loc>https://honeypot-e6c.pages.dev/ja/</loc><lastmod>2026-10-17</lastmod></url>
+  <url><loc>https://honeypot-e6c.pages.dev/llms.txt</loc><lastmod>2026-10-17</lastmod></url>
+  <url><loc>https://honeypot-e6c.pages.dev/llms-full.txt</loc><lastmod>2026-10-17</lastmod></url>
+  <url><loc>https://honeypot-e6c.pages.dev/skill-template.md</loc><lastmod>2026-10-17</lastmod></url>
+  <url><loc>https://honeypot-e6c.pages.dev/badge.svg</loc><lastmod>2026-10-17</lastmod></url>
   <url><loc>https://honeypot-e6c.pages.dev/badge/agent-checkout.svg</loc><lastmod>2026-10-10</lastmod></url>
   <url><loc>https://honeypot-e6c.pages.dev/badge/coinbase.svg</loc><lastmod>2026-09-29</lastmod></url>
   <url><loc>https://honeypot-e6c.pages.dev/badge/context7.svg</loc><lastmod>2026-10-12</lastmod></url>
@@ -25,10 +26,10 @@
   <url><loc>https://honeypot-e6c.pages.dev/badge/discord.svg</loc><lastmod>2026-10-12</lastmod></url>
   <url><loc>https://honeypot-e6c.pages.dev/badge/cursor.svg</loc><lastmod>2026-10-12</lastmod></url>
   <url><loc>https://honeypot-e6c.pages.dev/api/skills.json</loc><lastmod>2026-10-12</lastmod></url>
-  <url><loc>https://honeypot-e6c.pages.dev/api/changelog.json</loc><lastmod>2026-10-12</lastmod></url>
-  <url><loc>https://honeypot-e6c.pages.dev/api/editors-picks.json</loc><lastmod>2026-10-12</lastmod></url>
-  <url><loc>https://honeypot-e6c.pages.dev/feed.xml</loc><lastmod>2026-10-12</lastmod></url>
-  <url><loc>https://honeypot-e6c.pages.dev/faq/</loc><lastmod>2026-10-12</lastmod></url>
+  <url><loc>https://honeypot-e6c.pages.dev/api/changelog.json</loc><lastmod>2026-10-17</lastmod></url>
+  <url><loc>https://honeypot-e6c.pages.dev/api/editors-picks.json</loc><lastmod>2026-10-17</lastmod></url>
+  <url><loc>https://honeypot-e6c.pages.dev/feed.xml</loc><lastmod>2026-10-17</lastmod></url>
+  <url><loc>https://honeypot-e6c.pages.dev/faq/</loc><lastmod>2026-10-17</lastmod></url>
   <url><loc>https://honeypot-e6c.pages.dev/categories/tooling/</loc><lastmod>2026-10-12</lastmod></url>
   <url><loc>https://honeypot-e6c.pages.dev/categories/trading/</loc><lastmod>2026-10-12</lastmod></url>
   <url><loc>https://honeypot-e6c.pages.dev/categories/identity/</loc><lastmod>2026-10-12</lastmod></url>

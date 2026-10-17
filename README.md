@@ -97,6 +97,7 @@ Requirements (learned the hard way — PRs missing these get bounced):
 ## Layout
 
 - `index.html` — the site
+- `ja/index.html` — Japanese homepage
 - `search.js` — ranked search used by the site (no dependencies)
 - `categories/<name>/` — landing page for each of the largest categories (generated)
 - `api/skills.json` — the machine-readable index
