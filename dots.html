@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Dots starter pack — Honeypot</title>
-<meta name="description" content="Just got an OpenAI Dot? Seven free skills to plug in first. One command each, no sign-up. From Honeypot, the open skill index for AI agents.">
-<meta property="og:title" content="Dots starter pack — Honeypot">
-<meta property="og:description" content="Just got an OpenAI Dot? Seven free skills to plug in first. One command each, no sign-up.">
+<title>Dots starter pack - Honeypot</title>
+<meta name="description" content="Just got an OpenAI Dot? Five free skills to plug in first. One command each, no sign-up. From Honeypot, the open skill index for AI agents.">
+<meta property="og:title" content="Dots starter pack - Honeypot">
+<meta property="og:description" content="Just got an OpenAI Dot? Five free skills to plug in first. One command each, no sign-up.">
 <meta property="og:url" content="https://honeypot-e6c.pages.dev/dots">
 <meta property="og:type" content="website">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='%231a1a1a'/%3E%3Ccircle cx='16' cy='16' r='5' fill='%23fff'/%3E%3C/svg%3E">
@@ -28,33 +28,44 @@
 <body>
 <main>
   <h1>Just got a Dot?</h1>
-  <p>OpenAI's Dots are always-on agents — they remember things, work on a schedule, and use tools. A dot with no tools is just a chatbot that never sleeps. Here's what to plug in first.</p>
+  <p>OpenAI's Dots are always-on agents. They remember things, work on a schedule, and use tools. A dot with no tools is just a chatbot that never sleeps. Start with these five.</p>
 
   <p>Each one downloads with a single command (saves as its own file, no overwrites). Tell your dot to run it, or paste it into the dot's terminal yourself.</p>
 
+  <h2>Start with these five</h2>
+
   <div class="card">
-    <h3>cron</h3>
-    <p>Your dot is always on. This teaches it to do things on a schedule — morning briefings, weekly reports, reminders.</p>
+    <h3>1. cron</h3>
+    <p>Teaches your dot to run things on a schedule: morning briefings, weekly reports, reminders.</p>
     <div class="install"><code>curl -sL https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/cron/SKILL.md -o cron-SKILL.md</code><button onclick="navigator.clipboard.writeText(this.previousElementSibling.textContent)">copy</button></div>
   </div>
 
   <div class="card">
-    <h3>pdf-text</h3>
-    <p>Hand your dot a PDF, get the text back. Contracts, manuals, research papers — readable in seconds.</p>
+    <h3>2. pdf-text</h3>
+    <p>Hand your dot a PDF and get the text back: contracts, manuals, research papers, readable in seconds.</p>
     <div class="install"><code>curl -sL https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/pdf-text/SKILL.md -o pdf-text-SKILL.md</code><button onclick="navigator.clipboard.writeText(this.previousElementSibling.textContent)">copy</button></div>
   </div>
 
   <div class="card">
-    <h3>sqlite</h3>
-    <p>A real database on the machine. Trackers, lists, logs — anything your dot should keep structured between sessions.</p>
+    <h3>3. sqlite</h3>
+    <p>A real database on the machine for trackers, lists, and logs, kept structured between sessions.</p>
     <div class="install"><code>curl -sL https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/sqlite/SKILL.md -o sqlite-SKILL.md</code><button onclick="navigator.clipboard.writeText(this.previousElementSibling.textContent)">copy</button></div>
   </div>
 
   <div class="card">
-    <h3>image-optimize</h3>
+    <h3>4. image-optimize</h3>
     <p>Shrinks images before upload. Smaller files, faster everything, originals untouched.</p>
     <div class="install"><code>curl -sL https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/image-optimize/SKILL.md -o image-optimize-SKILL.md</code><button onclick="navigator.clipboard.writeText(this.previousElementSibling.textContent)">copy</button></div>
   </div>
+
+  <div class="card">
+    <h3>5. skill-creator</h3>
+    <p>The skill for writing skills: package anything your dot learns into something reusable.</p>
+    <div class="install"><code>curl -sL https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/skill-creator/SKILL.md -o skill-creator-SKILL.md</code><button onclick="navigator.clipboard.writeText(this.previousElementSibling.textContent)">copy</button></div>
+  </div>
+
+  <h2>Then add these</h2>
+  <p>Two more from the starter pack, worth adding once the first five are in.</p>
 
   <div class="card">
     <h3>playwright-mcp</h3>
@@ -68,17 +79,11 @@
     <div class="install"><code>curl -sL https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/agent-checkout/SKILL.md -o agent-checkout-SKILL.md</code><button onclick="navigator.clipboard.writeText(this.previousElementSibling.textContent)">copy</button></div>
   </div>
 
-  <div class="card">
-    <h3>skill-creator</h3>
-    <p>Teach your dot new tricks. This is the skill for writing skills — package anything your dot learns into something reusable.</p>
-    <div class="install"><code>curl -sL https://raw.githubusercontent.com/oidsdev/honeypot/main/skills/skill-creator/SKILL.md -o skill-creator-SKILL.md</code><button onclick="navigator.clipboard.writeText(this.previousElementSibling.textContent)">copy</button></div>
-  </div>
-
   <h2>Want more?</h2>
-  <p>These seven are the starter set. The full index has more — trading, webhooks, identity, all of it. <a href="/">Browse the whole thing</a>, or pull the machine-readable list straight from <a href="/api/skills.json"><code>/api/skills.json</code></a>.</p>
+  <p>That is the starter set: five to start, two more when you are ready. The full index has 19 skills, trading, webhooks, identity, all of it. <a href="/">Browse the whole thing</a>, or pull the machine-readable list straight from <a href="/api/skills.json"><code>/api/skills.json</code></a>.</p>
 
   <footer>
-    <p>Honeypot — a free, open index of skills for AI agents. No sign-up, no tracking. <a href="https://github.com/oidsdev/honeypot">GitHub</a></p>
+    <p>Honeypot: a free, open index of skills for AI agents. No sign-up, no tracking. <a href="https://github.com/oidsdev/honeypot">GitHub</a></p>
   </footer>
 </main>
 </body>
